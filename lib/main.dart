@@ -36,9 +36,9 @@ class _MyAppState extends State<MyApp> {
                     border: Border.all(color: Colors.blueAccent, width: 2.0)),
                 width: 150,
                 height: 150,
-                child: ClipOval(
-                  child: Image.network(
-                    "https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png",
+                child: const ClipOval(
+                  child: Image(
+                    image: AssetImage("assets/img/userIcon.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
