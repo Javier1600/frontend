@@ -19,6 +19,7 @@ class User {
   String telefono;
   String usuario;
   String password;
+  String confirmPassword;
   int v;
 
   User({
@@ -30,6 +31,7 @@ class User {
     required this.telefono,
     required this.usuario,
     required this.password,
+    required this.confirmPassword,
     required this.v,
   });
 
@@ -42,6 +44,7 @@ class User {
         telefono: json["telefono"],
         usuario: json["usuario"],
         password: json["password"],
+        confirmPassword: json["password"],
         v: json["__v"],
       );
 
@@ -53,5 +56,6 @@ class User {
         "telefono": telefono,
         "usuario": usuario,
         "password": password,
+        "confirmPassword": confirmPassword
       };
 }
