@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
             color: Colors.white,
             child: Column(children: [
               Container(
-                margin: const EdgeInsets.all(10),
+                margin: const EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.blueAccent, width: 2.0)),
