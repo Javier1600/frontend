@@ -5,9 +5,9 @@ import 'package:frontend/classes/users.dart';
 import 'package:frontend/services/user.services.dart';
 
 class MyApp extends StatefulWidget {
-  String idUser;
+  User loggedUser;
 
-  MyApp(this.idUser, {super.key});
+  MyApp(this.loggedUser, {super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -46,7 +46,8 @@ class _MyAppState extends State<MyApp> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Text(widget.idUser),
+                    Text(
+                        '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}'),
                   ],
                 ),
               ),
