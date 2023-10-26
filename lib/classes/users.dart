@@ -15,6 +15,7 @@ class User {
   String nombre;
   String apellido;
   String rol;
+  String sexo;
   DateTime fechaNacimiento;
   String telefono;
   String usuario;
@@ -27,6 +28,7 @@ class User {
     required this.nombre,
     required this.apellido,
     required this.rol,
+    required this.sexo,
     required this.fechaNacimiento,
     required this.telefono,
     required this.usuario,
@@ -40,6 +42,7 @@ class User {
         nombre: json["nombre"],
         apellido: json["apellido"],
         rol: json["rol"],
+        sexo: json["sexo"],
         fechaNacimiento: DateTime.parse(json["fechaNacimiento"]),
         telefono: json["telefono"],
         usuario: json["usuario"],
@@ -52,6 +55,7 @@ class User {
         "nombre": nombre,
         "apellido": apellido,
         "rol": rol,
+        "sexo": sexo,
         "fechaNacimiento": fechaNacimiento.toIso8601String(),
         "telefono": telefono,
         "usuario": usuario,

@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     const ClipOval(
                       child: Image(
-                        image: AssetImage("assets/img/userIcon.png"),
+                        image: AssetImage("assets/img/hombre.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
