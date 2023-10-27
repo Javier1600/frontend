@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:frontend/classes/companies.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Company>> getAllUsers() async => http
+Future<List<Company>> getAllCompanies() async => http
         .get(
             Uri.parse("https://0vmlb023-8000.use2.devtunnels.ms/api/companies"))
         .then((res) {
@@ -15,7 +15,7 @@ Future<List<Company>> getAllUsers() async => http
       }
     });
 
-Future<String> createUser(List<Company> user) => http.post(
+Future<String> createCompany(List<Company> user) => http.post(
         Uri.parse("https://0vmlb023-8000.use2.devtunnels.ms/api/company/new"),
         body: {companyToJson(user)}).then((res) {
       if (res.statusCode == 200) {

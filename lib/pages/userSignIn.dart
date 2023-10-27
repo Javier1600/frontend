@@ -23,7 +23,7 @@ class _userSignInState extends State<userSignIn> {
   //Variables para los valores de los campos
   String nombre = '';
   String apellido = '';
-  String rol = '';
+  String rol = 'Cliente';
   String sexo = '';
   String fechaNacimiento = '';
   String telefono = '';
@@ -31,12 +31,12 @@ class _userSignInState extends State<userSignIn> {
   String password = '';
   String confirmPassword = '';
   //Controladores de textos para las contraseñas y la fecha de nacimiento
-  final TextEditingController passController = TextEditingController();
-  final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
   //Variables para controlar los checkboxs de sexo
   bool isMale = false;
   bool isFemale = false;
+  //Variable para controlar el registro en caso de usuario repetido
+  bool registeredUser = false;
   //Mascara del campo fecha nacimiento
   var dateMaskFormatter = MaskTextInputFormatter(
       mask: '##-##-####',
@@ -54,6 +54,43 @@ class _userSignInState extends State<userSignIn> {
   void initState() {
     users = getAllUsers();
     super.initState();
+  }
+
+  void signInAlert(String title, String mensaje, bool navigate) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title,
+              style: TextStyle(
+                  color: Color.fromRGBO(226, 144, 32, 1),
+                  fontWeight: FontWeight.w700)),
+          content: Text(mensaje,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+          backgroundColor: Colors.white70,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                if (navigate) {
+                  Navigator.pushNamed(context, 'home');
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text(
+                'Cerrar',
+                style: TextStyle(
+                    color: Color.fromRGBO(1, 167, 211, 1),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700),
+              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.white70),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -216,7 +253,7 @@ class _userSignInState extends State<userSignIn> {
                             keyboardType: TextInputType.number,
                             inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
-                              hintText: 'MM-DD-AAAA',
+                              hintText: 'DD-MM-AAAA',
                               icon: Icon(Icons.calendar_month_outlined),
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
@@ -263,7 +300,6 @@ class _userSignInState extends State<userSignIn> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            controller: passController,
                             obscureText: passwordVisible,
                             decoration: InputDecoration(
                               icon: Icon(Icons.password),
@@ -291,7 +327,6 @@ class _userSignInState extends State<userSignIn> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            controller: confirmPassController,
                             obscureText: confPassVisible,
                             decoration: InputDecoration(
                               icon: Icon(Icons.password),
@@ -322,7 +357,74 @@ class _userSignInState extends State<userSignIn> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    //Verifico que se ingresaron todos los campos
+                                    if (nombre != '' &&
+                                        apellido != '' &&
+                                        (isMale || isFemale) &&
+                                        fechaNacimiento != '' &&
+                                        telefono != '' &&
+                                        usuario != '' &&
+                                        password != '' &&
+                                        confirmPassword != '') {
+                                      //Verifica si el usuario ingresado existe
+                                      for (User u in uList!) {
+                                        if (u.usuario != usuario) {
+                                          registeredUser = false;
+                                        } else {
+                                          registeredUser = true;
+                                        }
+                                      }
+                                      if (registeredUser) {
+                                        signInAlert(
+                                            "Error",
+                                            "El nombre de usuario ya se encuentra registrado",
+                                            false);
+                                      } else {
+                                        if (password == confirmPassword) {
+                                          String encryptedPassword = md5
+                                              .convert(utf8.encode(password))
+                                              .toString();
+                                          if (isMale) {
+                                            sexo = 'Masculino';
+                                          } else {
+                                            sexo = 'Femenino';
+                                          }
+                                          User newUser = User(
+                                              id: '',
+                                              nombre: nombre,
+                                              apellido: apellido,
+                                              rol: rol,
+                                              sexo: sexo,
+                                              fechaNacimiento:
+                                                  DateFormat("dd-MM-yyyy")
+                                                      .parse(fechaNacimiento),
+                                              telefono: telefono,
+                                              usuario: usuario,
+                                              password: encryptedPassword,
+                                              confirmPassword:
+                                                  encryptedPassword,
+                                              v: 0);
+                                          print(
+                                              '${newUser.fechaNacimiento.toIso8601String()} ');
+                                          createUser(newUser);
+                                          signInAlert(
+                                              "Exito",
+                                              "Se ha registrado el usuario de forma exitosa",
+                                              true);
+                                        } else {
+                                          signInAlert(
+                                              "Error",
+                                              "Las contraseñas deben coincidir",
+                                              false);
+                                        }
+                                      }
+                                    } else {
+                                      //Muestro una alerta pidiendo ingresar todos los campos
+                                      signInAlert(
+                                          "Error",
+                                          "Ingrese todos los campos solicitados",
+                                          false);
+                                    }
                                   },
                                   child: Text(
                                     'Registrar',

@@ -1,10 +1,15 @@
 // ignore_for_file: file_names, camel_case_types, avoid_unnecessary_containers, prefer_const_constructors, unused_local_variable, avoid_print, prefer_void_to_null, non_constant_identifier_names, sort_child_properties_last
 
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/classes/companies.dart';
 
 import 'package:frontend/pages/pages.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/services/user.services.dart';
+import 'package:frontend/services/company.services.dart';
 
 class initialPage extends StatefulWidget {
   const initialPage({super.key});
@@ -15,6 +20,7 @@ class initialPage extends StatefulWidget {
 
 class _initialPageState extends State<initialPage> {
   //Controladores de textos:
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   //Variables para los valores de los textos:
   String username = '';
@@ -26,6 +32,19 @@ class _initialPageState extends State<initialPage> {
   List<User>? uList = [];
   //Variable para controlar si se logea una empresa
   bool isCompany = false;
+  //Usuario que se loguea
+  User authUser = User(
+      id: "",
+      nombre: "",
+      apellido: "",
+      rol: "",
+      sexo: "",
+      fechaNacimiento: DateTime.now(),
+      telefono: "",
+      usuario: "",
+      password: "",
+      confirmPassword: "",
+      v: 0);
   @override
   void initState() {
     users = getAllUsers();
@@ -39,10 +58,13 @@ class _initialPageState extends State<initialPage> {
   }
 
   void clearTextFields() {
+    usernameController.clear();
     passwordController.clear();
+    username = '';
+    password = '';
   }
 
-  void loginAlert(String title, String error) {
+  void loginAlert(String title, String msg) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -51,7 +73,7 @@ class _initialPageState extends State<initialPage> {
               style: TextStyle(
                   color: Color.fromRGBO(226, 144, 32, 1),
                   fontWeight: FontWeight.w700)),
-          content: Text(error,
+          content: Text(msg,
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
           backgroundColor: Colors.white70,
@@ -167,6 +189,7 @@ class _initialPageState extends State<initialPage> {
                                               Color.fromRGBO(1, 167, 211, 1)),
                                     ),
                                     TextField(
+                                      controller: usernameController,
                                       decoration: InputDecoration(
                                         icon: Icon(Icons.account_circle),
                                         hintText: 'Usuario',
@@ -241,29 +264,37 @@ class _initialPageState extends State<initialPage> {
                                           onPressed: () {
                                             if (username.isEmpty ||
                                                 password.isEmpty) {
-                                              loginAlert("Error",
+                                              loginAlert("msg",
                                                   "Ingrese los campos requeridos");
                                             } else {
                                               //No es empresa
                                               if (isCompany == false) {
                                                 for (User u in uList!) {
                                                   if (u.usuario == username &&
-                                                      u.password == password) {
-                                                    //Valido el rol
-                                                    //Usuario
-                                                    if (u.rol == 'Usuario') {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute<
-                                                                  Null>(
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                        return MyApp(u);
-                                                      }));
-                                                    } else {
-                                                      //Administrador
-                                                    }
+                                                      u.password ==
+                                                          md5
+                                                              .convert(
+                                                                  utf8.encode(
+                                                                      password))
+                                                              .toString()) {
+                                                    authUser = u;
                                                   }
+                                                }
+                                                if (authUser.rol == "Cliente") {
+                                                  clearTextFields();
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute<Null>(
+                                                          builder: (BuildContext
+                                                              context) {
+                                                    return MyApp(authUser);
+                                                  }));
+                                                } else {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute<Null>(
+                                                          builder: (BuildContext
+                                                              context) {
+                                                    return MyApp(authUser);
+                                                  }));
                                                 }
                                               } else {
                                                 //Es Empresa
@@ -285,7 +316,7 @@ class _initialPageState extends State<initialPage> {
                                     ),
                                     Divider(),
                                     Text(
-                                      "Resgistrarse como:",
+                                      "Registrarse como:",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color:
