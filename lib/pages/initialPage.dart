@@ -4,12 +4,10 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/companies.dart';
 
 import 'package:frontend/pages/pages.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/services/user.services.dart';
-import 'package:frontend/services/company.services.dart';
 
 class initialPage extends StatefulWidget {
   const initialPage({super.key});
