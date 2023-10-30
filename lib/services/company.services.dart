@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:frontend/classes/companies.dart';
@@ -15,13 +17,15 @@ Future<List<Company>> getAllCompanies() async => http
       }
     });
 
-Future<String> createCompany(List<Company> user) => http.post(
-        Uri.parse("https://0vmlb023-8000.use2.devtunnels.ms/api/company/new"),
-        body: {companyToJson(user)}).then((res) {
-      if (res.statusCode == 200) {
-        String body = utf8.decode(res.bodyBytes);
-        return body;
-      } else {
-        return utf8.decode(res.bodyBytes);
-      }
-    });
+void createcompany(Company company) async {
+  try {
+    var response = await http.post(
+        Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/company/new'),
+        body: {
+          'nombre': company.nombreEmpresa,
+        });
+    print(response.body);
+  } catch (e) {
+    print(e);
+  }
+}

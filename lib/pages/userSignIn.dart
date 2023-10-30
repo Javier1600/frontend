@@ -96,7 +96,10 @@ class _userSignInState extends State<userSignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
+      ),
       body: FutureBuilder(
           future: users,
           builder: (context, snapshot) {
@@ -107,7 +110,7 @@ class _userSignInState extends State<userSignIn> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: EdgeInsets.only(top: 0),
                     ),
                     Center(
                       child: Column(children: [

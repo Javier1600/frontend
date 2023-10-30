@@ -6,5 +6,6 @@ class Routes {
     'home': (_) => const initialPage(),
     'userSignIn': (_) => const userSignIn(),
     'companySignIn': (_) => const companySignIn(),
+    'userLogInPage': (_) => const loginUserPage(),
   };
 }
