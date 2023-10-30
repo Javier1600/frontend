@@ -5,18 +5,18 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
-import 'package:frontend/pages/pages.dart';
-import 'package:frontend/classes/users.dart';
-import 'package:frontend/services/user.services.dart';
+// import 'package:frontend/pages/pages.dart';
+import 'package:frontend/classes/companies.dart';
+import 'package:frontend/services/company.services.dart';
 
-class loginUserPage extends StatefulWidget {
-  const loginUserPage({super.key});
+class loginCompanyPage extends StatefulWidget {
+  const loginCompanyPage({super.key});
 
   @override
-  State<loginUserPage> createState() => _loginUserPageState();
+  State<loginCompanyPage> createState() => _loginCompanyPageState();
 }
 
-class _loginUserPageState extends State<loginUserPage> {
+class _loginCompanyPageState extends State<loginCompanyPage> {
   //Controladores de textos:
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -28,24 +28,24 @@ class _loginUserPageState extends State<loginUserPage> {
   //Variable para validar la existencia del usuario que se logea
   bool uExist = false;
   //variable que contiene todos los usuarios de la base
-  late Future<List<User>> users;
-  late List<User>? uList = [];
+  late Future<List<Company>> companies;
+  late List<Company>? cList = [];
   //Usuario que se loguea
-  User authUser = User(
-      id: "",
-      nombre: "",
-      apellido: "",
-      rol: "",
-      sexo: "",
-      fechaNacimiento: DateTime.now(),
-      telefono: "",
-      usuario: "",
-      password: "",
-      confirmPassword: "",
+  Company authUser = Company(
+      id: '',
+      nombreEmpresa: '',
+      correo: '',
+      direccion: '',
+      telefono: '',
+      descripcion: '',
+      rol: '',
+      usuario: '',
+      password: '',
+      confirmPassword: '',
       v: 0);
   @override
   void initState() {
-    users = getAllUsers();
+    companies = getAllCompanies();
     super.initState();
   }
 
@@ -78,7 +78,7 @@ class _loginUserPageState extends State<loginUserPage> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'home');
+                Navigator.pushNamed(context, 'companyLogInPage');
               },
               child: Text(
                 'Cerrar',
@@ -108,7 +108,7 @@ class _loginUserPageState extends State<loginUserPage> {
             },
           ),
           title: Text(
-            "Usuarios",
+            "Empresas",
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 25.0,
@@ -117,10 +117,10 @@ class _loginUserPageState extends State<loginUserPage> {
           ),
         ),
         body: FutureBuilder(
-            future: users,
+            future: companies,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                uList = snapshot.data;
+                cList = snapshot.data;
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
@@ -262,7 +262,7 @@ class _loginUserPageState extends State<loginUserPage> {
                                                     "Ingrese los campos requeridos");
                                               } else {
                                                 //Busco el usuario en la lista
-                                                for (User u in uList!) {
+                                                for (Company u in cList!) {
                                                   if (u.usuario == username &&
                                                       u.password ==
                                                           md5
@@ -280,22 +280,22 @@ class _loginUserPageState extends State<loginUserPage> {
                                                   if (authUser.rol ==
                                                       "Cliente") {
                                                     clearTextFields();
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<Null>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return MyApp(authUser);
-                                                    }));
+                                                    // Navigator.of(context).push(
+                                                    //     MaterialPageRoute<Null>(
+                                                    //         builder:
+                                                    //             (BuildContext
+                                                    //                 context) {
+                                                    //   return MyApp(authUser);
+                                                    // }));
                                                   } else {
-                                                    clearTextFields();
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<Null>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return MyApp(authUser);
-                                                    }));
+                                                    // clearTextFields();
+                                                    // Navigator.of(context).push(
+                                                    //     MaterialPageRoute<Null>(
+                                                    //         builder:
+                                                    //             (BuildContext
+                                                    //                 context) {
+                                                    //   return MyApp(authUser);
+                                                    // }));
                                                   }
                                                 } else {
                                                   //No existe el usuario
@@ -321,7 +321,7 @@ class _loginUserPageState extends State<loginUserPage> {
                                               onPressed: () {
                                                 clearTextFields();
                                                 Navigator.pushNamed(
-                                                    context, 'userSignIn');
+                                                    context, 'companySignIn');
                                               },
                                               style: ElevatedButton.styleFrom(
                                                   backgroundColor:

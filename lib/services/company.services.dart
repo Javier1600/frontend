@@ -16,13 +16,20 @@ Future<List<Company>> getAllCompanies() async => http
         throw Exception("Conexión fallida");
       }
     });
-
 void createcompany(Company company) async {
   try {
     var response = await http.post(
         Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/company/new'),
         body: {
-          'nombre': company.nombreEmpresa,
+          'nombreEmpresa': company.nombreEmpresa,
+          'correo': company.correo,
+          'direccion': company.direccion,
+          'telefono': company.telefono,
+          'descripcion': company.descripcion,
+          'rol': company.rol,
+          'usuario': company.usuario,
+          'password': company.password,
+          'confirmPassword': company.confirmPassword,
         });
     print(response.body);
   } catch (e) {
