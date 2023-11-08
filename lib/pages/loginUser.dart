@@ -4,19 +4,22 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:frontend/classes/companies.dart';
 
-import 'package:frontend/pages/pages.dart';
+import 'package:frontend/pages/homePageUser.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/services/company.services.dart';
 import 'package:frontend/services/user.services.dart';
 
-class loginUserPage extends StatefulWidget {
-  const loginUserPage({super.key});
+class loginPage extends StatefulWidget {
+  const loginPage({super.key});
 
   @override
-  State<loginUserPage> createState() => _loginUserPageState();
+  State<loginPage> createState() => _loginPageState();
 }
 
-class _loginUserPageState extends State<loginUserPage> {
+class _loginPageState extends State<loginPage> {
   //Controladores de textos:
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -30,6 +33,9 @@ class _loginUserPageState extends State<loginUserPage> {
   //variable que contiene todos los usuarios de la base
   late Future<List<User>> users;
   late List<User>? uList = [];
+  //variable que contiene todos las companias de la base
+  late Future<List<Company>> companies;
+  late List<Company>? cList = [];
   //Usuario que se loguea
   User authUser = User(
       id: "",
@@ -43,9 +49,25 @@ class _loginUserPageState extends State<loginUserPage> {
       password: "",
       confirmPassword: "",
       v: 0);
+  //Empresa que se loguea
+  Company authCompany = Company(
+      id: "",
+      nombreEmpresa: "",
+      correo: "",
+      direccion: "",
+      telefono: "",
+      descripcion: "",
+      rol: "",
+      usuario: "",
+      password: "",
+      confirmPassword: "",
+      v: 0);
+  //Variable para controlar si se loguea una empresa
+  bool isCompany = false;
   @override
   void initState() {
     users = getAllUsers();
+    companies = getAllCompanies();
     super.initState();
   }
 
@@ -78,7 +100,7 @@ class _loginUserPageState extends State<loginUserPage> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'home');
+                Navigator.pop(context);
               },
               child: Text(
                 'Cerrar',
@@ -102,13 +124,13 @@ class _loginUserPageState extends State<loginUserPage> {
           surfaceTintColor: Colors.white,
           foregroundColor: Color.fromRGBO(1, 167, 211, 1),
           leading: IconButton(
-            icon: Icon(Icons.home_filled),
+            icon: Icon(Icons.exit_to_app_rounded),
             onPressed: () {
-              Navigator.of(context).pop();
+              SystemNavigator.pop();
             },
           ),
           title: Text(
-            "Usuarios",
+            "Inicio de Sesión",
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 25.0,
@@ -121,213 +143,275 @@ class _loginUserPageState extends State<loginUserPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 uList = snapshot.data;
-                return SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 35),
-                      ),
-                      Container(
-                        child: Center(
-                          child: Column(
-                            children: [
-                              const Text(
-                                "Empleos",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 40.0,
-                                    color: Color.fromRGBO(1, 167, 211, 1)),
-                                textAlign: TextAlign.center,
-                              ),
-                              RichText(
-                                  text: const TextSpan(children: [
-                                TextSpan(
-                                  text: "Chavez",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 40.0,
-                                      color: Color.fromRGBO(226, 144, 32, 1),
-                                      fontFamily: 'PlaypenSans'),
-                                ),
-                                TextSpan(
-                                  text: "pamba",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 40.0,
-                                      color: Color.fromRGBO(1, 167, 211, 1),
-                                      fontFamily: 'PlaypenSans'),
-                                ),
-                              ])),
-                              Padding(padding: EdgeInsets.only(bottom: 10)),
-                              ClipOval(
-                                child: Image(
-                                  image: AssetImage("assets/img/cp.png"),
-                                  width: 120,
-                                  height: 120,
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.only(bottom: 15)),
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: 16.0,
-                                    right: 16.0,
-                                    top: 10,
-                                    bottom: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.black12,
-                                          offset: Offset(0.0, 15.0),
-                                          blurRadius: 15.0)
-                                    ]),
+                return FutureBuilder(
+                  future: companies,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      cList = snapshot.data;
+                      return SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 20),
+                            ),
+                            Container(
+                              child: Center(
                                 child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Ingresa tu usuario y contraseña:",
-                                      textAlign: TextAlign.left,
+                                  children: [
+                                    const Text(
+                                      "Empleos",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 17.0,
-                                          color:
-                                              Color.fromRGBO(226, 144, 32, 1),
-                                          fontFamily: 'PlaypenSans'),
-                                    ),
-                                    Divider(
-                                      color: Color.fromRGBO(226, 144, 32, 1),
-                                    ),
-                                    Text(
-                                      'Usuario',
-                                      style: TextStyle(
+                                          fontSize: 40.0,
                                           color:
                                               Color.fromRGBO(1, 167, 211, 1)),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    TextField(
-                                      controller: usernameController,
-                                      decoration: InputDecoration(
-                                        icon: Icon(Icons.account_circle),
-                                        hintText: 'Usuario',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
+                                    RichText(
+                                        text: const TextSpan(children: [
+                                      TextSpan(
+                                        text: "Chavez",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 40.0,
+                                            color:
+                                                Color.fromRGBO(226, 144, 32, 1),
+                                            fontFamily: 'PlaypenSans'),
                                       ),
-                                      onChanged: (valor) => setState(() {
-                                        username = valor;
-                                      }),
-                                    ),
-                                    Text(
-                                      'Contraseña',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(1, 167, 211, 1)),
-                                    ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      controller: passwordController,
-                                      obscureText: passwordVisible,
-                                      decoration: InputDecoration(
-                                        icon: Icon(Icons.password),
-                                        hintText: 'Contraseña',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(passwordVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off),
-                                          onPressed: () {
-                                            setState(() {
-                                              passwordVisible =
-                                                  !passwordVisible;
-                                            });
-                                          },
-                                        ),
+                                      TextSpan(
+                                        text: "pamba",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 40.0,
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontFamily: 'PlaypenSans'),
                                       ),
-                                      onChanged: (valor) => setState(() {
-                                        password = valor;
-                                      }),
+                                    ])),
+                                    Padding(
+                                        padding: EdgeInsets.only(bottom: 10)),
+                                    ClipOval(
+                                      child: Image(
+                                        image: AssetImage("assets/img/cp.png"),
+                                        width: 120,
+                                        height: 120,
+                                      ),
                                     ),
+                                    Padding(
+                                        padding: EdgeInsets.only(bottom: 15)),
                                     Container(
-                                      padding: EdgeInsets.only(top: 15),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                          top: 10,
+                                          bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                color: Colors.black12,
+                                                offset: Offset(0.0, 15.0),
+                                                blurRadius: 15.0)
+                                          ]),
+                                      child: Column(
                                         children: <Widget>[
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              //Valido que se haya ingresado valores a los textos
-                                              if (username.isEmpty ||
-                                                  password.isEmpty) {
-                                                loginAlert("Error",
-                                                    "Ingrese los campos requeridos");
-                                              } else {
-                                                //Busco el usuario en la lista
-                                                for (User u in uList!) {
-                                                  if (u.usuario == username &&
-                                                      u.password ==
-                                                          md5
-                                                              .convert(
-                                                                  utf8.encode(
-                                                                      password))
-                                                              .toString()) {
-                                                    authUser = u;
-                                                    uExist = true;
-                                                  } else {
-                                                    uExist = false;
-                                                  }
-                                                }
-                                                if (uExist) {
-                                                  if (authUser.rol ==
-                                                      "Cliente") {
-                                                    clearTextFields();
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<Null>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return MyApp(authUser);
-                                                    }));
-                                                  } else {
-                                                    clearTextFields();
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<Null>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return MyApp(authUser);
-                                                    }));
-                                                  }
-                                                } else {
-                                                  //No existe el usuario
-                                                  loginAlert("Error",
-                                                      "Verifique las credenciales ingresadas");
-                                                }
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white),
-                                            child: Text(
-                                              "Ingresar",
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
+                                          Text(
+                                            "Ingresa tu usuario y contraseña:",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 17.0,
+                                                color: Color.fromRGBO(
+                                                    226, 144, 32, 1),
+                                                fontFamily: 'PlaypenSans'),
+                                          ),
+                                          Divider(
+                                            color:
+                                                Color.fromRGBO(226, 144, 32, 1),
+                                          ),
+                                          Text(
+                                            'Usuario',
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    1, 167, 211, 1)),
+                                          ),
+                                          TextField(
+                                            controller: usernameController,
+                                            decoration: InputDecoration(
+                                              icon: Icon(Icons.account_circle),
+                                              hintText: 'Usuario',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            onChanged: (valor) => setState(() {
+                                              username = valor;
+                                            }),
+                                          ),
+                                          Text(
+                                            'Contraseña',
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    1, 167, 211, 1)),
+                                          ),
+                                          TextFormField(
+                                            keyboardType: TextInputType.text,
+                                            controller: passwordController,
+                                            obscureText: passwordVisible,
+                                            decoration: InputDecoration(
+                                              icon: Icon(Icons.password),
+                                              hintText: 'Contraseña',
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              suffixIcon: IconButton(
+                                                icon: Icon(passwordVisible
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    passwordVisible =
+                                                        !passwordVisible;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            onChanged: (valor) => setState(() {
+                                              password = valor;
+                                            }),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Checkbox(
+                                                  activeColor: Color.fromRGBO(
                                                       226, 144, 32, 1),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w700),
+                                                  value: isCompany,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isCompany = !isCompany;
+                                                    });
+                                                  },
+                                                ),
+                                                Text("Soy una empresa",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 17.0,
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1)))
+                                              ],
                                             ),
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.only(left: 20),
+                                          Center(
                                             child: ElevatedButton(
                                               onPressed: () {
-                                                clearTextFields();
-                                                Navigator.pushNamed(
-                                                    context, 'userSignIn');
+                                                //Valido que se haya ingresado valores a los textos
+                                                if (username.isEmpty ||
+                                                    password.isEmpty) {
+                                                  loginAlert("Error",
+                                                      "Ingrese los campos requeridos");
+                                                } else {
+                                                  //Valido el valor del ChekBox
+                                                  //Inicia sesion como empresa
+                                                  if (isCompany) {
+                                                    for (Company c in cList!) {
+                                                      print(c.nombreEmpresa);
+                                                      if (c.usuario ==
+                                                              username &&
+                                                          c.password ==
+                                                              md5
+                                                                  .convert(utf8
+                                                                      .encode(
+                                                                          password))
+                                                                  .toString()) {
+                                                        authCompany = c;
+                                                        uExist = true;
+                                                      } else {
+                                                        uExist = false;
+                                                      }
+                                                    }
+                                                    if (uExist) {
+                                                      clearTextFields();
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  Null>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return homePageUser(
+                                                            authUser);
+                                                      }));
+                                                    } else {
+                                                      //No existe la empresa
+                                                      loginAlert("Error",
+                                                          "La empresa ingresada no se encuentra registrada");
+                                                    }
+                                                  } else {
+                                                    //No es empresa
+                                                    //Busco el usuario en la lista de usuarios
+                                                    for (User u in uList!) {
+                                                      print(u.nombre);
+                                                      if (u.usuario ==
+                                                              username &&
+                                                          u.password ==
+                                                              md5
+                                                                  .convert(utf8
+                                                                      .encode(
+                                                                          password))
+                                                                  .toString()) {
+                                                        authUser = u;
+                                                        uExist = true;
+                                                      } else {
+                                                        uExist = false;
+                                                      }
+                                                    }
+                                                    //Verifico la existencia del usuario
+                                                    if (uExist) {
+                                                      //Si el usuario es un Cliente
+                                                      if (authUser.rol ==
+                                                          "Cliente") {
+                                                        clearTextFields();
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    Null>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return homePageUser(
+                                                              authUser);
+                                                        }));
+                                                      } else {
+                                                        //El usario es un Administrador
+                                                        clearTextFields();
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    Null>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return homePageUser(
+                                                              authUser);
+                                                        }));
+                                                      }
+                                                    } else {
+                                                      //No existe el usuario
+                                                      loginAlert("Error",
+                                                          "El usuario ingresado no se encuentra registrado");
+                                                    }
+                                                  }
+                                                }
                                               },
                                               style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       Colors.white),
                                               child: Text(
-                                                "Registrarme",
+                                                "Ingresar",
                                                 style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         1, 167, 211, 1),
@@ -337,20 +421,91 @@ class _loginUserPageState extends State<loginUserPage> {
                                               ),
                                             ),
                                           ),
+                                          Divider(
+                                            color:
+                                                Color.fromRGBO(226, 144, 32, 1),
+                                          ),
+                                          Text(
+                                            "Registrarme como:",
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    226, 144, 32, 1),
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    clearTextFields();
+                                                    Navigator.pushNamed(
+                                                        context, 'userSignIn');
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white),
+                                                  child: Text(
+                                                    "Usuario",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15.0),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      clearTextFields();
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          'companySignIn');
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white),
+                                                    child: Text(
+                                                      "Empresa",
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                    Divider(
-                                        color: Color.fromRGBO(226, 144, 32, 1)),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
