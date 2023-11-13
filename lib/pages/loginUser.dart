@@ -320,90 +320,102 @@ class _loginPageState extends State<loginPage> {
                                                   //Valido el valor del ChekBox
                                                   //Inicia sesion como empresa
                                                   if (isCompany) {
-                                                    for (Company c in cList!) {
-                                                      print(c.nombreEmpresa);
-                                                      if (c.usuario ==
+                                                    int i = 0;
+                                                    while (uExist == false &&
+                                                        i < cList!.length) {
+                                                      if (cList![i].usuario ==
                                                               username &&
-                                                          c.password ==
+                                                          cList![i].password ==
                                                               md5
                                                                   .convert(utf8
                                                                       .encode(
                                                                           password))
                                                                   .toString()) {
-                                                        authCompany = c;
+                                                        authCompany = cList![i];
                                                         uExist = true;
+                                                        if (uExist) {
+                                                          clearTextFields();
+                                                          Navigator.of(context).push(
+                                                              MaterialPageRoute<
+                                                                      Null>(
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                            return homePageUser(
+                                                                authUser);
+                                                          }));
+                                                          break;
+                                                        }
                                                       } else {
                                                         uExist = false;
+                                                        i = i + 1;
                                                       }
                                                     }
-                                                    if (uExist) {
-                                                      clearTextFields();
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute<
-                                                                  Null>(
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                        return homePageUser(
-                                                            authUser);
-                                                      }));
-                                                    } else {
+                                                    if (uExist == false) {
                                                       //No existe la empresa
                                                       loginAlert("Error",
-                                                          "La empresa ingresada no se encuentra registrada");
+                                                          "Verifique las credenciales ingresadas");
                                                     }
+                                                    uExist = false;
                                                   } else {
                                                     //No es empresa
                                                     //Busco el usuario en la lista de usuarios
-                                                    for (User u in uList!) {
-                                                      print(u.nombre);
-                                                      if (u.usuario ==
+                                                    int i = 0;
+                                                    while (uExist == false &&
+                                                        i < uList!.length) {
+                                                      if (uList![i].usuario ==
                                                               username &&
-                                                          u.password ==
+                                                          uList![i].password ==
                                                               md5
                                                                   .convert(utf8
                                                                       .encode(
                                                                           password))
                                                                   .toString()) {
-                                                        authUser = u;
+                                                        authUser = uList![i];
                                                         uExist = true;
+                                                        //Verifico la existencia del usuario
+                                                        if (uExist) {
+                                                          //Existe y es un Cliente
+                                                          if (authUser.rol ==
+                                                              "Cliente") {
+                                                            clearTextFields();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(MaterialPageRoute<
+                                                                        Null>(
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                              return homePageUser(
+                                                                  authUser);
+                                                            }));
+                                                          } else {
+                                                            //Existe y es un Administrador
+                                                            clearTextFields();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(MaterialPageRoute<
+                                                                        Null>(
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                              return homePageUser(
+                                                                  authUser);
+                                                            }));
+                                                            break;
+                                                          }
+                                                        }
                                                       } else {
                                                         uExist = false;
+                                                        i++;
                                                       }
                                                     }
-                                                    //Verifico la existencia del usuario
-                                                    if (uExist) {
-                                                      //Si el usuario es un Cliente
-                                                      if (authUser.rol ==
-                                                          "Cliente") {
-                                                        clearTextFields();
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute<
-                                                                    Null>(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return homePageUser(
-                                                              authUser);
-                                                        }));
-                                                      } else {
-                                                        //El usario es un Administrador
-                                                        clearTextFields();
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute<
-                                                                    Null>(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return homePageUser(
-                                                              authUser);
-                                                        }));
-                                                      }
-                                                    } else {
-                                                      //No existe el usuario
+                                                    if (uExist == false) {
+                                                      //No existe la empresa
                                                       loginAlert("Error",
-                                                          "El usuario ingresado no se encuentra registrado");
+                                                          "Verifique las credenciales ingresadas");
                                                     }
+                                                    uExist = false;
                                                   }
                                                 }
                                               },

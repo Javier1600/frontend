@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'PlaypenSans'),
         title: 'Empleos Chavezpamba',
-        initialRoute: 'home',
+        initialRoute: 'start',
         routes: Routes.routes,
       ),
     );
