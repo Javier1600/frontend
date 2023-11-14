@@ -2,6 +2,8 @@
 //
 //     final workExperience = workExperienceFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<WorkExperience> workExperienceFromJson(String str) =>

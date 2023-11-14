@@ -2,6 +2,8 @@
 //
 //     final acadTraining = acadTrainingFromJson(jsonString);
 
+// ignore_for_file: file_names
+
 import 'dart:convert';
 
 List<AcadTraining> acadTrainingFromJson(String str) => List<AcadTraining>.from(
