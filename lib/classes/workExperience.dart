@@ -15,6 +15,7 @@ String workExperienceToJson(List<WorkExperience> data) =>
 
 class WorkExperience {
   String id;
+  String puesto;
   String descripcionResponsabilidades;
   String ambitoLaboral;
   String empresa;
@@ -25,6 +26,7 @@ class WorkExperience {
 
   WorkExperience({
     required this.id,
+    required this.puesto,
     required this.descripcionResponsabilidades,
     required this.ambitoLaboral,
     required this.empresa,
@@ -36,6 +38,7 @@ class WorkExperience {
 
   factory WorkExperience.fromJson(Map<String, dynamic> json) => WorkExperience(
         id: json["_id"],
+        puesto: json["puesto"],
         descripcionResponsabilidades: json["descripcionResponsabilidades"],
         ambitoLaboral: json["ambitoLaboral"],
         empresa: json["empresa"],
@@ -47,6 +50,7 @@ class WorkExperience {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "puesto": puesto,
         "descripcionResponsabilidades": descripcionResponsabilidades,
         "ambitoLaboral": ambitoLaboral,
         "empresa": empresa,

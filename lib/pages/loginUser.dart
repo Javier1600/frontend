@@ -515,7 +515,21 @@ class _loginPageState extends State<loginPage> {
                       return Text("${snapshot.error}");
                     }
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Obteniendo datos",
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          CircularProgressIndicator(
+                            color: Color.fromRGBO(1, 167, 211, 1),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );
@@ -523,7 +537,21 @@ class _loginPageState extends State<loginPage> {
                 return Text("${snapshot.error}");
               }
               return const Center(
-                child: CircularProgressIndicator(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Obteniendo datos",
+                      style: TextStyle(
+                          color: Color.fromRGBO(1, 167, 211, 1),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    CircularProgressIndicator(
+                      color: Color.fromRGBO(1, 167, 211, 1),
+                    ),
+                  ],
+                ),
               );
             }));
   }

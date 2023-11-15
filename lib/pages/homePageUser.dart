@@ -60,7 +60,8 @@ class _homePageUserState extends State<homePageUser> {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute<Null>(
                             builder: (BuildContext context) {
-                          return userProfile(widget.loggedUser);
+                          return userProfile(
+                              widget.loggedUser, widget.loggedUser);
                         }));
                       },
                       child: Text(
