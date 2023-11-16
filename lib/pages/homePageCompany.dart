@@ -1,17 +1,17 @@
-// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_unnecessary_containers, prefer_void_to_null
+// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_unnecessary_containers, prefer_void_to_null, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/users.dart';
-import 'package:frontend/pages/userProfile.dart';
+import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/companyProfile.dart';
 
-class homePageUser extends StatefulWidget {
-  User loggedUser;
-  homePageUser(this.loggedUser, {super.key});
+class homePageCompany extends StatefulWidget {
+  Company loggedCompany;
+  homePageCompany(this.loggedCompany, {super.key});
   @override
-  State<homePageUser> createState() => _homePageUserState();
+  State<homePageCompany> createState() => _homePageCompanyState();
 }
 
-class _homePageUserState extends State<homePageUser> {
+class _homePageCompanyState extends State<homePageCompany> {
   @override
   void initState() {
     super.initState();
@@ -34,14 +34,13 @@ class _homePageUserState extends State<homePageUser> {
               height: 200,
               child: const ClipOval(
                   child: Image(
-                image: AssetImage('assets/img/hombre.png'),
+                image: AssetImage('assets/img/empresa.png'),
                 fit: BoxFit.contain,
               )),
             ),
             Container(
               padding: EdgeInsets.only(top: 10),
-              child: Text(
-                  '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}'),
+              child: Text('${widget.loggedCompany.nombreEmpresa}'),
             ),
             Container(
               child:
@@ -60,7 +59,7 @@ class _homePageUserState extends State<homePageUser> {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute<Null>(
                             builder: (BuildContext context) {
-                          return userProfile(widget.loggedUser);
+                          return CompanyProfile(widget.loggedCompany);
                         }));
                       },
                       child: Text(
@@ -77,7 +76,7 @@ class _homePageUserState extends State<homePageUser> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+        backgroundColor: Color.fromRGBO(206, 144, 32, 1),
         title: const Text(
           'Resumen',
           style: TextStyle(color: Colors.white),

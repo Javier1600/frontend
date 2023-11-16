@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/homePageCompany.dart';
 
 import 'package:frontend/pages/homePageUser.dart';
 import 'package:frontend/classes/users.dart';
@@ -57,6 +58,7 @@ class _loginPageState extends State<loginPage> {
       direccion: "",
       telefono: "",
       descripcion: "",
+      valores: "",
       rol: "",
       usuario: "",
       password: "",
@@ -341,8 +343,8 @@ class _loginPageState extends State<loginPage> {
                                                                   builder:
                                                                       (BuildContext
                                                                           context) {
-                                                            return homePageUser(
-                                                                authUser);
+                                                            return homePageCompany(
+                                                                authCompany);
                                                           }));
                                                           break;
                                                         }

@@ -17,6 +17,7 @@ class Company {
   String direccion;
   String telefono;
   String descripcion;
+  String valores;
   String rol;
   String usuario;
   String password;
@@ -30,6 +31,7 @@ class Company {
     required this.direccion,
     required this.telefono,
     required this.descripcion,
+    required this.valores,
     required this.rol,
     required this.usuario,
     required this.password,
@@ -44,6 +46,7 @@ class Company {
         direccion: json["direccion"],
         telefono: json["telefono"],
         descripcion: json["descripcion"],
+        valores: json["valores"],
         rol: json["rol"],
         usuario: json["usuario"],
         password: json["password"],
@@ -57,6 +60,7 @@ class Company {
         "direccion": direccion,
         "telefono": telefono,
         "descripcion": descripcion,
+        "valores": valores,
         "rol": rol,
         "usuario": usuario,
         "password": password,

@@ -26,6 +26,7 @@ void createcompany(Company company) async {
           'direccion': company.direccion,
           'telefono': company.telefono,
           'descripcion': company.descripcion,
+          'valores': company.valores,
           'rol': company.rol,
           'usuario': company.usuario,
           'password': company.password,

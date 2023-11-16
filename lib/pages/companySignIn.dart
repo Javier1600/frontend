@@ -25,6 +25,7 @@ class _companySignInState extends State<companySignIn> {
   String direccion = '';
   String telefono = '';
   String descripcion = '';
+  String valores = '';
   String rol = 'Empresa';
   String usuario = '';
   String password = '';
@@ -236,6 +237,23 @@ class _companySignInState extends State<companySignIn> {
                             }),
                           ),
                           Text(
+                            'Valores esperados de sus empleados',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextField(
+                            minLines: 1,
+                            maxLines: 10,
+                            decoration: InputDecoration(
+                              hintText: 'Respeto, puntualidad...',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              icon: Icon(Icons.person_search_rounded),
+                            ),
+                            onChanged: (valor) => setState(() {
+                              valores = valor;
+                            }),
+                          ),
+                          Text(
                             'Nombre de usuario',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
@@ -346,6 +364,7 @@ class _companySignInState extends State<companySignIn> {
                                               direccion: direccion,
                                               telefono: telefono,
                                               descripcion: descripcion,
+                                              valores: valores,
                                               rol: rol,
                                               usuario: usuario,
                                               password: encryptedPassword,

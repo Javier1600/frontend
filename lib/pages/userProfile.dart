@@ -1,21 +1,22 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/workExperience.dart';
-import 'package:frontend/services/workExperiences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/classes/workExperience.dart';
+import 'package:frontend/services/workExperiences.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:frontend/services/schools.services.dart';
 
 class userProfile extends StatefulWidget {
   //Variables para construir el drawer y el perfil
-  User loggedUser, reqUser;
-  userProfile(this.loggedUser, this.reqUser, {super.key});
+  User loggedUser;
+  userProfile(this.loggedUser, {super.key});
 
   @override
   State<userProfile> createState() => _userProfileState();
@@ -58,10 +59,10 @@ class _userProfileState extends State<userProfile> {
   late List<WorkExperience>? wEList = [];
   @override
   void initState() {
-    acadTraining = getUserAcadTraining(widget.reqUser.id);
-    certifications = getUserCertifications(widget.reqUser.id);
+    acadTraining = getUserAcadTraining(widget.loggedUser.id);
+    certifications = getUserCertifications(widget.loggedUser.id);
     schools = getAllSchools();
-    workExp = getUserWorkExperiences(widget.reqUser.id);
+    workExp = getUserWorkExperiences(widget.loggedUser.id);
     super.initState();
   }
 
@@ -89,18 +90,14 @@ class _userProfileState extends State<userProfile> {
             ),
             Container(
               padding: EdgeInsets.only(top: 10),
-              child: Text(
-                  '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}'),
-            ),
-            Container(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromRGBO(1, 167, 211, 1)),
                           minimumSize: MaterialStateProperty.all(Size(200, 50)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -109,13 +106,13 @@ class _userProfileState extends State<userProfile> {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute<Null>(
                             builder: (BuildContext context) {
-                          return userProfile(widget.loggedUser, widget.reqUser);
+                          return userProfile(widget.loggedUser);
                         }));
                       },
                       child: Text(
                         "Mi perfil",
                         style: TextStyle(
-                            color: Color.fromRGBO(206, 144, 32, 1),
+                            color: Colors.white,
                             fontSize: 34,
                             fontWeight: FontWeight.w700),
                       )),
@@ -126,9 +123,10 @@ class _userProfileState extends State<userProfile> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
         title: const Text(
-          "Mi perfil",
-          textAlign: TextAlign.center,
+          'Mi perfil',
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: FutureBuilder(
@@ -156,142 +154,167 @@ class _userProfileState extends State<userProfile> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   child: Column(children: [
-                                    Center(
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0,
+                                          right: 10.0,
+                                          top: 10,
+                                          bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                color: Colors.black26,
+                                                offset: Offset(8.0, 8.0),
+                                                blurRadius: 15.0)
+                                          ]),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         children: [
+                                          Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  width: 150,
+                                                  height: 150,
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        'assets/img/hombre.png'),
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Container(
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    color: const Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                    width: 2.0)),
-                                            width: 150,
-                                            height: 150,
-                                            child: const ClipOval(
-                                                child: Image(
-                                              image: AssetImage(
-                                                  'assets/img/hombre.png'),
-                                              fit: BoxFit.contain,
-                                            )),
+                                            child: Text(
+                                              "Datos personales",
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      1, 167, 211, 1),
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Nombre: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Fecha de nacimiento: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${widget.loggedUser.fechaNacimiento.day}-${widget.loggedUser.fechaNacimiento.month}-${widget.loggedUser.fechaNacimiento.year}',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Edad: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${CalcularEdad(widget.loggedUser.fechaNacimiento)} años',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Contacto: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${widget.loggedUser.telefono}',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Divider(
-                                            color: Color.fromRGBO(
-                                                226, 144, 32, 1)),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 5.0),
-                                          child: Text(
-                                            "Datos personales",
-                                            style: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    1, 167, 211, 1),
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Nombre: ',
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 1),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}',
-                                              style: TextStyle(
-                                                color:
-                                                    Color.fromRGBO(0, 0, 0, 1),
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Fecha de nacimiento: ',
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 1),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              '${widget.reqUser.fechaNacimiento.day}-${widget.reqUser.fechaNacimiento.month}-${widget.reqUser.fechaNacimiento.year}',
-                                              style: TextStyle(
-                                                color:
-                                                    Color.fromRGBO(0, 0, 0, 1),
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Edad: ',
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 1),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              '${CalcularEdad(widget.reqUser.fechaNacimiento)} años',
-                                              style: TextStyle(
-                                                color:
-                                                    Color.fromRGBO(0, 0, 0, 1),
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Contacto: ',
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      0, 0, 0, 1),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              '${widget.reqUser.telefono}',
-                                              style: TextStyle(
-                                                color:
-                                                    Color.fromRGBO(0, 0, 0, 1),
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    Padding(padding: EdgeInsets.only(top: 5)),
                                     Container(
+                                      padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                          top: 10,
+                                          bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                color: Colors.black26,
+                                                offset: Offset(8.0, 8.0),
+                                                blurRadius: 15.0)
+                                          ]),
                                       child: Column(children: [
-                                        Divider(
-                                            color: Color.fromRGBO(
-                                                226, 144, 32, 1)),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               top: 5.0, bottom: 5.0),
@@ -310,14 +333,25 @@ class _userProfileState extends State<userProfile> {
                                         )
                                       ]),
                                     ),
+                                    Padding(padding: EdgeInsets.only(top: 5)),
                                     Container(
+                                      padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                          top: 10,
+                                          bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                color: Colors.black26,
+                                                offset: Offset(8.0, 8.0),
+                                                blurRadius: 15.0)
+                                          ]),
                                       child: Column(children: [
-                                        Divider(
-                                            color: Color.fromRGBO(
-                                                226, 144, 32, 1)),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 5.0, bottom: 5.0),
+                                        Container(
                                           child: Text(
                                             "Certificaciones",
                                             style: TextStyle(
@@ -332,11 +366,24 @@ class _userProfileState extends State<userProfile> {
                                         )
                                       ]),
                                     ),
+                                    Padding(padding: EdgeInsets.only(top: 5)),
                                     Container(
+                                      padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                          top: 10,
+                                          bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                color: Colors.black26,
+                                                offset: Offset(8.0, 8.0),
+                                                blurRadius: 15.0)
+                                          ]),
                                       child: Column(children: [
-                                        Divider(
-                                            color: Color.fromRGBO(
-                                                226, 144, 32, 1)),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               top: 5.0, bottom: 5.0),
