@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/editCompanyProfile.dart';
 
 class CompanyProfile extends StatefulWidget {
   Company loggedCompany;
@@ -32,10 +33,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 image: AssetImage('assets/img/empresa.png'),
                 fit: BoxFit.contain,
               )),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Text('${widget.loggedCompany.nombreEmpresa}'),
             ),
             Container(
               child:
@@ -111,6 +108,27 @@ class _CompanyProfileState extends State<CompanyProfile> {
                             image: AssetImage('assets/img/empresa.png'),
                             fit: BoxFit.contain,
                           ),
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit_square,
+                                color: Colors.black38,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute<Null>(
+                                        builder: (BuildContext context) {
+                                  return EditCompanyProfile(
+                                      widget.loggedCompany);
+                                }));
+                              },
+                            ),
+                          ],
                         ),
                       ),
                       Text(

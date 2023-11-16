@@ -37,3 +37,26 @@ void createcompany(Company company) async {
     print(e);
   }
 }
+
+void editCompany(Company company) async {
+  try {
+    var response = await http.post(
+        Uri.parse(
+            'https://0vmlb023-8000.use2.devtunnels.ms/api/company/${company.id}'),
+        body: {
+          'id': company.id,
+          'nombreEmpresa': company.nombreEmpresa,
+          'correo': company.correo,
+          'direccion': company.direccion,
+          'telefono': company.telefono,
+          'descripcion': company.descripcion,
+          'valores': company.valores,
+          'rol': company.rol,
+          'usuario': company.usuario,
+          'password': company.password,
+        });
+    print(response.body);
+  } catch (e) {
+    print(e);
+  }
+}

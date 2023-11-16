@@ -1,20 +1,22 @@
-// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last
+// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, must_be_immutable, non_constant_identifier_names, prefer_void_to_null
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:frontend/pages/companyProfile.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 
 import 'package:frontend/services/company.services.dart';
 
-class companySignIn extends StatefulWidget {
-  const companySignIn({super.key});
+class EditCompanyProfile extends StatefulWidget {
+  Company reqCompany;
+  EditCompanyProfile(this.reqCompany, {super.key});
 
   @override
-  State<companySignIn> createState() => _companySignInState();
+  State<EditCompanyProfile> createState() => _EditCompanyProfileState();
 }
 
-class _companySignInState extends State<companySignIn> {
+class _EditCompanyProfileState extends State<EditCompanyProfile> {
   //Variable que contiene todos los usuarios actuales de la base
   late Future<List<Company>> users;
   //Variable para iterar la lista de usuarios de la base
@@ -30,7 +32,7 @@ class _companySignInState extends State<companySignIn> {
   String usuario = '';
   String password = '';
   String confirmPassword = '';
-  //Variable para controlar el registro en caso de usuario repetido
+  //Variable para controlar la edicion en caso de usuario repetido
   bool registeredCompany = false;
   //Mascara del campo telefono
   var phoneMaskFormatter = MaskTextInputFormatter(
@@ -43,10 +45,19 @@ class _companySignInState extends State<companySignIn> {
   @override
   void initState() {
     users = getAllCompanies();
+    nombreEmpresa = widget.reqCompany.nombreEmpresa;
+    correo = widget.reqCompany.correo;
+    direccion = widget.reqCompany.direccion;
+    telefono = widget.reqCompany.telefono;
+    descripcion = widget.reqCompany.descripcion;
+    valores = widget.reqCompany.valores;
+    rol = widget.reqCompany.rol;
+    usuario = widget.reqCompany.usuario;
     super.initState();
   }
 
-  void signInAlert(String title, String mensaje, bool navigate) {
+  void EditAlert(
+      String title, String mensaje, bool navigate, Company editedCompany) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -63,7 +74,10 @@ class _companySignInState extends State<companySignIn> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.pushNamed(context, 'companyLogInPage');
+                  Navigator.of(context).push(
+                      MaterialPageRoute<Null>(builder: (BuildContext context) {
+                    return CompanyProfile(editedCompany);
+                  }));
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -135,7 +149,7 @@ class _companySignInState extends State<companySignIn> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Registro de nueva empresa",
+                          "Editar empresa",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -163,7 +177,8 @@ class _companySignInState extends State<companySignIn> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: nombreEmpresa,
                             decoration: InputDecoration(
                                 hintText: 'Nombre de la empresa',
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -177,7 +192,8 @@ class _companySignInState extends State<companySignIn> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: correo,
                             decoration: InputDecoration(
                               hintText: 'correo@dominio.com',
                               hintStyle: TextStyle(color: Colors.grey),
@@ -192,7 +208,8 @@ class _companySignInState extends State<companySignIn> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: direccion,
                             decoration: InputDecoration(
                               hintText: 'Calle 1 y Calle 2',
                               hintStyle: TextStyle(color: Colors.grey),
@@ -208,6 +225,7 @@ class _companySignInState extends State<companySignIn> {
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
+                            initialValue: telefono,
                             keyboardType: TextInputType.number,
                             inputFormatters: [phoneMaskFormatter],
                             decoration: InputDecoration(
@@ -224,7 +242,8 @@ class _companySignInState extends State<companySignIn> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: descripcion,
                             minLines: 1,
                             maxLines: 10,
                             decoration: InputDecoration(
@@ -241,9 +260,10 @@ class _companySignInState extends State<companySignIn> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: valores,
                             minLines: 1,
-                            maxLines: 10,
+                            maxLines: 4,
                             decoration: InputDecoration(
                               hintText: 'Respeto, puntualidad...',
                               hintStyle: TextStyle(color: Colors.grey),
@@ -259,6 +279,7 @@ class _companySignInState extends State<companySignIn> {
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
+                            initialValue: usuario,
                             decoration: InputDecoration(
                               hintText: 'compania123',
                               icon: Icon(Icons.supervisor_account),
@@ -351,51 +372,67 @@ class _companySignInState extends State<companySignIn> {
                                         }
                                       }
                                       if (registeredCompany) {
-                                        signInAlert(
+                                        EditAlert(
                                             "Error",
                                             "El nombre de usuario ya se encuentra registrado",
-                                            false);
+                                            false,
+                                            widget.reqCompany);
                                       } else {
-                                        if (password == confirmPassword) {
-                                          String encryptedPassword = md5
-                                              .convert(utf8.encode(password))
-                                              .toString();
-                                          Company newCompany = Company(
-                                              id: '',
-                                              nombreEmpresa: nombreEmpresa,
-                                              correo: correo,
-                                              direccion: direccion,
-                                              telefono: telefono,
-                                              descripcion: descripcion,
-                                              valores: valores,
-                                              rol: rol,
-                                              usuario: usuario,
-                                              password: encryptedPassword,
-                                              confirmPassword:
-                                                  encryptedPassword,
-                                              v: 0);
-                                          createcompany(newCompany);
-                                          signInAlert(
-                                              "Exito",
-                                              "Se ha registrado la empresa de forma exitosa",
-                                              true);
+                                        //Verifico que la nueva contraseña sea diferente a la actual
+                                        if (md5
+                                                .convert(utf8.encode(password))
+                                                .toString() !=
+                                            widget.reqCompany.password) {
+                                          if (password == confirmPassword) {
+                                            String encryptedPassword = md5
+                                                .convert(utf8.encode(password))
+                                                .toString();
+                                            Company editedCompany = Company(
+                                                id: '',
+                                                nombreEmpresa: nombreEmpresa,
+                                                correo: correo,
+                                                direccion: direccion,
+                                                telefono: telefono,
+                                                descripcion: descripcion,
+                                                valores: valores,
+                                                rol: rol,
+                                                usuario: usuario,
+                                                password: encryptedPassword,
+                                                confirmPassword:
+                                                    encryptedPassword,
+                                                v: 0);
+                                            editCompany(editedCompany);
+                                            EditAlert(
+                                                "Exito",
+                                                "Se ha actualizado la empresa de forma exitosa",
+                                                true,
+                                                editedCompany);
+                                          } else {
+                                            EditAlert(
+                                                "Error",
+                                                "Las contraseñas deben coincidir",
+                                                false,
+                                                widget.reqCompany);
+                                          }
                                         } else {
-                                          signInAlert(
+                                          EditAlert(
                                               "Error",
-                                              "Las contraseñas deben coincidir",
-                                              false);
+                                              "La nueva contraseña no puede ser igual a la actual",
+                                              false,
+                                              widget.reqCompany);
                                         }
                                       }
                                     } else {
                                       //Muestro una alerta pidiendo ingresar todos los campos
-                                      signInAlert(
+                                      EditAlert(
                                           "Error",
                                           "Ingrese todos los campos solicitados",
-                                          false);
+                                          false,
+                                          widget.reqCompany);
                                     }
                                   },
                                   child: Text(
-                                    'Registrar',
+                                    'Guardar',
                                     style: TextStyle(
                                         color: Color.fromRGBO(1, 167, 211, 1),
                                         fontSize: 22,
