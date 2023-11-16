@@ -40,7 +40,7 @@ void createcompany(Company company) async {
 
 void editCompany(Company company) async {
   try {
-    var response = await http.post(
+    var response = await http.put(
         Uri.parse(
             'https://0vmlb023-8000.use2.devtunnels.ms/api/company/${company.id}'),
         body: {

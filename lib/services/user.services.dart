@@ -36,3 +36,24 @@ void createUser(User user) async {
     print(e);
   }
 }
+
+void editUser(User user) async {
+  try {
+    var response = await http.put(
+        Uri.parse(
+            'https://0vmlb023-8000.use2.devtunnels.ms/api/user/${user.id}'),
+        body: {
+          'id': user.id,
+          'nombre': user.nombre,
+          'apellido': user.apellido,
+          'rol': user.rol,
+          'sexo': user.sexo,
+          'fechaNacimiento': user.fechaNacimiento.toIso8601String(),
+          'telefono': user.telefono,
+          'usuario': user.usuario,
+          'password': user.password,
+        });
+  } catch (e) {
+    print(e);
+  }
+}

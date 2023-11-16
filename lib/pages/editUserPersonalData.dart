@@ -1,39 +1,49 @@
-// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, must_be_immutable, non_constant_identifier_names, prefer_void_to_null
+// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names, must_be_immutable, prefer_void_to_null
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:frontend/pages/companyProfile.dart';
+import 'package:frontend/pages/userProfile.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/companies.dart';
+import 'package:frontend/classes/users.dart';
 
-import 'package:frontend/services/company.services.dart';
+import 'package:frontend/services/user.services.dart';
 
-class EditCompanyProfile extends StatefulWidget {
-  Company reqCompany;
-  EditCompanyProfile(this.reqCompany, {super.key});
+class EditUserPersonalData extends StatefulWidget {
+  User reqUser;
+  EditUserPersonalData(this.reqUser, {super.key});
 
   @override
-  State<EditCompanyProfile> createState() => _EditCompanyProfileState();
+  State<EditUserPersonalData> createState() => EditUserPersonalDataState();
 }
 
-class _EditCompanyProfileState extends State<EditCompanyProfile> {
+class EditUserPersonalDataState extends State<EditUserPersonalData> {
   //Variable que contiene todos los usuarios actuales de la base
-  late Future<List<Company>> users;
+  late Future<List<User>> users;
   //Variable para iterar la lista de usuarios de la base
-  List<Company>? cList = [];
-  //Variables para los valores de los campo
-  String nombreEmpresa = '';
-  String correo = '';
-  String direccion = '';
+  List<User>? uList = [];
+  //Variables para los valores de los campos
+  String nombre = '';
+  String apellido = '';
+  String rol = 'Cliente';
+  String sexo = '';
+  String fechaNacimiento = '';
   String telefono = '';
-  String descripcion = '';
-  String valores = '';
-  String rol = 'Empresa';
   String usuario = '';
   String password = '';
   String confirmPassword = '';
-  //Variable para controlar la edicion en caso de usuario repetido
-  bool registeredCompany = false;
+  //Controladores de textos para las contraseñas y la fecha de nacimiento
+  final TextEditingController birthDateController = TextEditingController();
+  //Variables para controlar los checkboxs de sexo
+  bool isMale = false;
+  bool isFemale = false;
+  //Variable para controlar el registro en caso de usuario repetido
+  bool registeredUser = false;
+  //Mascara del campo fecha nacimiento
+  var dateMaskFormatter = MaskTextInputFormatter(
+      mask: '##-##-####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
   //Mascara del campo telefono
   var phoneMaskFormatter = MaskTextInputFormatter(
       mask: '##########',
@@ -44,20 +54,38 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
   bool confPassVisible = true;
   @override
   void initState() {
-    users = getAllCompanies();
-    nombreEmpresa = widget.reqCompany.nombreEmpresa;
-    correo = widget.reqCompany.correo;
-    direccion = widget.reqCompany.direccion;
-    telefono = widget.reqCompany.telefono;
-    descripcion = widget.reqCompany.descripcion;
-    valores = widget.reqCompany.valores;
-    rol = widget.reqCompany.rol;
-    usuario = widget.reqCompany.usuario;
+    users = getAllUsers();
+    nombre = widget.reqUser.nombre;
+    apellido = widget.reqUser.apellido;
+    rol = widget.reqUser.rol;
+    sexo = widget.reqUser.sexo;
+    telefono = widget.reqUser.telefono;
+    usuario = widget.reqUser.usuario;
+    //Mes y dia
+    if (widget.reqUser.fechaNacimiento.day < 10 &&
+        widget.reqUser.fechaNacimiento.month < 10) {
+      fechaNacimiento =
+          "0${widget.reqUser.fechaNacimiento.day}-0${widget.reqUser.fechaNacimiento.month}-${widget.reqUser.fechaNacimiento.year}";
+      //Solo dia
+    } else if (widget.reqUser.fechaNacimiento.day < 10 &&
+        widget.reqUser.fechaNacimiento.month > 10) {
+      fechaNacimiento =
+          "0${widget.reqUser.fechaNacimiento.day}-${widget.reqUser.fechaNacimiento.month}-${widget.reqUser.fechaNacimiento.year}";
+    } else {
+      //Solo mes
+      fechaNacimiento =
+          "${widget.reqUser.fechaNacimiento.day}-0${widget.reqUser.fechaNacimiento.month}-${widget.reqUser.fechaNacimiento.year}";
+    }
+    if (widget.reqUser.sexo == "Masculino") {
+      isMale = true;
+    } else {
+      isFemale = true;
+    }
     super.initState();
   }
 
-  void EditAlert(
-      String title, String mensaje, bool navigate, Company editedCompany) {
+  void signInAlert(
+      String title, String mensaje, bool navigate, User editedUser) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -76,7 +104,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                 if (navigate) {
                   Navigator.of(context).push(
                       MaterialPageRoute<Null>(builder: (BuildContext context) {
-                    return CompanyProfile(editedCompany);
+                    return userProfile(editedUser);
                   }));
                 } else {
                   Navigator.of(context).pop();
@@ -97,6 +125,11 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
     );
   }
 
+  bool ValidatePassword(String password) {
+    RegExp regExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()?])');
+    return regExp.hasMatch(password);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +141,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
           future: users,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              cList = snapshot.data;
+              uList = snapshot.data;
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -149,7 +182,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Editar empresa",
+                          "Edición de usuario",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -173,51 +206,103 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            'Nombre de la empresa',
+                            'Nombre',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
-                            initialValue: nombreEmpresa,
+                            initialValue: nombre,
                             decoration: InputDecoration(
-                                hintText: 'Nombre de la empresa',
+                                hintText: 'Nombre',
                                 hintStyle: TextStyle(color: Colors.grey),
                                 icon: Icon(Icons.account_circle_outlined)),
                             onChanged: (valor) => setState(() {
-                              nombreEmpresa = valor;
+                              nombre = valor;
                             }),
                           ),
                           Text(
-                            'Correo',
+                            'Apellido',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
-                            initialValue: correo,
+                            initialValue: apellido,
                             decoration: InputDecoration(
-                              hintText: 'correo@dominio.com',
+                              hintText: 'Apellido',
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.mail_outline),
+                              icon: Icon(Icons.account_circle_outlined),
                             ),
                             onChanged: (valor) => setState(() {
-                              correo = valor;
+                              apellido = valor;
                             }),
                           ),
                           Text(
-                            'Dirección',
+                            'Sexo',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(right: 40),
+                                child: Row(
+                                  children: <Widget>[
+                                    Checkbox(
+                                        value: isMale,
+                                        activeColor:
+                                            Color.fromRGBO(226, 144, 32, 1),
+                                        onChanged: (newBool) {
+                                          setState(() {
+                                            isMale = newBool!;
+                                            isFemale = !isMale;
+                                          });
+                                        }),
+                                    Text(
+                                      "Masculino",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 17.0,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Checkbox(
+                                  value: isFemale,
+                                  activeColor: Color.fromRGBO(226, 144, 32, 1),
+                                  onChanged: (newBool) {
+                                    setState(() {
+                                      isFemale = newBool!;
+                                      isMale = !isFemale;
+                                    });
+                                  }),
+                              Text(
+                                "Femenino",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 17.0,
+                                    color: Colors.black),
+                              )
+                            ],
+                          ),
+                          Text(
+                            'Fecha de nacimiento',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
-                            initialValue: direccion,
+                            initialValue: fechaNacimiento,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
-                              hintText: 'Calle 1 y Calle 2',
+                              hintText: 'DD-MM-AAAA',
+                              icon: Icon(Icons.calendar_month_outlined),
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.location_on_outlined),
                             ),
-                            onChanged: (valor) => setState(() {
-                              direccion = valor;
-                            }),
+                            onChanged: (valor) {
+                              fechaNacimiento = valor;
+                            },
                           ),
                           Text(
                             'Número de teléfono',
@@ -238,42 +323,6 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                             },
                           ),
                           Text(
-                            'Descripción',
-                            style: TextStyle(
-                                color: Color.fromRGBO(1, 167, 211, 1)),
-                          ),
-                          TextFormField(
-                            initialValue: descripcion,
-                            minLines: 1,
-                            maxLines: 10,
-                            decoration: InputDecoration(
-                              hintText: 'Empresa dedicada a...',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.description_outlined),
-                            ),
-                            onChanged: (valor) => setState(() {
-                              descripcion = valor;
-                            }),
-                          ),
-                          Text(
-                            'Valores esperados de sus empleados',
-                            style: TextStyle(
-                                color: Color.fromRGBO(1, 167, 211, 1)),
-                          ),
-                          TextFormField(
-                            initialValue: valores,
-                            minLines: 1,
-                            maxLines: 4,
-                            decoration: InputDecoration(
-                              hintText: 'Respeto, puntualidad...',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.person_search_rounded),
-                            ),
-                            onChanged: (valor) => setState(() {
-                              valores = valor;
-                            }),
-                          ),
-                          Text(
                             'Nombre de usuario',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
@@ -281,7 +330,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                           TextFormField(
                             initialValue: usuario,
                             decoration: InputDecoration(
-                              hintText: 'compania123',
+                              hintText: 'user123',
                               icon: Icon(Icons.supervisor_account),
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
@@ -354,81 +403,110 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     //Verifico que se ingresaron todos los campos
-                                    if (nombreEmpresa != '' &&
-                                        correo != '' &&
-                                        direccion != '' &&
+                                    if (nombre != '' &&
+                                        apellido != '' &&
+                                        (isMale || isFemale) &&
+                                        fechaNacimiento != '' &&
                                         telefono != '' &&
-                                        descripcion != '' &&
-                                        valores != '' &&
                                         usuario != '' &&
                                         password != '' &&
                                         confirmPassword != '') {
                                       //Verifica si el usuario ingresado existe
-                                      for (Company c in cList!) {
-                                        if (c.usuario != usuario) {
-                                          registeredCompany = false;
+                                      for (User u in uList!) {
+                                        if (u.usuario != usuario) {
+                                          registeredUser = false;
                                         } else {
-                                          registeredCompany = true;
+                                          registeredUser = true;
                                         }
                                       }
-                                      if (registeredCompany) {
-                                        EditAlert(
+                                      if (registeredUser) {
+                                        signInAlert(
                                             "Error",
                                             "El nombre de usuario ya se encuentra registrado",
                                             false,
-                                            widget.reqCompany);
+                                            widget.reqUser);
                                       } else {
-                                        //Verifico que la nueva contraseña sea diferente a la actual
-                                        if (md5
-                                                .convert(utf8.encode(password))
-                                                .toString() !=
-                                            widget.reqCompany.password) {
-                                          if (password == confirmPassword) {
-                                            String encryptedPassword = md5
-                                                .convert(utf8.encode(password))
-                                                .toString();
-                                            Company editedCompany = Company(
-                                                id: widget.reqCompany.id,
-                                                nombreEmpresa: nombreEmpresa,
-                                                correo: correo,
-                                                direccion: direccion,
-                                                telefono: telefono,
-                                                descripcion: descripcion,
-                                                valores: valores,
-                                                rol: rol,
-                                                usuario: usuario,
-                                                password: encryptedPassword,
-                                                confirmPassword:
-                                                    encryptedPassword,
-                                                v: 0);
-                                            editCompany(editedCompany);
-                                            EditAlert(
-                                                "Exito",
-                                                "Se ha actualizado la empresa de forma exitosa",
-                                                true,
-                                                editedCompany);
+                                        //Verifico que las contraseñas coincidan
+                                        if (password == confirmPassword) {
+                                          //Verifico que la contaseña sea diferente a la actual
+                                          if (md5
+                                                  .convert(
+                                                      utf8.encode(password))
+                                                  .toString() !=
+                                              widget.reqUser.password) {
+                                            //Verifico que sea una contraseña valida
+                                            if (ValidatePassword(password)) {
+                                              //Verifico la longitud de la contraseña
+                                              if (password.length >= 8) {
+                                                String encryptedPassword = md5
+                                                    .convert(
+                                                        utf8.encode(password))
+                                                    .toString();
+                                                if (isMale) {
+                                                  sexo = 'Masculino';
+                                                } else {
+                                                  sexo = 'Femenino';
+                                                }
+                                                User editedUser = User(
+                                                    id: widget.reqUser.id,
+                                                    nombre: nombre,
+                                                    apellido: apellido,
+                                                    rol: rol,
+                                                    sexo: sexo,
+                                                    fechaNacimiento: DateFormat(
+                                                            "dd-MM-yyyy")
+                                                        .parse(fechaNacimiento),
+                                                    telefono: telefono,
+                                                    usuario: usuario,
+                                                    password: encryptedPassword,
+                                                    confirmPassword:
+                                                        encryptedPassword,
+                                                    v: 0);
+                                                print(
+                                                    '${editedUser.fechaNacimiento.toIso8601String()} ');
+                                                //Actualizo el usuario
+                                                editUser(editedUser);
+                                                signInAlert(
+                                                    "Exito",
+                                                    "Se ha actualizado el usuario de forma exitosa",
+                                                    true,
+                                                    editedUser);
+                                              } else {
+                                                signInAlert(
+                                                    "Error",
+                                                    "La contraseña debe contener almenos 8 caratéres",
+                                                    false,
+                                                    widget.reqUser);
+                                              }
+                                            } else {
+                                              signInAlert(
+                                                  "Error",
+                                                  "La contraseña debe contener almenos un número, una letra mayúscula y un caracter especial (!@#\$%^&*()?)",
+                                                  false,
+                                                  widget.reqUser);
+                                            }
                                           } else {
-                                            EditAlert(
+                                            signInAlert(
                                                 "Error",
-                                                "Las contraseñas deben coincidir",
+                                                "La nueva contraseña no puede ser igual a la actual",
                                                 false,
-                                                widget.reqCompany);
+                                                widget.reqUser);
                                           }
                                         } else {
-                                          EditAlert(
+                                          signInAlert(
                                               "Error",
-                                              "La nueva contraseña no puede ser igual a la actual",
+                                              "Las contraseñas deben coincidir",
                                               false,
-                                              widget.reqCompany);
+                                              widget.reqUser);
                                         }
                                       }
                                     } else {
                                       //Muestro una alerta pidiendo ingresar todos los campos
-                                      EditAlert(
+                                      signInAlert(
                                           "Error",
                                           "Ingrese todos los campos solicitados",
                                           false,
-                                          widget.reqCompany);
+                                          widget.reqUser);
                                     }
                                   },
                                   child: Text(
@@ -468,7 +546,21 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
               return Text("${snapshot.error}");
             }
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Obteniendo datos",
+                    style: TextStyle(
+                        color: Color.fromRGBO(1, 167, 211, 1),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  CircularProgressIndicator(
+                    color: Color.fromRGBO(1, 167, 211, 1),
+                  ),
+                ],
+              ),
             );
           }),
     );

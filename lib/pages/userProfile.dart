@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -202,6 +203,30 @@ class _userProfileState extends State<userProfile> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditUserPersonalData(
+                                                          widget.loggedUser);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -263,6 +288,29 @@ class _userProfileState extends State<userProfile> {
                                               ),
                                               Text(
                                                 '${CalcularEdad(widget.loggedUser.fechaNacimiento)} años',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Sexo: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${widget.loggedUser.sexo}',
                                                 style: TextStyle(
                                                   color: Color.fromRGBO(
                                                       0, 0, 0, 1),
