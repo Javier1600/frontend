@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last
+// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -81,6 +81,12 @@ class _companySignInState extends State<companySignIn> {
         );
       },
     );
+  }
+
+  bool ValidatePassword(String password) {
+    RegExp regExp =
+        RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])');
+    return regExp.hasMatch(password);
   }
 
   @override
@@ -357,28 +363,43 @@ class _companySignInState extends State<companySignIn> {
                                             false);
                                       } else {
                                         if (password == confirmPassword) {
-                                          String encryptedPassword = md5
-                                              .convert(utf8.encode(password))
-                                              .toString();
-                                          Company newCompany = Company(
-                                              id: '',
-                                              nombreEmpresa: nombreEmpresa,
-                                              correo: correo,
-                                              direccion: direccion,
-                                              telefono: telefono,
-                                              descripcion: descripcion,
-                                              valores: valores,
-                                              rol: rol,
-                                              usuario: usuario,
-                                              password: encryptedPassword,
-                                              confirmPassword:
-                                                  encryptedPassword,
-                                              v: 0);
-                                          createcompany(newCompany);
-                                          signInAlert(
-                                              "Exito",
-                                              "Se ha registrado la empresa de forma exitosa",
-                                              true);
+                                          if (ValidatePassword(password)) {
+                                            if (password.length >= 8) {
+                                              String encryptedPassword = md5
+                                                  .convert(
+                                                      utf8.encode(password))
+                                                  .toString();
+                                              Company newCompany = Company(
+                                                  id: '',
+                                                  nombreEmpresa: nombreEmpresa,
+                                                  correo: correo,
+                                                  direccion: direccion,
+                                                  telefono: telefono,
+                                                  descripcion: descripcion,
+                                                  valores: valores,
+                                                  rol: rol,
+                                                  usuario: usuario,
+                                                  password: encryptedPassword,
+                                                  confirmPassword:
+                                                      encryptedPassword,
+                                                  v: 0);
+                                              createcompany(newCompany);
+                                              signInAlert(
+                                                  "Exito",
+                                                  "Se ha registrado la empresa de forma exitosa",
+                                                  true);
+                                            } else {
+                                              signInAlert(
+                                                  "Error",
+                                                  "La contraseña debe contener almenos 8 caractéres",
+                                                  false);
+                                            }
+                                          } else {
+                                            signInAlert(
+                                                "Error",
+                                                "La contraseña debe contener almenos un número, una letra mayúscula y un caracter especial (!@#\$%^&*()?)",
+                                                false);
+                                          }
                                         } else {
                                           signInAlert(
                                               "Error",

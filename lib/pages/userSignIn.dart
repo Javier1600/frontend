@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last
+// ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
@@ -91,6 +91,11 @@ class _userSignInState extends State<userSignIn> {
         );
       },
     );
+  }
+
+  bool ValidatePassword(String password) {
+    RegExp regExp = RegExp(r'^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()?])');
+    return regExp.hasMatch(password);
   }
 
   @override
@@ -384,36 +389,53 @@ class _userSignInState extends State<userSignIn> {
                                             false);
                                       } else {
                                         if (password == confirmPassword) {
-                                          String encryptedPassword = md5
-                                              .convert(utf8.encode(password))
-                                              .toString();
-                                          if (isMale) {
-                                            sexo = 'Masculino';
-                                          } else {
-                                            sexo = 'Femenino';
-                                          }
-                                          User newUser = User(
-                                              id: '',
-                                              nombre: nombre,
-                                              apellido: apellido,
-                                              rol: rol,
-                                              sexo: sexo,
-                                              fechaNacimiento:
-                                                  DateFormat("dd-MM-yyyy")
+                                          //Verifico que sea una contraseña valida
+                                          if (ValidatePassword(password)) {
+                                            //Verifico la longitud de la contraseña
+                                            if (password.length >= 8) {
+                                              String encryptedPassword = md5
+                                                  .convert(
+                                                      utf8.encode(password))
+                                                  .toString();
+                                              if (isMale) {
+                                                sexo = 'Masculino';
+                                              } else {
+                                                sexo = 'Femenino';
+                                              }
+                                              User newUser = User(
+                                                  id: '',
+                                                  nombre: nombre,
+                                                  apellido: apellido,
+                                                  rol: rol,
+                                                  sexo: sexo,
+                                                  fechaNacimiento: DateFormat(
+                                                          "dd-MM-yyyy")
                                                       .parse(fechaNacimiento),
-                                              telefono: telefono,
-                                              usuario: usuario,
-                                              password: encryptedPassword,
-                                              confirmPassword:
-                                                  encryptedPassword,
-                                              v: 0);
-                                          print(
-                                              '${newUser.fechaNacimiento.toIso8601String()} ');
-                                          createUser(newUser);
-                                          signInAlert(
-                                              "Exito",
-                                              "Se ha registrado el usuario de forma exitosa",
-                                              true);
+                                                  telefono: telefono,
+                                                  usuario: usuario,
+                                                  password: encryptedPassword,
+                                                  confirmPassword:
+                                                      encryptedPassword,
+                                                  v: 0);
+                                              print(
+                                                  '${newUser.fechaNacimiento.toIso8601String()} ');
+                                              createUser(newUser);
+                                              signInAlert(
+                                                  "Exito",
+                                                  "Se ha registrado el usuario de forma exitosa",
+                                                  true);
+                                            } else {
+                                              signInAlert(
+                                                  "Error",
+                                                  "La contraseña debe contener almenos 8 caratéres",
+                                                  false);
+                                            }
+                                          } else {
+                                            signInAlert(
+                                                "Error",
+                                                "La contraseña debe contener almenos un número, una letra mayúscula y un caracter especial (!@#\$%^&*()?)",
+                                                false);
+                                          }
                                         } else {
                                           signInAlert(
                                               "Error",

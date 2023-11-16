@@ -28,29 +28,25 @@ class _homePageCompanyState extends State<homePageCompany> {
             Container(
               margin: const EdgeInsets.only(top: 30),
               decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.blueAccent, width: 2.0)),
+                shape: BoxShape.rectangle,
+              ),
               width: 200,
               height: 200,
-              child: const ClipOval(
-                  child: Image(
+              child: Image(
                 image: AssetImage('assets/img/empresa.png'),
                 fit: BoxFit.contain,
-              )),
+              ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Text('${widget.loggedCompany.nombreEmpresa}'),
-            ),
-            Container(
+              padding: EdgeInsets.only(top: 5.0),
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 FractionallySizedBox(
                   widthFactor: 1,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromRGBO(206, 144, 32, 1)),
                           minimumSize: MaterialStateProperty.all(Size(200, 50)),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -65,7 +61,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                       child: Text(
                         "Mi perfil",
                         style: TextStyle(
-                            color: Color.fromRGBO(206, 144, 32, 1),
+                            color: Colors.white,
                             fontSize: 34,
                             fontWeight: FontWeight.w700),
                       )),
