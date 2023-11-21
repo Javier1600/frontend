@@ -102,7 +102,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
+        backgroundColor: Color.fromRGBO(226, 144, 32, 1),
       ),
       body: FutureBuilder(
           future: users,
@@ -468,7 +468,21 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
               return Text("${snapshot.error}");
             }
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Obteniendo datos",
+                    style: TextStyle(
+                        color: Color.fromRGBO(1, 167, 211, 1),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  CircularProgressIndicator(
+                    color: Color.fromRGBO(1, 167, 211, 1),
+                  ),
+                ],
+              ),
             );
           }),
     );

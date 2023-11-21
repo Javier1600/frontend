@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/addCertificacion.dart';
+import 'package:frontend/pages/addWorkExperience.dart';
 import 'package:frontend/pages/editDeleteCertification.dart';
+import 'package:frontend/pages/editDeleteWorkExperience.dart';
 import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -537,6 +539,45 @@ class _userProfileState extends State<userProfile> {
                                                     1, 167, 211, 1),
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.edit_square,
+                                                  color: Colors.black38,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute<Null>(
+                                                          builder: (BuildContext
+                                                              context) {
+                                                    return EditDeleteWorkExperience(
+                                                        wEList,
+                                                        widget.loggedUser);
+                                                  }));
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.add_to_photos_outlined,
+                                                  color: Colors.black38,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute<Null>(
+                                                          builder: (BuildContext
+                                                              context) {
+                                                    return AddWorkExperience(
+                                                        widget.loggedUser);
+                                                  }));
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Column(

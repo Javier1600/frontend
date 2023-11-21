@@ -3,29 +3,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
-import 'package:frontend/pages/editCertificacion.dart';
+import 'package:frontend/classes/workExperience.dart';
+import 'package:frontend/pages/editWorkExperience.dart';
 import 'package:frontend/pages/userProfile.dart';
-import 'package:frontend/services/certifications.services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:frontend/services/workExperiences.dart';
 
-class EditDeleteCertification extends StatefulWidget {
+class EditDeleteWorkExperience extends StatefulWidget {
   User user;
-  List<Certification>? cList;
-  EditDeleteCertification(this.cList, this.user, {super.key});
+  List<WorkExperience>? wEList;
+  EditDeleteWorkExperience(this.wEList, this.user, {super.key});
 
   @override
-  State<EditDeleteCertification> createState() =>
-      _EditDeleteCertificationState();
-}
-
-AbrirURL(url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'No se pudo abrir la URL: $url';
-  }
+  State<EditDeleteWorkExperience> createState() =>
+      _EditDeleteorkExperienceState();
 }
 
 String FormatoFecha(DateTime fecha) {
@@ -43,7 +34,7 @@ String FormatoFecha(DateTime fecha) {
   }
 }
 
-class _EditDeleteCertificationState extends State<EditDeleteCertification> {
+class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +84,7 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
                   color: Color.fromRGBO(226, 144, 32, 1),
                 ),
                 Text(
-                  "Certificados registrados",
+                  "Experiencia laboral registrada",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 25.0,
@@ -103,7 +94,7 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
               ]),
             ),
             Column(
-              children: Certificaciones(widget.cList, context, widget.user),
+              children: Experiences(widget.wEList, context, widget.user),
             )
           ]),
         ),
@@ -112,12 +103,12 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
   }
 }
 
-List<Widget> Certificaciones(
-    List<Certification>? cert, BuildContext context, User user) {
-  List<Widget> cRet = [];
-  if (cert != null) {
-    for (Certification certificacion in cert) {
-      cRet.add(Container(
+List<Widget> Experiences(
+    List<WorkExperience>? wExp, BuildContext context, User user) {
+  List<Widget> wERet = [];
+  if (wExp != null) {
+    for (WorkExperience exp in wExp) {
+      wERet.add(Container(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -131,7 +122,7 @@ List<Widget> Certificaciones(
         child: Column(
           children: [
             Text(
-              '${certificacion.titulo}',
+              '${exp.puesto}',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Color.fromRGBO(0, 0, 0, 1),
@@ -152,7 +143,7 @@ List<Widget> Certificaciones(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditCertification(user, certificacion);
+                        return EditWorkExperience(user, exp);
                       }));
                     },
                   ),
@@ -166,12 +157,13 @@ List<Widget> Certificaciones(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("Se eliminara el certificado!",
+                              title: Text(
+                                  "Se eliminara esta experiencia laboral!",
                                   style: TextStyle(
                                       color: Color.fromRGBO(226, 144, 32, 1),
                                       fontWeight: FontWeight.w700)),
                               content: Text(
-                                  "¿Está seguro de eliminar el certificado?",
+                                  "¿Está seguro de eliminar esta experiencia laboral?",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w700)),
@@ -184,14 +176,15 @@ List<Widget> Certificaciones(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text("Certificado eliminado",
+                                            title: Text(
+                                                "Experiencia laboral eliminada",
                                                 style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         226, 144, 32, 1),
                                                     fontWeight:
                                                         FontWeight.w700)),
                                             content: Text(
-                                                "Se ha eliminado el certificado",
+                                                "Se ha eliminado la experiencia laboral",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight:
@@ -200,8 +193,7 @@ List<Widget> Certificaciones(
                                             actions: [
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  deleteCertification(
-                                                      certificacion);
+                                                  deleteWorkExp(exp);
                                                   Timer(Duration(seconds: 2),
                                                       () {
                                                     Navigator.of(context).push(
@@ -273,7 +265,29 @@ List<Widget> Certificaciones(
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  FormatoFecha(certificacion.fechaExpedicion),
+                  "${exp.empresa}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    overflow: TextOverflow.clip,
+                  ),
+                  maxLines: 3,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Ámbito: ',
+                  style: TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  '${exp.ambitoLaboral}',
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -285,31 +299,66 @@ List<Widget> Certificaciones(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'URL: ',
+                  'Fecha inicio: ',
                   style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    AbrirURL(certificacion.url);
-                  },
-                  child: Text(
-                    'Ver certificado',
-                    style: TextStyle(
-                      color: Color.fromRGBO(1, 167, 211, 1),
-                      fontSize: 20,
-                    ),
+                Text(
+                  FormatoFecha(exp.fechaInicio),
+                  style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
                   ),
-                )
+                ),
               ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Fecha fin: ',
+                  style: TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  FormatoFecha(exp.fechaFin),
+                  style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Responsabilidades: ',
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                '${exp.descripcionResponsabilidades}',
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 1),
+                  fontSize: 20,
+                ),
+                maxLines: 10,
+              ),
             ),
           ],
         ),
       ));
-      cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
+      wERet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
-  return cRet;
+  return wERet;
 }

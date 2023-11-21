@@ -1,35 +1,37 @@
 // ignore_for_file: file_names, must_be_immutable
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
-import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/classes/workExperience.dart';
 import 'package:frontend/pages/userProfile.dart';
-import 'package:frontend/services/certifications.services.dart';
+import 'package:frontend/services/workExperiences.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
-class EditCertification extends StatefulWidget {
-  Certification certification;
+class AddWorkExperience extends StatefulWidget {
   User user;
-  EditCertification(this.user, this.certification, {super.key});
+  AddWorkExperience(this.user, {super.key});
 
   @override
-  State<EditCertification> createState() => _EditCertificacionState();
+  State<AddWorkExperience> createState() => _AddworkExperienceState();
 }
 
-class _EditCertificacionState extends State<EditCertification> {
+class _AddworkExperienceState extends State<AddWorkExperience> {
   //Variable que contiene todos los certificados registrados del usuario de la base
-  late Future<List<Certification>> certs;
+  late Future<List<WorkExperience>> wExperiences;
   //Variable para iterar la lista de usuarios de la base
-  List<Certification>? cList = [];
+  List<WorkExperience>? wEList = [];
   //Variables para los valores de los campos
-  String titulo = '';
-  String url = '';
-  String fechaExpedicion = '';
+  String puesto = '';
+  String ambitoLaboral = '';
+  String empresa = '';
+  String fechaInicio = '';
+  String fechaFin = '';
+  String descripcionResponsabilidades = '';
   //Controladores de textos para las contraseñas y la fecha de nacimiento
   final TextEditingController DateController = TextEditingController();
   //Variable para controlar el registro en caso de usuario repetido
-  bool registeredCertification = false;
+  bool registeredWorkExp = false;
   //Mascara del campo fecha
   var dateMaskFormatter = MaskTextInputFormatter(
       mask: '##-##-####',
@@ -38,29 +40,11 @@ class _EditCertificacionState extends State<EditCertification> {
 
   @override
   void initState() {
-    certs = getUserCertifications(widget.user.id);
-    titulo = widget.certification.titulo;
-    url = widget.certification.url;
-    fechaExpedicion = FormatoFecha(widget.certification.fechaExpedicion);
+    wExperiences = getUserWorkExperiences(widget.user.id);
     super.initState();
   }
 
-  String FormatoFecha(DateTime fecha) {
-    //Mes y dia
-    if (fecha.day < 10 && fecha.month < 10) {
-      return "0${fecha.day}-0${fecha.month}-${fecha.year}";
-      //Solo dia
-    } else if (fecha.day < 10 && fecha.month > 10) {
-      return "0${fecha.day}-${fecha.month}-${fecha.year}";
-    } else if (fecha.day > 10 && fecha.month < 10) {
-      //Solo mes
-      return "${fecha.day}-0${fecha.month}-${fecha.year}";
-    } else {
-      return "${fecha.day}-${fecha.month}-${fecha.year}";
-    }
-  }
-
-  void EditAlert(String title, String mensaje, bool navigate) {
+  void AddAlert(String title, String mensaje, bool navigate) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -108,10 +92,10 @@ class _EditCertificacionState extends State<EditCertification> {
         backgroundColor: Color.fromRGBO(1, 167, 211, 1),
       ),
       body: FutureBuilder(
-          future: certs,
+          future: wExperiences,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              cList = snapshot.data;
+              wEList = snapshot.data;
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -152,7 +136,8 @@ class _EditCertificacionState extends State<EditCertification> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Editar certificado",
+                          "Registro de nueva Experiencia laboral",
+                          maxLines: 2,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -176,43 +161,55 @@ class _EditCertificacionState extends State<EditCertification> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            'Título del certificado',
+                            'Puesto desempeñado',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextFormField(
-                            initialValue: titulo,
+                          TextField(
                             decoration: InputDecoration(
-                                hintText: 'Ttulo',
+                                hintText: 'Gerente',
                                 hintStyle: TextStyle(color: Colors.grey),
                                 icon: Icon(Icons.description_outlined)),
                             onChanged: (valor) => setState(() {
-                              titulo = valor;
+                              puesto = valor;
                             }),
                           ),
                           Text(
-                            'URL',
+                            'Ambito Laboral',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextFormField(
-                            initialValue: url,
+                          TextField(
                             decoration: InputDecoration(
-                              hintText: 'URL',
+                              hintText: 'Educación',
                               hintStyle: TextStyle(color: Colors.grey),
                               icon: Icon(Icons.link_rounded),
                             ),
                             onChanged: (valor) => setState(() {
-                              url = valor;
+                              ambitoLaboral = valor;
                             }),
                           ),
                           Text(
-                            'Fecha de expedición',
+                            'Empresa',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Empresa',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              icon: Icon(Icons.link_rounded),
+                            ),
+                            onChanged: (valor) => setState(() {
+                              empresa = valor;
+                            }),
+                          ),
+                          Text(
+                            'Fecha inicial',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
-                            initialValue: fechaExpedicion,
                             keyboardType: TextInputType.number,
                             inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
@@ -221,8 +218,40 @@ class _EditCertificacionState extends State<EditCertification> {
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                             onChanged: (valor) {
-                              fechaExpedicion = valor;
+                              fechaInicio = valor;
                             },
+                          ),
+                          Text(
+                            'Fecha finalización',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [dateMaskFormatter],
+                            decoration: InputDecoration(
+                              hintText: 'DD-MM-AAAA',
+                              icon: Icon(Icons.calendar_month_outlined),
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                            onChanged: (valor) {
+                              fechaFin = valor;
+                            },
+                          ),
+                          Text(
+                            'Responsabilidades a cargo',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: '',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              icon: Icon(Icons.info_outline_rounded),
+                            ),
+                            onChanged: (valor) => setState(() {
+                              descripcionResponsabilidades = valor;
+                            }),
                           ),
                           Container(
                             padding: EdgeInsets.only(top: 20),
@@ -235,35 +264,40 @@ class _EditCertificacionState extends State<EditCertification> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     //Verifico que se ingresaron todos los campos
-                                    if (titulo != '' &&
-                                        url != '' &&
-                                        fechaExpedicion != '') {
-                                      Certification updatedCert = Certification(
-                                          id: widget.certification.id,
-                                          titulo: titulo,
-                                          url: url,
+                                    if (puesto != '' &&
+                                        ambitoLaboral != '' &&
+                                        fechaInicio != '' &&
+                                        fechaFin != '' &&
+                                        empresa != '' &&
+                                        descripcionResponsabilidades != '') {
+                                      WorkExperience newWExp = WorkExperience(
+                                          id: '0',
+                                          puesto: puesto,
+                                          descripcionResponsabilidades:
+                                              descripcionResponsabilidades,
+                                          ambitoLaboral: ambitoLaboral,
+                                          empresa: empresa,
+                                          fechaInicio: DateFormat("dd-MM-yyyy")
+                                              .parse(fechaInicio),
+                                          fechaFin: DateFormat("dd-MM-yyyy")
+                                              .parse(fechaFin),
                                           idUsuario: widget.user.id,
-                                          fechaExpedicion:
-                                              DateFormat("dd-MM-yyyy")
-                                                  .parse(fechaExpedicion),
                                           v: 0);
-                                      print(
-                                          '${updatedCert.fechaExpedicion.toIso8601String()} ');
-                                      editCertification(updatedCert);
-                                      EditAlert(
+                                      createWorkExp(newWExp);
+                                      AddAlert(
                                           "Exito",
-                                          "Se ha modificado el certificado de forma exitosa",
+                                          "Se ha registrado la experiencia laboral de forma exitosa",
                                           true);
                                     } else {
                                       //Muestro una alerta pidiendo ingresar todos los campos
-                                      EditAlert(
+                                      AddAlert(
                                           "Error",
                                           "Ingrese todos los campos solicitados",
                                           false);
                                     }
                                   },
                                   child: Text(
-                                    'Guardar',
+                                    'Registrar',
                                     style: TextStyle(
                                         color: Color.fromRGBO(1, 167, 211, 1),
                                         fontSize: 22,
