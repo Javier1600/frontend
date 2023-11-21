@@ -47,6 +47,21 @@ AbrirURL(url) async {
   }
 }
 
+String FormatoFecha(DateTime fecha) {
+  //Mes y dia
+  if (fecha.day < 10 && fecha.month < 10) {
+    return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+    //Solo dia
+  } else if (fecha.day < 10 && fecha.month > 10) {
+    return "0${fecha.day}-${fecha.month}-${fecha.year}";
+  } else if (fecha.day > 10 && fecha.month < 10) {
+    //Solo mes
+    return "${fecha.day}-0${fecha.month}-${fecha.year}";
+  } else {
+    return "${fecha.day}-${fecha.month}-${fecha.year}";
+  }
+}
+
 class _userProfileState extends State<userProfile> {
   //variable que contiene la formacion academica del usuario
   late Future<List<AcadTraining>> acadTraining;
@@ -266,7 +281,8 @@ class _userProfileState extends State<userProfile> {
                                                         FontWeight.w700),
                                               ),
                                               Text(
-                                                '${widget.loggedUser.fechaNacimiento.day}-${widget.loggedUser.fechaNacimiento.month}-${widget.loggedUser.fechaNacimiento.year}',
+                                                FormatoFecha(widget.loggedUser
+                                                    .fechaNacimiento),
                                                 style: TextStyle(
                                                   color: Color.fromRGBO(
                                                       0, 0, 0, 1),
@@ -661,7 +677,7 @@ List<Widget> FormacionAcademica(List<AcadTraining>? aT, List<School>? s) {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${acadTraining.fechaInicio.day}-${acadTraining.fechaInicio.month}-${acadTraining.fechaInicio.year}',
+                  FormatoFecha(acadTraining.fechaInicio),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -680,7 +696,7 @@ List<Widget> FormacionAcademica(List<AcadTraining>? aT, List<School>? s) {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${acadTraining.fechaFin.day}-${acadTraining.fechaFin.month}-${acadTraining.fechaFin.year}',
+                  FormatoFecha(acadTraining.fechaFin),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -724,7 +740,7 @@ List<Widget> Certificaciones(List<Certification>? cert) {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${certificacion.fechaExpedicion.day}-${certificacion.fechaExpedicion.month}-${certificacion.fechaExpedicion.year}',
+                  FormatoFecha(certificacion.fechaExpedicion),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -821,7 +837,7 @@ List<Widget> ExpLaboral(List<WorkExperience>? expLab) {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${experience.fechaInicio.day}-${experience.fechaInicio.month}-${experience.fechaInicio.year}',
+                  FormatoFecha(experience.fechaInicio),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -840,7 +856,7 @@ List<Widget> ExpLaboral(List<WorkExperience>? expLab) {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${experience.fechaFin.day}-${experience.fechaFin.month}-${experience.fechaFin.year}',
+                  FormatoFecha(experience.fechaFin),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,

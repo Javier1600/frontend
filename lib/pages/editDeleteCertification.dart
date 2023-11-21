@@ -26,63 +26,85 @@ AbrirURL(url) async {
   }
 }
 
+String FormatoFecha(DateTime fecha) {
+  //Mes y dia
+  if (fecha.day < 10 && fecha.month < 10) {
+    return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+    //Solo dia
+  } else if (fecha.day < 10 && fecha.month > 10) {
+    return "0${fecha.day}-${fecha.month}-${fecha.year}";
+  } else if (fecha.day > 10 && fecha.month < 10) {
+    //Solo mes
+    return "${fecha.day}-0${fecha.month}-${fecha.year}";
+  } else {
+    return "${fecha.day}-${fecha.month}-${fecha.year}";
+  }
+}
+
 class _EditDeleteCertificationState extends State<EditDeleteCertification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(8.0),
-        child: Column(children: [
-          Center(
-            child: Column(children: [
-              const Text(
-                "Empleos",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 40.0,
-                    color: Color.fromRGBO(1, 167, 211, 1)),
-                textAlign: TextAlign.center,
-              ),
-              RichText(
-                  text: const TextSpan(children: [
-                TextSpan(
-                  text: "Chavez",
+          surfaceTintColor: Colors.white,
+          backgroundColor: Color.fromRGBO(1, 167, 211, 1)),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          padding:
+              EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Column(children: [
+            Center(
+              child: Column(children: [
+                const Text(
+                  "Empleos",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 40.0,
+                      color: Color.fromRGBO(1, 167, 211, 1)),
+                  textAlign: TextAlign.center,
+                ),
+                RichText(
+                    text: const TextSpan(children: [
+                  TextSpan(
+                    text: "Chavez",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 40.0,
+                        color: Color.fromRGBO(226, 144, 32, 1),
+                        fontFamily: 'PlaypenSans'),
+                  ),
+                  TextSpan(
+                    text: "pamba",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 40.0,
+                        color: Color.fromRGBO(1, 167, 211, 1),
+                        fontFamily: 'PlaypenSans'),
+                  ),
+                ])),
+                Divider(
+                  color: Color.fromRGBO(226, 144, 32, 1),
+                ),
+                Text(
+                  "Certificados registrados",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 25.0,
                       color: Color.fromRGBO(226, 144, 32, 1),
                       fontFamily: 'PlaypenSans'),
                 ),
-                TextSpan(
-                  text: "pamba",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 40.0,
-                      color: Color.fromRGBO(1, 167, 211, 1),
-                      fontFamily: 'PlaypenSans'),
-                ),
-              ])),
-              Divider(
-                color: Color.fromRGBO(226, 144, 32, 1),
-              ),
-              Text(
-                "Certificados registrados",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 25.0,
-                    color: Color.fromRGBO(226, 144, 32, 1),
-                    fontFamily: 'PlaypenSans'),
-              ),
-            ]),
-          ),
-          Column(
-            children: Certificaciones(widget.cList, context, widget.user),
-          )
-        ]),
+              ]),
+            ),
+            Column(
+              children: Certificaciones(widget.cList, context, widget.user),
+            )
+          ]),
+        ),
       ),
     );
   }
@@ -94,6 +116,16 @@ List<Widget> Certificaciones(
   if (cert != null) {
     for (Certification certificacion in cert) {
       cRet.add(Container(
+        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(8.0, 8.0),
+                  blurRadius: 15.0)
+            ]),
         child: Column(
           children: [
             Text(
@@ -235,7 +267,7 @@ List<Widget> Certificaciones(
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${certificacion.fechaExpedicion.day}-${certificacion.fechaExpedicion.month}-${certificacion.fechaExpedicion.year}',
+                  FormatoFecha(certificacion.fechaExpedicion),
                   style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 20,
@@ -270,6 +302,7 @@ List<Widget> Certificaciones(
           ],
         ),
       ));
+      cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
   return cRet;

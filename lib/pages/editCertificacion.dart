@@ -41,22 +41,23 @@ class _EditCertificacionState extends State<EditCertification> {
     certs = getUserCertifications(widget.user.id);
     titulo = widget.certification.titulo;
     url = widget.certification.url;
-    //Mes y dia
-    if (widget.certification.fechaExpedicion.day < 10 &&
-        widget.certification.fechaExpedicion.month < 10) {
-      fechaExpedicion =
-          "0${widget.certification.fechaExpedicion.day}-0${widget.certification.fechaExpedicion.month}-${widget.certification.fechaExpedicion.year}";
-      //Solo dia
-    } else if (widget.certification.fechaExpedicion.day < 10 &&
-        widget.certification.fechaExpedicion.month > 10) {
-      fechaExpedicion =
-          "0${widget.certification.fechaExpedicion.day}-${widget.certification.fechaExpedicion.month}-${widget.certification.fechaExpedicion.year}";
-    } else {
-      //Solo mes
-      fechaExpedicion =
-          "${widget.certification.fechaExpedicion.day}-0${widget.certification.fechaExpedicion.month}-${widget.certification.fechaExpedicion.year}";
-    }
+    fechaExpedicion = FormatoFecha(widget.certification.fechaExpedicion);
     super.initState();
+  }
+
+  String FormatoFecha(DateTime fecha) {
+    //Mes y dia
+    if (fecha.day < 10 && fecha.month < 10) {
+      return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+      //Solo dia
+    } else if (fecha.day < 10 && fecha.month > 10) {
+      return "0${fecha.day}-${fecha.month}-${fecha.year}";
+    } else if (fecha.day > 10 && fecha.month < 10) {
+      //Solo mes
+      return "${fecha.day}-0${fecha.month}-${fecha.year}";
+    } else {
+      return "${fecha.day}-${fecha.month}-${fecha.year}";
+    }
   }
 
   void EditAlert(String title, String mensaje, bool navigate) {
@@ -104,7 +105,7 @@ class _EditCertificacionState extends State<EditCertification> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
+        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
       ),
       body: FutureBuilder(
           future: certs,
