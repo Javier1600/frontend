@@ -3,29 +3,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/classes/certifications.dart';
+import 'package:frontend/classes/acadTrainings.dart';
+import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
-import 'package:frontend/pages/editCertificacion.dart';
+import 'package:frontend/pages/editAcadTraining.dart';
 import 'package:frontend/pages/userProfile.dart';
-import 'package:frontend/services/certifications.services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:frontend/services/acadTrainings.services.dart';
 
-class EditDeleteCertification extends StatefulWidget {
+class EditDeleteAcadTraining extends StatefulWidget {
   User user;
-  List<Certification>? cList;
-  EditDeleteCertification(this.cList, this.user, {super.key});
+  List<AcadTraining>? aTList;
+  List<School>? sList;
+  EditDeleteAcadTraining(this.aTList, this.user, this.sList, {super.key});
 
   @override
-  State<EditDeleteCertification> createState() =>
-      _EditDeleteCertificationState();
-}
-
-AbrirURL(url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'No se pudo abrir la URL: $url';
-  }
+  State<EditDeleteAcadTraining> createState() => _EditDeleteAcadTrainingState();
 }
 
 String FormatoFecha(DateTime fecha) {
@@ -44,7 +36,17 @@ String FormatoFecha(DateTime fecha) {
   }
 }
 
-class _EditDeleteCertificationState extends State<EditDeleteCertification> {
+String NombreInstitucion(id, List<School>? lista) {
+  String nombre = '';
+  for (var s in lista!) {
+    if (s.id == id) {
+      nombre = s.nombreInstitucion;
+    }
+  }
+  return nombre;
+}
+
+class _EditDeleteAcadTrainingState extends State<EditDeleteAcadTraining> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +96,15 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
                   color: Color.fromRGBO(226, 144, 32, 1),
                 ),
                 Text(
-                  "Certificados registrados",
+                  "Formación Académica",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 25.0,
+                      color: Color.fromRGBO(226, 144, 32, 1),
+                      fontFamily: 'PlaypenSans'),
+                ),
+                Text(
+                  "registrada",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 25.0,
@@ -104,7 +114,8 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
               ]),
             ),
             Column(
-              children: Certificaciones(widget.cList, context, widget.user),
+              children: AcadTrainings(
+                  widget.aTList, context, widget.user, widget.sList),
             )
           ]),
         ),
@@ -113,12 +124,12 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
   }
 }
 
-List<Widget> Certificaciones(
-    List<Certification>? cert, BuildContext context, User user) {
-  List<Widget> cRet = [];
-  if (cert != null) {
-    for (Certification certificacion in cert) {
-      cRet.add(Container(
+List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
+    BuildContext context, User user, List<School>? lista) {
+  List<Widget> aTRet = [];
+  if (acadTrainings != null) {
+    for (AcadTraining acadT in acadTrainings) {
+      aTRet.add(Container(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
         decoration: BoxDecoration(
             color: Colors.white,
@@ -132,7 +143,7 @@ List<Widget> Certificaciones(
         child: Column(
           children: [
             Text(
-              '${certificacion.titulo}',
+              '${acadT.tituloObtenido}',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Color.fromRGBO(0, 0, 0, 1),
@@ -153,7 +164,7 @@ List<Widget> Certificaciones(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditCertification(user, certificacion);
+                        return EditAcadTraining(user, acadT);
                       }));
                     },
                   ),
@@ -167,12 +178,12 @@ List<Widget> Certificaciones(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("Se eliminara el certificado!",
+                              title: Text("Se eliminará esta Formación!",
                                   style: TextStyle(
                                       color: Color.fromRGBO(226, 144, 32, 1),
                                       fontWeight: FontWeight.w700)),
                               content: Text(
-                                  "¿Está seguro de eliminar el certificado?",
+                                  "¿Está seguro de eliminar esta Formación?",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w700)),
@@ -185,14 +196,14 @@ List<Widget> Certificaciones(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text("Certificado eliminado",
+                                            title: Text("Formación eliminada",
                                                 style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         226, 144, 32, 1),
                                                     fontWeight:
                                                         FontWeight.w700)),
                                             content: Text(
-                                                "Se ha eliminado el certificado",
+                                                "Se ha eliminado la formación",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight:
@@ -201,8 +212,7 @@ List<Widget> Certificaciones(
                                             actions: [
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  deleteCertification(
-                                                      certificacion);
+                                                  deleteAcadTraining(acadT);
                                                   Timer(Duration(seconds: 2),
                                                       () {
                                                     Navigator.of(context).push(
@@ -263,22 +273,47 @@ List<Widget> Certificaciones(
                 ],
               ),
             ),
+            Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Institución: ',
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                NombreInstitucion(acadT.idInstitucion, lista),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                    overflow: TextOverflow.clip),
+                maxLines: 3,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Fecha obtenido: ',
+                  'Fecha inicio: ',
                   style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  FormatoFecha(certificacion.fechaExpedicion),
+                  FormatoFecha(acadT.fechaInicio),
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 1),
+                    color: Colors.black,
                     fontSize: 20,
+                    overflow: TextOverflow.clip,
                   ),
+                  maxLines: 3,
                 ),
               ],
             ),
@@ -286,31 +321,29 @@ List<Widget> Certificaciones(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'URL: ',
+                  'Fecha inicio: ',
                   style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    AbrirURL(certificacion.url);
-                  },
-                  child: Text(
-                    'Ver certificado',
-                    style: TextStyle(
-                      color: Color.fromRGBO(1, 167, 211, 1),
-                      fontSize: 20,
-                    ),
+                Text(
+                  FormatoFecha(acadT.fechaInicio),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    overflow: TextOverflow.clip,
                   ),
-                )
+                  maxLines: 3,
+                ),
               ],
             ),
           ],
         ),
       ));
-      cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
+      aTRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
-  return cRet;
+  return aTRet;
 }

@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/addCertificacion.dart';
 import 'package:frontend/pages/addWorkExperience.dart';
+import 'package:frontend/pages/editDeleteAcadTraining.dart';
 import 'package:frontend/pages/editDeleteCertification.dart';
 import 'package:frontend/pages/editDeleteWorkExperience.dart';
 import 'package:frontend/pages/editUserPersonalData.dart';
+import 'package:frontend/pages/registeredSchools.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -410,8 +412,10 @@ class _userProfileState extends State<userProfile> {
                                                       MaterialPageRoute<Null>(
                                                           builder: (BuildContext
                                                               context) {
-                                                    return EditUserPersonalData(
-                                                        widget.loggedUser);
+                                                    return EditDeleteAcadTraining(
+                                                        aTList,
+                                                        widget.loggedUser,
+                                                        sList);
                                                   }));
                                                 },
                                               ),
@@ -425,7 +429,7 @@ class _userProfileState extends State<userProfile> {
                                                       MaterialPageRoute<Null>(
                                                           builder: (BuildContext
                                                               context) {
-                                                    return EditUserPersonalData(
+                                                    return RegisteredSchools(
                                                         widget.loggedUser);
                                                   }));
                                                 },

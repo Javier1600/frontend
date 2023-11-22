@@ -89,7 +89,7 @@ class _AddworkExperienceState extends State<AddWorkExperience> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
       ),
       body: FutureBuilder(
           future: wExperiences,

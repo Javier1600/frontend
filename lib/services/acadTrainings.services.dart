@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable
 
 import 'dart:convert';
 
@@ -17,3 +17,49 @@ Future<List<AcadTraining>> getUserAcadTraining(idUser) async => http
         throw Exception("Conexión fallida");
       }
     });
+
+void createAcadTraining(AcadTraining acadTraining) async {
+  try {
+    var response = await http.post(
+        Uri.parse(
+            'https://0vmlb023-8000.use2.devtunnels.ms/api/acadTraining/new'),
+        body: {
+          "idInstitucion": acadTraining.idInstitucion,
+          "idUsuario": acadTraining.idUsuario,
+          "tituloObtenido": acadTraining.tituloObtenido,
+          "fechaInicio": acadTraining.fechaInicio.toIso8601String(),
+          "fechaFin": acadTraining.fechaFin.toIso8601String(),
+        });
+  } catch (e) {
+    print(e);
+  }
+}
+
+void editAcadTraining(AcadTraining acadTraining) async {
+  try {
+    var response = await http.put(
+        Uri.parse(
+            'https://0vmlb023-8000.use2.devtunnels.ms/api/acadTraining/${acadTraining.id}'),
+        body: {
+          'id': acadTraining.id,
+          "idInstitucion": acadTraining.idInstitucion,
+          "idUsuario": acadTraining.idUsuario,
+          "tituloObtenido": acadTraining.tituloObtenido,
+          "fechaInicio": acadTraining.fechaInicio.toIso8601String(),
+          "fechaFin": acadTraining.fechaFin.toIso8601String(),
+        });
+  } catch (e) {
+    print(e);
+  }
+}
+
+void deleteAcadTraining(AcadTraining acadTraining) async {
+  try {
+    var response = await http.delete(
+      Uri.parse(
+          'https://0vmlb023-8000.use2.devtunnels.ms/api/acadTraining/${acadTraining.id}'),
+    );
+  } catch (e) {
+    print(e);
+  }
+}

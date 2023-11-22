@@ -102,7 +102,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        backgroundColor: Color.fromRGBO(226, 144, 32, 1),
+        foregroundColor: Color.fromRGBO(226, 144, 32, 1),
       ),
       body: FutureBuilder(
           future: users,

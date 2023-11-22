@@ -1,35 +1,35 @@
 // ignore_for_file: file_names, must_be_immutable
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
-import 'package:frontend/classes/certifications.dart';
+import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/userProfile.dart';
-import 'package:frontend/services/certifications.services.dart';
+import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
-class EditCertification extends StatefulWidget {
-  Certification certification;
+class EditAcadTraining extends StatefulWidget {
   User user;
-  EditCertification(this.user, this.certification, {super.key});
+  AcadTraining acadTraining;
+  EditAcadTraining(this.user, this.acadTraining, {super.key});
 
   @override
-  State<EditCertification> createState() => _EditCertificacionState();
+  State<EditAcadTraining> createState() => _EditAcadTrainingState();
 }
 
-class _EditCertificacionState extends State<EditCertification> {
-  //Variable que contiene todos los certificados registrados del usuario de la base
-  late Future<List<Certification>> certs;
+class _EditAcadTrainingState extends State<EditAcadTraining> {
+  //Variable que contiene todos los acadTraining registrados del usuario de la base
+  late Future<List<AcadTraining>> acadTrainings;
   //Variable para iterar la lista de usuarios de la base
-  List<Certification>? cList = [];
+  List<AcadTraining>? aTList = [];
   //Variables para los valores de los campos
-  String titulo = '';
-  String url = '';
-  String fechaExpedicion = '';
+  String tituloObtenido = '';
+  String fechaInicio = '';
+  String fechaFin = '';
   //Controladores de textos para las contraseñas y la fecha de nacimiento
   final TextEditingController DateController = TextEditingController();
   //Variable para controlar el registro en caso de usuario repetido
-  bool registeredCertification = false;
+  bool registeredAcadTraining = false;
   //Mascara del campo fecha
   var dateMaskFormatter = MaskTextInputFormatter(
       mask: '##-##-####',
@@ -38,25 +38,26 @@ class _EditCertificacionState extends State<EditCertification> {
 
   @override
   void initState() {
-    certs = getUserCertifications(widget.user.id);
-    titulo = widget.certification.titulo;
-    url = widget.certification.url;
-    fechaExpedicion = FormatoFecha(widget.certification.fechaExpedicion);
+    acadTrainings = getUserAcadTraining(widget.user.id);
+    tituloObtenido = widget.acadTraining.tituloObtenido;
+    fechaInicio = FormatoFecha(widget.acadTraining.fechaInicio);
+    fechaFin = FormatoFecha(widget.acadTraining.fechaFin);
     super.initState();
   }
 
   String FormatoFecha(DateTime fecha) {
     //Mes y dia
     if (fecha.day < 10 && fecha.month < 10) {
-      return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+      return "0${fecha.day}/0${fecha.month}/${fecha.year}";
       //Solo dia
-    } else if (fecha.day < 10 && fecha.month > 10) {
-      return "0${fecha.day}-${fecha.month}-${fecha.year}";
-    } else if (fecha.day > 10 && fecha.month < 10) {
+    } else if (fecha.day < 10 && fecha.month >= 10) {
+      return "0${fecha.day}/${fecha.month}/${fecha.year}";
+    } else if (fecha.day >= 10 && fecha.month < 10) {
       //Solo mes
-      return "${fecha.day}-0${fecha.month}-${fecha.year}";
+      return "${fecha.day}/0${fecha.month}/${fecha.year}";
     } else {
-      return "${fecha.day}-${fecha.month}-${fecha.year}";
+      //Ninguno
+      return "${fecha.day}/${fecha.month}/${fecha.year}";
     }
   }
 
@@ -108,10 +109,10 @@ class _EditCertificacionState extends State<EditCertification> {
         foregroundColor: Color.fromRGBO(1, 167, 211, 1),
       ),
       body: FutureBuilder(
-          future: certs,
+          future: acadTrainings,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              cList = snapshot.data;
+              aTList = snapshot.data;
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -152,7 +153,7 @@ class _EditCertificacionState extends State<EditCertification> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Editar certificado",
+                          "Registro de nuevo certificado",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -180,39 +181,21 @@ class _EditCertificacionState extends State<EditCertification> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextFormField(
-                            initialValue: titulo,
+                          TextField(
                             decoration: InputDecoration(
-                                hintText: 'Ttulo',
+                                hintText: 'Titulo',
                                 hintStyle: TextStyle(color: Colors.grey),
                                 icon: Icon(Icons.description_outlined)),
                             onChanged: (valor) => setState(() {
-                              titulo = valor;
+                              tituloObtenido = valor;
                             }),
                           ),
                           Text(
-                            'URL',
+                            'Fecha inicio',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
-                            initialValue: url,
-                            decoration: InputDecoration(
-                              hintText: 'URL',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.link_rounded),
-                            ),
-                            onChanged: (valor) => setState(() {
-                              url = valor;
-                            }),
-                          ),
-                          Text(
-                            'Fecha de expedición',
-                            style: TextStyle(
-                                color: Color.fromRGBO(1, 167, 211, 1)),
-                          ),
-                          TextFormField(
-                            initialValue: fechaExpedicion,
                             keyboardType: TextInputType.number,
                             inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
@@ -221,7 +204,24 @@ class _EditCertificacionState extends State<EditCertification> {
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
                             onChanged: (valor) {
-                              fechaExpedicion = valor;
+                              fechaInicio = valor;
+                            },
+                          ),
+                          Text(
+                            'Fecha fin',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [dateMaskFormatter],
+                            decoration: InputDecoration(
+                              hintText: 'DD-MM-AAAA',
+                              icon: Icon(Icons.calendar_month_outlined),
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                            onChanged: (valor) {
+                              fechaFin = valor;
                             },
                           ),
                           Container(
@@ -235,24 +235,26 @@ class _EditCertificacionState extends State<EditCertification> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     //Verifico que se ingresaron todos los campos
-                                    if (titulo != '' &&
-                                        url != '' &&
-                                        fechaExpedicion != '') {
-                                      Certification updatedCert = Certification(
-                                          id: widget.certification.id,
-                                          titulo: titulo,
-                                          url: url,
-                                          idUsuario: widget.user.id,
-                                          fechaExpedicion:
-                                              DateFormat("dd-MM-yyyy")
-                                                  .parse(fechaExpedicion),
-                                          v: 0);
-                                      print(
-                                          '${updatedCert.fechaExpedicion.toIso8601String()} ');
-                                      editCertification(updatedCert);
+                                    if (tituloObtenido != '' &&
+                                        fechaInicio != '' &&
+                                        fechaFin != '') {
+                                      AcadTraining updatedAcadTraining =
+                                          AcadTraining(
+                                              id: '0',
+                                              idInstitucion: widget
+                                                  .acadTraining.idInstitucion,
+                                              tituloObtenido: tituloObtenido,
+                                              idUsuario: widget.user.id,
+                                              fechaInicio:
+                                                  DateFormat("dd-MM-yyyy")
+                                                      .parse(fechaInicio),
+                                              fechaFin: DateFormat("dd-MM-yyyy")
+                                                  .parse(fechaFin),
+                                              v: 0);
+                                      editAcadTraining(updatedAcadTraining);
                                       EditAlert(
                                           "Exito",
-                                          "Se ha modificado el certificado de forma exitosa",
+                                          "Se ha modificado de forma exitosa",
                                           true);
                                     } else {
                                       //Muestro una alerta pidiendo ingresar todos los campos

@@ -13,22 +13,26 @@ String schoolToJson(List<School> data) =>
 class School {
   String id;
   String nombreInstitucion;
+  String ubicacion;
   int v;
 
   School({
     required this.id,
     required this.nombreInstitucion,
+    required this.ubicacion,
     required this.v,
   });
 
   factory School.fromJson(Map<String, dynamic> json) => School(
         id: json["_id"],
         nombreInstitucion: json["nombreInstitucion"],
+        ubicacion: json["ubicacion"],
         v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
         "nombreInstitucion": nombreInstitucion,
+        "ubicacion": ubicacion,
       };
 }

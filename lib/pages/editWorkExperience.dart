@@ -111,7 +111,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+        foregroundColor: Color.fromRGBO(1, 167, 211, 1),
       ),
       body: FutureBuilder(
           future: wExperiences,
@@ -325,7 +325,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                                     }
                                   },
                                   child: Text(
-                                    'Registrar',
+                                    'Guardar',
                                     style: TextStyle(
                                         color: Color.fromRGBO(1, 167, 211, 1),
                                         fontSize: 22,

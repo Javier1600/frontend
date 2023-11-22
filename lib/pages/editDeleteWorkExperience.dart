@@ -41,7 +41,7 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
     return Scaffold(
       appBar: AppBar(
           surfaceTintColor: Colors.white,
-          backgroundColor: Color.fromRGBO(1, 167, 211, 1)),
+          foregroundColor: Color.fromRGBO(1, 167, 211, 1)),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
