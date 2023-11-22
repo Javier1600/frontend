@@ -136,7 +136,16 @@ class _AddworkExperienceState extends State<AddWorkExperience> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Registro de nueva Experiencia laboral",
+                          "Registro de nueva",
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 25.0,
+                              color: Color.fromRGBO(226, 144, 32, 1),
+                              fontFamily: 'PlaypenSans'),
+                        ),
+                        Text(
+                          "Experiencia Laboral",
                           maxLines: 2,
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
@@ -169,7 +178,7 @@ class _AddworkExperienceState extends State<AddWorkExperience> {
                             decoration: InputDecoration(
                                 hintText: 'Gerente',
                                 hintStyle: TextStyle(color: Colors.grey),
-                                icon: Icon(Icons.description_outlined)),
+                                icon: Icon(Icons.work_outline)),
                             onChanged: (valor) => setState(() {
                               puesto = valor;
                             }),
@@ -183,7 +192,7 @@ class _AddworkExperienceState extends State<AddWorkExperience> {
                             decoration: InputDecoration(
                               hintText: 'Educación',
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.link_rounded),
+                              icon: Icon(Icons.topic_outlined),
                             ),
                             onChanged: (valor) => setState(() {
                               ambitoLaboral = valor;
@@ -198,7 +207,7 @@ class _AddworkExperienceState extends State<AddWorkExperience> {
                             decoration: InputDecoration(
                               hintText: 'Empresa',
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.link_rounded),
+                              icon: Icon(Icons.home_work_outlined),
                             ),
                             onChanged: (valor) => setState(() {
                               empresa = valor;

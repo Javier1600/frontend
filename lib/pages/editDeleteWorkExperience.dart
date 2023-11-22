@@ -22,15 +22,16 @@ class EditDeleteWorkExperience extends StatefulWidget {
 String FormatoFecha(DateTime fecha) {
   //Mes y dia
   if (fecha.day < 10 && fecha.month < 10) {
-    return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+    return "0${fecha.day}/0${fecha.month}/${fecha.year}";
     //Solo dia
-  } else if (fecha.day < 10 && fecha.month > 10) {
-    return "0${fecha.day}-${fecha.month}-${fecha.year}";
-  } else if (fecha.day > 10 && fecha.month < 10) {
+  } else if (fecha.day < 10 && fecha.month >= 10) {
+    return "0${fecha.day}/${fecha.month}/${fecha.year}";
+  } else if (fecha.day >= 10 && fecha.month < 10) {
     //Solo mes
-    return "${fecha.day}-0${fecha.month}-${fecha.year}";
+    return "${fecha.day}/0${fecha.month}/${fecha.year}";
   } else {
-    return "${fecha.day}-${fecha.month}-${fecha.year}";
+    //Ninguno
+    return "${fecha.day}/${fecha.month}/${fecha.year}";
   }
 }
 
@@ -84,7 +85,15 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
                   color: Color.fromRGBO(226, 144, 32, 1),
                 ),
                 Text(
-                  "Experiencia laboral registrada",
+                  "Experiencia laboral",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 25.0,
+                      color: Color.fromRGBO(226, 144, 32, 1),
+                      fontFamily: 'PlaypenSans'),
+                ),
+                Text(
+                  "registrada",
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 25.0,

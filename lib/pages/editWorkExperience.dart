@@ -192,7 +192,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                             decoration: InputDecoration(
                                 hintText: 'Gerente',
                                 hintStyle: TextStyle(color: Colors.grey),
-                                icon: Icon(Icons.description_outlined)),
+                                icon: Icon(Icons.work_outline)),
                             onChanged: (valor) => setState(() {
                               puesto = valor;
                             }),
@@ -207,7 +207,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                             decoration: InputDecoration(
                               hintText: 'Educación',
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.link_rounded),
+                              icon: Icon(Icons.topic_outlined),
                             ),
                             onChanged: (valor) => setState(() {
                               ambitoLaboral = valor;
@@ -223,7 +223,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                             decoration: InputDecoration(
                               hintText: 'Empresa',
                               hintStyle: TextStyle(color: Colors.grey),
-                              icon: Icon(Icons.link_rounded),
+                              icon: Icon(Icons.home_work_outlined),
                             ),
                             onChanged: (valor) => setState(() {
                               empresa = valor;

@@ -52,15 +52,16 @@ AbrirURL(url) async {
 String FormatoFecha(DateTime fecha) {
   //Mes y dia
   if (fecha.day < 10 && fecha.month < 10) {
-    return "0${fecha.day}-0${fecha.month}-${fecha.year}";
+    return "0${fecha.day}/0${fecha.month}/${fecha.year}";
     //Solo dia
-  } else if (fecha.day < 10 && fecha.month > 10) {
-    return "0${fecha.day}-${fecha.month}-${fecha.year}";
-  } else if (fecha.day > 10 && fecha.month < 10) {
+  } else if (fecha.day < 10 && fecha.month >= 10) {
+    return "0${fecha.day}/${fecha.month}/${fecha.year}";
+  } else if (fecha.day >= 10 && fecha.month < 10) {
     //Solo mes
-    return "${fecha.day}-0${fecha.month}-${fecha.year}";
+    return "${fecha.day}/0${fecha.month}/${fecha.year}";
   } else {
-    return "${fecha.day}-${fecha.month}-${fecha.year}";
+    //Ninguno
+    return "${fecha.day}/${fecha.month}/${fecha.year}";
   }
 }
 
@@ -269,20 +270,21 @@ class _userProfileState extends State<userProfile> {
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Fecha de nacimiento: ',
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 1),
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                              Text(
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              'Fecha de nacimiento: ',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 1),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
                                                 FormatoFecha(widget.loggedUser
                                                     .fechaNacimiento),
                                                 style: TextStyle(
@@ -290,9 +292,7 @@ class _userProfileState extends State<userProfile> {
                                                       0, 0, 0, 1),
                                                   fontSize: 20,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              )),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
