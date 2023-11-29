@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/userProfile.dart';
 
 class homePageUser extends StatefulWidget {
@@ -61,6 +62,37 @@ class _homePageUserState extends State<homePageUser> {
                       },
                       child: Text(
                         "Mi perfil",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 34,
+                            fontWeight: FontWeight.w700),
+                      )),
+                ),
+              ]),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 5.0),
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromRGBO(1, 167, 211, 1)),
+                          minimumSize: MaterialStateProperty.all(Size(200, 50)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0)))),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute<Null>(
+                            builder: (BuildContext context) {
+                          return loginPage();
+                        }));
+                      },
+                      child: Text(
+                        "Cerrar sesión",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 34,

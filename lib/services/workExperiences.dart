@@ -27,7 +27,7 @@ void createWorkExp(WorkExperience exp) async {
           "empresa": exp.empresa,
           "fechaInicio": exp.fechaInicio.toIso8601String(),
           "fechaFin": exp.fechaFin.toIso8601String(),
-          "idUsuario": "6531e386d6a7cc3a1698aab1",
+          "idUsuario": exp.idUsuario,
           "puesto": exp.puesto
         });
   } catch (e) {
@@ -47,7 +47,7 @@ void editWorkExp(WorkExperience exp) async {
           "empresa": exp.empresa,
           "fechaInicio": exp.fechaInicio.toIso8601String(),
           "fechaFin": exp.fechaFin.toIso8601String(),
-          "idUsuario": "6531e386d6a7cc3a1698aab1",
+          "idUsuario": exp.idUsuario,
           "puesto": exp.puesto
         });
   } catch (e) {

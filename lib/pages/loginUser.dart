@@ -68,6 +68,31 @@ class _loginPageState extends State<loginPage> {
   bool isCompany = false;
   @override
   void initState() {
+    authUser = User(
+        id: "",
+        nombre: "",
+        apellido: "",
+        rol: "",
+        sexo: "",
+        fechaNacimiento: DateTime.now(),
+        telefono: "",
+        usuario: "",
+        password: "",
+        confirmPassword: "",
+        v: 0);
+    authCompany = Company(
+        id: "",
+        nombreEmpresa: "",
+        correo: "",
+        direccion: "",
+        telefono: "",
+        descripcion: "",
+        valores: "",
+        rol: "",
+        usuario: "",
+        password: "",
+        confirmPassword: "",
+        v: 0);
     users = getAllUsers();
     companies = getAllCompanies();
     super.initState();

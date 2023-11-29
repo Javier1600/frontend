@@ -181,7 +181,8 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
-                          TextField(
+                          TextFormField(
+                            initialValue: tituloObtenido,
                             decoration: InputDecoration(
                                 hintText: 'Titulo',
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -196,6 +197,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
+                            initialValue: fechaInicio,
                             keyboardType: TextInputType.number,
                             inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
@@ -213,6 +215,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
                           TextFormField(
+                            initialValue: fechaFin,
                             keyboardType: TextInputType.number,
                             inputFormatters: [dateMaskFormatter],
                             decoration: InputDecoration(
