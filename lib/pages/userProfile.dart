@@ -292,29 +292,28 @@ class _userProfileState extends State<userProfile> {
                                                 ],
                                               ),
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Nombre: ',
-                                                  style: TextStyle(
-                                                      color: Color.fromRGBO(
-                                                          0, 0, 0, 1),
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                                Text(
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                'Nombre: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
                                                   '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}',
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
                                                     fontSize: 20,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
+                                                )),
                                             Container(
                                               alignment: Alignment.topLeft,
                                               child: Text(

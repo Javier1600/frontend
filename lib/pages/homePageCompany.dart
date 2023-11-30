@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/addViewJobs.dart';
 import 'package:frontend/pages/companyProfile.dart';
 import 'package:frontend/pages/loginUser.dart';
 
@@ -96,6 +97,42 @@ class _homePageCompanyState extends State<homePageCompany> {
                                         borderRadius:
                                             BorderRadius.circular(0)))),
                             onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return RegisteredJobs(widget.loggedCompany);
+                              }));
+                            },
+                            child: Text(
+                              "Mis empleos",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 50)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
                               _onBack(context);
                             },
                             child: Text(
@@ -107,7 +144,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                             )),
                       ),
                     ]),
-              )
+              ),
             ]),
           ),
         ),

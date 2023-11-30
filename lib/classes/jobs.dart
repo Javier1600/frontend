@@ -12,39 +12,55 @@ String jobToJson(List<Job> data) =>
 
 class Job {
   String id;
+  String puesto;
   String idEmpresa;
   String descripcion;
+  String formacionAcademica;
+  String experiencia;
   String conocimientos;
   String aptitudes;
+  String modalidad;
   String numeroVacantes;
   int v;
 
   Job({
     required this.id,
+    required this.puesto,
     required this.idEmpresa,
     required this.descripcion,
+    required this.formacionAcademica,
+    required this.experiencia,
     required this.conocimientos,
     required this.aptitudes,
+    required this.modalidad,
     required this.numeroVacantes,
     required this.v,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) => Job(
         id: json["_id"],
+        puesto: json['puesto'],
         idEmpresa: json["idEmpresa"],
         descripcion: json["descripcion"],
+        formacionAcademica: json["formacionAcademica"],
+        experiencia: json['experiencia'],
         conocimientos: json["conocimientos"],
         aptitudes: json["aptitudes"],
+        modalidad: json["modalidad"],
         numeroVacantes: json["numeroVacantes"],
         v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "puesto": puesto,
         "idEmpresa": idEmpresa,
         "descripcion": descripcion,
+        "formacionAcademica": formacionAcademica,
+        "experiencia": experiencia,
         "conocimientos": conocimientos,
         "aptitudes": aptitudes,
+        "modalidad": modalidad,
         "numeroVacantes": numeroVacantes,
       };
 }

@@ -34,10 +34,14 @@ void createJob(Job job) async {
     var response = await http.post(
         Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/job/new'),
         body: {
+          "puesto": job.puesto,
           "idEmpresa": job.idEmpresa,
           "descripcion": job.descripcion,
+          "formacionAcademica": job.formacionAcademica,
           "conocimientos": job.conocimientos,
+          "experiencia": job.experiencia,
           "aptitudes": job.aptitudes,
+          "modalidad": job.modalidad,
           "numeroVacantes": job.numeroVacantes,
         });
   } catch (e) {
@@ -51,18 +55,22 @@ void editJob(Job job) async {
         Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/job/${job.id}'),
         body: {
           "id": job.id,
+          "puesto": job.puesto,
           "idEmpresa": job.idEmpresa,
           "descripcion": job.descripcion,
+          "formacionAcademica": job.formacionAcademica,
           "conocimientos": job.conocimientos,
+          "experiencia": job.experiencia,
           "aptitudes": job.aptitudes,
-          "numeroVacantes": job.numeroVacantes,
+          "modalidad": job.modalidad,
+          "numeroVacantes": job.numeroVacantes
         });
   } catch (e) {
     print(e);
   }
 }
 
-void deleteWorkjob(Job job) async {
+void deleteJob(Job job) async {
   try {
     var response = await http.delete(
       Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/job/${job.id}'),
