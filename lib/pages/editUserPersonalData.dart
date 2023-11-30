@@ -556,6 +556,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
+                  Padding(padding: EdgeInsets.all(8)),
                   CircularProgressIndicator(
                     color: Color.fromRGBO(1, 167, 211, 1),
                   ),

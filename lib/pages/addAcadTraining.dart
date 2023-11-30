@@ -136,7 +136,15 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Registro de nuevo certificado",
+                          "Registro de nueva",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 25.0,
+                              color: Color.fromRGBO(226, 144, 32, 1),
+                              fontFamily: 'PlaypenSans'),
+                        ),
+                        Text(
+                          "Formación Académica",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -310,6 +318,7 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
+                  Padding(padding: EdgeInsets.all(8)),
                   CircularProgressIndicator(
                     color: Color.fromRGBO(1, 167, 211, 1),
                   ),

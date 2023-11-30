@@ -452,7 +452,22 @@ class _companySignInState extends State<companySignIn> {
               return Text("${snapshot.error}");
             }
             return const Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Obteniendo datos",
+                    style: TextStyle(
+                        color: Color.fromRGBO(1, 167, 211, 1),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Padding(padding: EdgeInsets.all(8)),
+                  CircularProgressIndicator(
+                    color: Color.fromRGBO(1, 167, 211, 1),
+                  ),
+                ],
+              ),
             );
           }),
     );

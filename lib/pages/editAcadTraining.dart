@@ -48,16 +48,16 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
   String FormatoFecha(DateTime fecha) {
     //Mes y dia
     if (fecha.day < 10 && fecha.month < 10) {
-      return "0${fecha.day}/0${fecha.month}/${fecha.year}";
+      return "0${fecha.day}-0${fecha.month}-${fecha.year}";
       //Solo dia
     } else if (fecha.day < 10 && fecha.month >= 10) {
-      return "0${fecha.day}/${fecha.month}/${fecha.year}";
+      return "0${fecha.day}-${fecha.month}-${fecha.year}";
     } else if (fecha.day >= 10 && fecha.month < 10) {
       //Solo mes
-      return "${fecha.day}/0${fecha.month}/${fecha.year}";
+      return "${fecha.day}-0${fecha.month}-${fecha.year}";
     } else {
       //Ninguno
-      return "${fecha.day}/${fecha.month}/${fecha.year}";
+      return "${fecha.day}-${fecha.month}-${fecha.year}";
     }
   }
 
@@ -153,7 +153,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Registro de nuevo certificado",
+                          "Editar formación académica",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -183,6 +183,8 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                           ),
                           TextFormField(
                             initialValue: tituloObtenido,
+                            minLines: 1,
+                            maxLines: 4,
                             decoration: InputDecoration(
                                 hintText: 'Titulo',
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -314,6 +316,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
+                  Padding(padding: EdgeInsets.all(8)),
                   CircularProgressIndicator(
                     color: Color.fromRGBO(1, 167, 211, 1),
                   ),

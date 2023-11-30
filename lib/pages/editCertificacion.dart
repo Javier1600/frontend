@@ -182,6 +182,8 @@ class _EditCertificacionState extends State<EditCertification> {
                           ),
                           TextFormField(
                             initialValue: titulo,
+                            minLines: 1,
+                            maxLines: 4,
                             decoration: InputDecoration(
                                 hintText: 'Ttulo',
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -309,6 +311,7 @@ class _EditCertificacionState extends State<EditCertification> {
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
+                  Padding(padding: EdgeInsets.all(8)),
                   CircularProgressIndicator(
                     color: Color.fromRGBO(1, 167, 211, 1),
                   ),
