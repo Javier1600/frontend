@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/jobs.dart';
 import 'package:frontend/pages/addJob.dart';
@@ -39,7 +40,16 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
       child: Scaffold(
         appBar: AppBar(
             surfaceTintColor: Colors.white,
-            foregroundColor: Color.fromRGBO(1, 167, 211, 1)),
+            foregroundColor: Color.fromRGBO(1, 167, 211, 1),
+            leading: IconButton(
+              icon: Icon(Icons.home_filled),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute<Null>(builder: (BuildContext context) {
+                  return homePageCompany(widget.company);
+                }));
+              },
+            )),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(

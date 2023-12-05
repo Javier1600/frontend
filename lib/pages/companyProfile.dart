@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/addViewJobs.dart';
 import 'package:frontend/pages/editCompanyProfile.dart';
 import 'package:frontend/pages/homePageCompany.dart';
 import 'package:frontend/pages/loginUser.dart';
@@ -60,11 +61,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return CompanyProfile(widget.loggedCompany);
+                                return RegisteredJobs(widget.loggedCompany);
                               }));
                             },
                             child: Text(
-                              "Mi perfil",
+                              "Mis empleos",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 34,
