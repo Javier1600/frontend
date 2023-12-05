@@ -521,7 +521,7 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                               );
                                             });
                                       } else {
-//Muestro una alerta pidiendo ingresar todos los campos
+                                        //Muestro una alerta pidiendo ingresar todos los campos
                                         EditAlert(
                                             "Error",
                                             "Ingrese todos los campos solicitados",
