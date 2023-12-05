@@ -452,71 +452,93 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                                             FontWeight.w700)),
                                                 backgroundColor: Colors.white70,
                                                 actions: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Company editedCompany = Company(
-                                                          id: widget
-                                                              .reqCompany.id,
-                                                          nombreEmpresa:
-                                                              nombreEmpresa,
-                                                          correo: correo,
-                                                          direccion: direccion,
-                                                          telefono: telefono,
-                                                          descripcion:
-                                                              descripcion,
-                                                          valores: valores,
-                                                          rol: rol,
-                                                          usuario: usuario,
-                                                          password: widget
-                                                              .reqCompany
-                                                              .password,
-                                                          confirmPassword: widget
-                                                              .reqCompany
-                                                              .confirmPassword,
-                                                          v: 0);
-                                                      editCompany(
-                                                          editedCompany);
-                                                      EditAlert(
-                                                          "Exito",
-                                                          "Se ha actualizado la empresa de forma exitosa",
-                                                          true,
-                                                          editedCompany);
-                                                    },
-                                                    child: Text(
-                                                      'Mantener',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              1, 167, 211, 1),
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white70),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: Text(
-                                                      'Cambiar',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              1, 167, 211, 1),
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white70),
-                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Company editedCompany = Company(
+                                                              id: widget
+                                                                  .reqCompany
+                                                                  .id,
+                                                              nombreEmpresa:
+                                                                  nombreEmpresa,
+                                                              correo: correo,
+                                                              direccion:
+                                                                  direccion,
+                                                              telefono:
+                                                                  telefono,
+                                                              descripcion:
+                                                                  descripcion,
+                                                              valores: valores,
+                                                              rol: rol,
+                                                              usuario: usuario,
+                                                              password: widget
+                                                                  .reqCompany
+                                                                  .password,
+                                                              confirmPassword: widget
+                                                                  .reqCompany
+                                                                  .confirmPassword,
+                                                              v: 0);
+                                                          editCompany(
+                                                              editedCompany);
+                                                          EditAlert(
+                                                              "Exito",
+                                                              "Se ha actualizado la empresa de forma exitosa",
+                                                              true,
+                                                              editedCompany);
+                                                        },
+                                                        child: Text(
+                                                          'Mantener',
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      1,
+                                                                      167,
+                                                                      211,
+                                                                      1),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white70),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text(
+                                                          'Cambiar',
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      1,
+                                                                      167,
+                                                                      211,
+                                                                      1),
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white70),
+                                                      ),
+                                                    ],
+                                                  )
                                                 ],
                                               );
                                             });
