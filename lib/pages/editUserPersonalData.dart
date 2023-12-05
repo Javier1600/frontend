@@ -339,7 +339,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                             },
                           ),
                           Text(
-                            'Contraseña',
+                            'Contraseña (Opcional)',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
@@ -366,7 +366,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                             }),
                           ),
                           Text(
-                            'Confirmar contraseña',
+                            'Confirmar contraseña (Opcional)',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
                           ),
@@ -501,12 +501,114 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                         }
                                       }
                                     } else {
-                                      //Muestro una alerta pidiendo ingresar todos los campos
-                                      signInAlert(
-                                          "Error",
-                                          "Ingrese todos los campos solicitados",
-                                          false,
-                                          widget.reqUser);
+                                      //Verifico si los campos de contra estan vacios para consevar la contra anterior
+                                      if (nombre != '' &&
+                                          apellido != '' &&
+                                          (isMale || isFemale) &&
+                                          fechaNacimiento != '' &&
+                                          telefono != '' &&
+                                          usuario != '' &&
+                                          password == '' &&
+                                          confirmPassword == '') {
+                                        if (isMale) {
+                                          sexo = 'Masculino';
+                                        } else {
+                                          sexo = 'Femenino';
+                                        }
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Campo contraseña vacío!",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "¿Desea mantener la contraseña actual?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      User editedUser = User(
+                                                          id: widget.reqUser.id,
+                                                          nombre: nombre,
+                                                          apellido: apellido,
+                                                          rol: rol,
+                                                          sexo: sexo,
+                                                          fechaNacimiento: DateFormat(
+                                                                  "dd-MM-yyyy")
+                                                              .parse(
+                                                                  fechaNacimiento),
+                                                          telefono: telefono,
+                                                          usuario: usuario,
+                                                          password:
+                                                              widget.reqUser
+                                                                  .password,
+                                                          confirmPassword: widget
+                                                              .reqUser
+                                                              .confirmPassword,
+                                                          v: 0);
+                                                      //Actualizo el usuario
+                                                      editUser(editedUser);
+                                                      signInAlert(
+                                                          "Exito",
+                                                          "Se ha actualizado el usuario de forma exitosa",
+                                                          true,
+                                                          editedUser);
+                                                    },
+                                                    child: Text(
+                                                      'Mantener',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      'Cambiar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        //Muestro una alerta pidiendo ingresar todos los campos
+                                        signInAlert(
+                                            "Error",
+                                            "Ingrese todos los campos solicitados",
+                                            false,
+                                            widget.reqUser);
+                                      }
                                     }
                                   },
                                   child: Text(

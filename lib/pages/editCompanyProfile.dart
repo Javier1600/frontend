@@ -423,12 +423,111 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                         }
                                       }
                                     } else {
-                                      //Muestro una alerta pidiendo ingresar todos los campos
-                                      EditAlert(
-                                          "Error",
-                                          "Ingrese todos los campos solicitados",
-                                          false,
-                                          widget.reqCompany);
+                                      //Verifico si los campos de contra estan vacios para consevar la contra anterior
+                                      if (nombreEmpresa != '' &&
+                                          correo != '' &&
+                                          direccion != '' &&
+                                          telefono != '' &&
+                                          descripcion != '' &&
+                                          valores != '' &&
+                                          usuario != '' &&
+                                          password == '' &&
+                                          confirmPassword == '') {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Campo contraseña vacío!",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "¿Desea mantener la contraseña actual?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Company editedCompany = Company(
+                                                          id: widget
+                                                              .reqCompany.id,
+                                                          nombreEmpresa:
+                                                              nombreEmpresa,
+                                                          correo: correo,
+                                                          direccion: direccion,
+                                                          telefono: telefono,
+                                                          descripcion:
+                                                              descripcion,
+                                                          valores: valores,
+                                                          rol: rol,
+                                                          usuario: usuario,
+                                                          password: widget
+                                                              .reqCompany
+                                                              .password,
+                                                          confirmPassword: widget
+                                                              .reqCompany
+                                                              .confirmPassword,
+                                                          v: 0);
+                                                      editCompany(
+                                                          editedCompany);
+                                                      EditAlert(
+                                                          "Exito",
+                                                          "Se ha actualizado la empresa de forma exitosa",
+                                                          true,
+                                                          editedCompany);
+                                                    },
+                                                    child: Text(
+                                                      'Mantener',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      'Cambiar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+//Muestro una alerta pidiendo ingresar todos los campos
+                                        EditAlert(
+                                            "Error",
+                                            "Ingrese todos los campos solicitados",
+                                            false,
+                                            widget.reqCompany);
+                                      }
                                     }
                                   },
                                   child: Text(
