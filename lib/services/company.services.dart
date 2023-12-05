@@ -16,6 +16,18 @@ Future<List<Company>> getAllCompanies() async => http
         throw Exception("Conexión fallida");
       }
     });
+Future<List<Company>> getCompany(idCompany) async => http
+        .get(Uri.parse(
+            "https://0vmlb023-8000.use2.devtunnels.ms/api/company/$idCompany"))
+        .then((res) {
+      if (res.statusCode == 200) {
+        String body = utf8.decode(res.bodyBytes);
+        return companyFromJson(body);
+      } else {
+        throw Exception("Conexión fallida");
+      }
+    });
+
 void createcompany(Company company) async {
   try {
     var response = await http.post(

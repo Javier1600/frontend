@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/loginUser.dart';
+import 'package:frontend/pages/userPostulations.dart';
 import 'package:frontend/pages/userProfile.dart';
+import 'package:frontend/pages/viewJobsUser.dart';
 
 class homePageUser extends StatefulWidget {
   User loggedUser;
@@ -32,7 +34,7 @@ class _homePageUserState extends State<homePageUser> {
                 margin: const EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 2.0)),
+                    border: Border.all(color: Colors.black, width: 4.0)),
                 width: 200,
                 height: 200,
                 child: const ClipOval(
@@ -54,7 +56,7 @@ class _homePageUserState extends State<homePageUser> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(1, 167, 211, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -90,7 +92,7 @@ class _homePageUserState extends State<homePageUser> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(1, 167, 211, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -100,8 +102,76 @@ class _homePageUserState extends State<homePageUser> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return loginPage();
+                                return UserJobsView(widget.loggedUser);
                               }));
+                            },
+                            child: Text(
+                              "Empleos",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return UserPostulations(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Postulaciones",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              _onBack(context);
                             },
                             child: Text(
                               "Cerrar sesión",

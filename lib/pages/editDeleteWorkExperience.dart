@@ -175,7 +175,8 @@ List<Widget> Experiences(
                                   "¿Está seguro de eliminar esta experiencia laboral?",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700)),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18)),
                               backgroundColor: Colors.white70,
                               actions: [
                                 ElevatedButton(
@@ -196,8 +197,8 @@ List<Widget> Experiences(
                                                 "Se ha eliminado la experiencia laboral",
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.w700)),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18)),
                                             backgroundColor: Colors.white70,
                                             actions: [
                                               ElevatedButton(

@@ -10,6 +10,8 @@ import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:frontend/pages/homePageUser.dart';
 import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/registeredSchools.dart';
+import 'package:frontend/pages/userPostulations.dart';
+import 'package:frontend/pages/viewJobsUser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -105,8 +107,7 @@ class _userProfileState extends State<userProfile> {
                 margin: const EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 0, 0, 0), width: 2.0)),
+                    border: Border.all(color: Colors.black, width: 4.0)),
                 width: 200,
                 height: 200,
                 child: const ClipOval(
@@ -116,7 +117,7 @@ class _userProfileState extends State<userProfile> {
                 )),
               ),
               Container(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 5.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -128,7 +129,7 @@ class _userProfileState extends State<userProfile> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(1, 167, 211, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -138,11 +139,11 @@ class _userProfileState extends State<userProfile> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return userProfile(widget.loggedUser);
+                                return homePageUser(widget.loggedUser);
                               }));
                             },
                             child: Text(
-                              "Mi perfil",
+                              "Inicio",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 34,
@@ -164,7 +165,79 @@ class _userProfileState extends State<userProfile> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(1, 167, 211, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return UserJobsView(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Empleos",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return UserPostulations(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Postulaciones",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -245,8 +318,8 @@ class _userProfileState extends State<userProfile> {
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    width: 150,
-                                                    height: 150,
+                                                    width: 170,
+                                                    height: 170,
                                                     child: Image(
                                                       image: AssetImage(
                                                           'assets/img/hombre.png'),

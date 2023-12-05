@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_void_to_null
+// ignore_for_file: file_names, must_be_immutable, prefer_void_to_null, deprecated_member_use
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/schools.dart';

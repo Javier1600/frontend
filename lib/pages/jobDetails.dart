@@ -25,27 +25,33 @@ class _JobDetailsState extends State<JobDetails> {
     super.initState();
   }
 
-  String getCompanyDetails(List<Company>? CompList, String idEmpresa) {
-    String direction = '';
+  Company? getCompanyDetails(List<Company>? CompList, String idEmpresa) {
+    //Variable para contener los detalles de la empresa
+    Company? company;
     for (Company c in CompList!) {
       if (c.id == idEmpresa) {
-        direction = c.direccion;
+        company = c;
       }
     }
-    return direction;
+    return company;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            foregroundColor: const Color.fromRGBO(1, 167, 211, 1)),
+          backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+          title: const Text(
+            'Detalle empleo',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
         body: FutureBuilder(
             future: companies,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 cList = snapshot.data;
+                company = getCompanyDetails(cList, widget.job.idEmpresa);
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Center(
@@ -73,6 +79,22 @@ class _JobDetailsState extends State<JobDetails> {
                                     color: Color.fromRGBO(226, 144, 32, 1),
                                     fontSize: 34,
                                     fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 10)),
+                            Text(
+                              "Empresa",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Text(
+                              company!.nombreEmpresa,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
                               ),
                             ),
                             Padding(padding: EdgeInsets.only(top: 10)),
@@ -114,7 +136,7 @@ class _JobDetailsState extends State<JobDetails> {
                                   fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              getCompanyDetails(cList, widget.job.idEmpresa),
+                              company!.direccion,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.black,

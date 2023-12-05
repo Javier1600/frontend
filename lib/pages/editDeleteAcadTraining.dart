@@ -186,7 +186,8 @@ List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
                                   "¿Está seguro de eliminar esta Formación?",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700)),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18)),
                               backgroundColor: Colors.white70,
                               actions: [
                                 ElevatedButton(
@@ -206,8 +207,8 @@ List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
                                                 "Se ha eliminado la formación",
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.w700)),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18)),
                                             backgroundColor: Colors.white70,
                                             actions: [
                                               ElevatedButton(

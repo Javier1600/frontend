@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/jobs.dart';
 import 'package:frontend/pages/addJob.dart';
