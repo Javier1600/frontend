@@ -313,5 +313,13 @@ List<Widget> Certificaciones(
       cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
+  if (cRet.isEmpty) {
+    cRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin certificaciones",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
+  }
   return cRet;
 }

@@ -462,13 +462,13 @@ class _AddJobState extends State<AddJob> {
                   Text(
                     "Obteniendo datos",
                     style: TextStyle(
-                        color: Color.fromRGBO(1, 167, 211, 1),
+                        color: Colors.black,
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
                   Padding(padding: EdgeInsets.all(8)),
                   CircularProgressIndicator(
-                    color: Color.fromRGBO(1, 167, 211, 1),
+                    color: Colors.black,
                   ),
                 ],
               ),

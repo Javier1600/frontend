@@ -40,10 +40,10 @@ class _JobDetailsState extends State<JobDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+          backgroundColor: Color.fromRGBO(226, 144, 32, 1),
           title: const Text(
             'Detalle empleo',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ),
         body: FutureBuilder(
@@ -282,13 +282,13 @@ class _JobDetailsState extends State<JobDetails> {
                     Text(
                       "Obteniendo datos",
                       style: TextStyle(
-                          color: Color.fromRGBO(1, 167, 211, 1),
+                          color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.w700),
                     ),
                     Padding(padding: EdgeInsets.all(8)),
                     CircularProgressIndicator(
-                      color: Color.fromRGBO(1, 167, 211, 1),
+                      color: Colors.black,
                     ),
                   ],
                 ),

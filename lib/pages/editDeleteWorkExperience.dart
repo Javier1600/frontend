@@ -370,5 +370,13 @@ List<Widget> Experiences(
       wERet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
+  if (wERet.isEmpty) {
+    wERet.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin experiencia laboral",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
+  }
   return wERet;
 }

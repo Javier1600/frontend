@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/jobs.dart';
 import 'package:frontend/pages/addJob.dart';
+import 'package:frontend/pages/companyProfile.dart';
 import 'package:frontend/pages/editJob.dart';
 import 'package:frontend/pages/homePageCompany.dart';
 import 'package:frontend/pages/jobDetails.dart';
+import 'package:frontend/pages/jobPostulations.dart';
+import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/services/jobs.services.dart';
 
 class RegisteredJobs extends StatefulWidget {
@@ -38,17 +41,136 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
       onWillPop: () => _onBack(context),
       child: Scaffold(
         appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            foregroundColor: Color.fromRGBO(1, 167, 211, 1),
-            leading: IconButton(
-              icon: Icon(Icons.home_filled),
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute<Null>(builder: (BuildContext context) {
-                  return homePageCompany(widget.company);
-                }));
-              },
-            )),
+          backgroundColor: Color.fromRGBO(206, 144, 32, 1),
+          title: const Text(
+            'Mis empleos',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        drawer: Drawer(
+          width: MediaQuery.of(context).size.width * 0.75,
+          child: Container(
+            color: Colors.white,
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.only(top: 30),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                ),
+                width: 200,
+                height: 200,
+                child: Image(
+                  image: AssetImage('assets/img/empresa.png'),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return homePageCompany(widget.company);
+                              }));
+                            },
+                            child: Text(
+                              "Inicio",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return CompanyProfile(widget.company);
+                              }));
+                            },
+                            child: Text(
+                              "Mi perfil",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              _onCloseSession(context);
+                            },
+                            child: Text(
+                              "Cerrar sesión",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+            ]),
+          ),
+        ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
@@ -61,36 +183,6 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
             child: Column(children: [
               Center(
                 child: Column(children: [
-                  const Text(
-                    "Empleos",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 40.0,
-                        color: Color.fromRGBO(1, 167, 211, 1)),
-                    textAlign: TextAlign.center,
-                  ),
-                  RichText(
-                      text: const TextSpan(children: [
-                    TextSpan(
-                      text: "Chavez",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 40.0,
-                          color: Color.fromRGBO(226, 144, 32, 1),
-                          fontFamily: 'PlaypenSans'),
-                    ),
-                    TextSpan(
-                      text: "pamba",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 40.0,
-                          color: Color.fromRGBO(1, 167, 211, 1),
-                          fontFamily: 'PlaypenSans'),
-                    ),
-                  ])),
-                  Divider(
-                    color: Color.fromRGBO(226, 144, 32, 1),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
@@ -101,24 +193,16 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
                         }));
                       },
                       child: Text(
-                        'Nuevo empleo',
+                        'Publicar empleo',
                         style: TextStyle(
-                            color: Color.fromRGBO(1, 167, 211, 1),
+                            color: Colors.black,
                             fontSize: 22,
                             fontWeight: FontWeight.w700),
                       ),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white),
+                        backgroundColor: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Empleos publicados",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22.0,
-                        color: Color.fromRGBO(226, 144, 32, 1),
-                        fontFamily: 'PlaypenSans'),
                   ),
                 ]),
               ),
@@ -148,13 +232,13 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
                         Text(
                           "Obteniendo datos",
                           style: TextStyle(
-                              color: Color.fromRGBO(1, 167, 211, 1),
+                              color: Colors.black,
                               fontSize: 17,
                               fontWeight: FontWeight.w700),
                         ),
                         Padding(padding: EdgeInsets.all(8)),
                         CircularProgressIndicator(
-                          color: Color.fromRGBO(1, 167, 211, 1),
+                          color: Colors.black,
                         ),
                       ],
                     ),
@@ -174,6 +258,59 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
       return homePageCompany(widget.company);
     }));
     return true;
+  }
+
+  Future<bool> _onCloseSession(BuildContext context) async {
+    bool exitApp = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("¿Está  seguro de cerrar sesión?",
+                style: TextStyle(
+                    color: Color.fromRGBO(226, 144, 32, 1),
+                    fontWeight: FontWeight.w700)),
+            backgroundColor: Colors.white70,
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                        return loginPage();
+                      }));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white60),
+                    child: Text(
+                      'Sí',
+                      style: TextStyle(
+                          color: Color.fromRGBO(1, 167, 211, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white60),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                          color: Color.fromRGBO(1, 167, 211, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+    return exitApp;
   }
 }
 
@@ -198,6 +335,18 @@ List<Widget> Jobs(List<Job>? jobs, BuildContext context, Company company) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.remove_red_eye_outlined,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                        return JobDetails(job);
+                      }));
+                    },
+                  ),
                   IconButton(
                     icon: Icon(
                       Icons.edit_square,
@@ -391,11 +540,11 @@ List<Widget> Jobs(List<Job>? jobs, BuildContext context, Company company) {
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return JobDetails(job);
+                    return JobPostulations(job, company);
                   }));
                 },
                 child: Text(
-                  'Más detalles',
+                  'Ver postulaciones',
                   style: TextStyle(
                       color: Color.fromRGBO(226, 144, 32, 1),
                       fontSize: 22,
@@ -409,6 +558,13 @@ List<Widget> Jobs(List<Job>? jobs, BuildContext context, Company company) {
       ));
       cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
+  }
+  if (cRet.isEmpty) {
+    cRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("No existen empleos publicados",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+    ));
   }
   return cRet;
 }

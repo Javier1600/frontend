@@ -346,5 +346,13 @@ List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
       aTRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
+  if (aTRet.isEmpty) {
+    aTRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin formación académica",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
+  }
   return aTRet;
 }

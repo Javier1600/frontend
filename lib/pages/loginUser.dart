@@ -654,7 +654,7 @@ class _loginPageState extends State<loginPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(true);
+                      SystemNavigator.pop();
                     },
                     child: Text(
                       'Cerrar',

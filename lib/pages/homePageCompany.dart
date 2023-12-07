@@ -54,7 +54,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -90,7 +90,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -126,7 +126,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(

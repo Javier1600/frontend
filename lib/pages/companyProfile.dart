@@ -51,7 +51,43 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return homePageCompany(widget.loggedCompany);
+                              }));
+                            },
+                            child: Text(
+                              "Inicio",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -87,7 +123,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                     MaterialStateProperty.all<Color>(
                                         Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
-                                    MaterialStateProperty.all(Size(200, 50)),
+                                    MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(

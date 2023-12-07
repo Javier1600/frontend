@@ -7,42 +7,52 @@ import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/jobs.dart';
 import 'package:frontend/classes/postulations.dart';
 import 'package:frontend/classes/users.dart';
-import 'package:frontend/pages/homePageUser.dart';
-import 'package:frontend/pages/jobDetails.dart';
+import 'package:frontend/pages/addViewJobs.dart';
+import 'package:frontend/pages/companyProfile.dart';
+import 'package:frontend/pages/homePageCompany.dart';
 import 'package:frontend/pages/loginUser.dart';
-import 'package:frontend/pages/userProfile.dart';
-import 'package:frontend/pages/viewJobsUser.dart';
-import 'package:frontend/services/company.services.dart';
-import 'package:frontend/services/jobs.services.dart';
+import 'package:frontend/pages/userProfileCompany.dart';
 import 'package:frontend/services/postulations.services.dart';
+import 'package:frontend/services/user.services.dart';
 
-class UserPostulations extends StatefulWidget {
-  User user;
-  UserPostulations(this.user, {super.key});
+class JobPostulations extends StatefulWidget {
+  Job job;
+  Company company;
+  JobPostulations(this.job, this.company, {super.key});
 
   @override
-  State<UserPostulations> createState() => _UserPostulationsState();
+  State<JobPostulations> createState() => _JobPostulationsState();
 }
 
-class _UserPostulationsState extends State<UserPostulations> {
+String FormatoFecha(DateTime fecha) {
+  //Mes y dia
+  if (fecha.day < 10 && fecha.month < 10) {
+    return "0${fecha.day}/0${fecha.month}/${fecha.year}";
+    //Solo dia
+  } else if (fecha.day < 10 && fecha.month >= 10) {
+    return "0${fecha.day}/${fecha.month}/${fecha.year}";
+  } else if (fecha.day >= 10 && fecha.month < 10) {
+    //Solo mes
+    return "${fecha.day}/0${fecha.month}/${fecha.year}";
+  } else {
+    //Ninguno
+    return "${fecha.day}/${fecha.month}/${fecha.year}";
+  }
+}
+
+class _JobPostulationsState extends State<JobPostulations> {
   //Variable que contiene todos los trabajos publicados almacenados en la base
-  late Future<List<Job>> jobs;
+  late Future<List<User>> users;
   //Variable para iterar la lista de los trabajos publicados de la base
-  List<Job>? jList = [];
+  List<User>? uList = [];
   //Variable que contiene las postulaciones del usuario
   late Future<List<Postulation>> userPostulations;
   //Variable para iterar las postulaciones del usario
-  List<Postulation> uPList = [];
-  //Variable que contiene todos los trabajos publicados almacenados en la base
-  late Future<List<Company>> companies;
-  //Variable para iterar la lista de los trabajos publicados de la base
-  List<Company>? cList = [];
-
+  List<Postulation> jPList = [];
   @override
   void initState() {
-    jobs = getAllJobs();
-    userPostulations = getUserPostulations(widget.user.id);
-    companies = getAllCompanies();
+    users = getAllUsers();
+    userPostulations = getJobPostulations(widget.job.id);
     super.initState();
   }
 
@@ -59,15 +69,14 @@ class _UserPostulationsState extends State<UserPostulations> {
               Container(
                 margin: const EdgeInsets.only(top: 30),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 4.0)),
+                  shape: BoxShape.rectangle,
+                ),
                 width: 200,
                 height: 200,
-                child: const ClipOval(
-                    child: Image(
-                  image: AssetImage('assets/img/hombre.png'),
+                child: Image(
+                  image: AssetImage('assets/img/empresa.png'),
                   fit: BoxFit.contain,
-                )),
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 5.0),
@@ -80,7 +89,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(1, 167, 211, 1)),
+                                        Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
                                     MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
@@ -92,7 +101,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return homePageUser(widget.user);
+                                return homePageCompany(widget.company);
                               }));
                             },
                             child: Text(
@@ -116,7 +125,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(1, 167, 211, 1)),
+                                        Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
                                     MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
@@ -128,7 +137,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return userProfile(widget.user);
+                                return CompanyProfile(widget.company);
                               }));
                             },
                             child: Text(
@@ -152,7 +161,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(1, 167, 211, 1)),
+                                        Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
                                     MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
@@ -164,11 +173,11 @@ class _UserPostulationsState extends State<UserPostulations> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return UserJobsView(widget.user);
+                                return RegisteredJobs(widget.company);
                               }));
                             },
                             child: Text(
-                              "Empleos",
+                              "Mis empleos",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 34,
@@ -188,7 +197,7 @@ class _UserPostulationsState extends State<UserPostulations> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(1, 167, 211, 1)),
+                                        Color.fromRGBO(206, 144, 32, 1)),
                                 minimumSize:
                                     MaterialStateProperty.all(Size(200, 70)),
                                 shape: MaterialStateProperty.all<
@@ -208,14 +217,14 @@ class _UserPostulationsState extends State<UserPostulations> {
                             )),
                       ),
                     ]),
-              )
+              ),
             ]),
           ),
         ),
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+          backgroundColor: Color.fromRGBO(206, 144, 32, 1),
           title: const Text(
-            'Mis postulaciones',
+            'Postulantes',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -230,61 +239,31 @@ class _UserPostulationsState extends State<UserPostulations> {
             ),
             child: Column(children: [
               FutureBuilder(
-                future: jobs,
+                future: users,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    jList = snapshot.data;
+                    uList = snapshot.data;
                     return FutureBuilder(
                         future: userPostulations,
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
-                            uPList = snapshot.data;
-                            return FutureBuilder(
-                              future: companies,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  cList = snapshot.data;
-                                  return SingleChildScrollView(
-                                      physics: BouncingScrollPhysics(),
-                                      child: SingleChildScrollView(
-                                          physics: BouncingScrollPhysics(),
-                                          child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              child: Container(
-                                                  child: Column(
-                                                children: Postulations(
-                                                    jList,
-                                                    uPList,
-                                                    cList,
-                                                    widget.user,
-                                                    context),
-                                              )))));
-                                } else if (snapshot.hasError) {
-                                  return Text("${snapshot.error}");
-                                }
-                                return const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Obteniendo datos",
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromRGBO(1, 167, 211, 1),
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Padding(padding: EdgeInsets.all(8)),
-                                      CircularProgressIndicator(
-                                        color: Color.fromRGBO(1, 167, 211, 1),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
+                            jPList = snapshot.data;
+                            return SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
+                                child: SingleChildScrollView(
+                                    physics: BouncingScrollPhysics(),
+                                    child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        child: Container(
+                                            child: Column(
+                                          children: Postulations(
+                                              uList,
+                                              jPList,
+                                              widget.company,
+                                              widget.job,
+                                              context),
+                                        )))));
                           } else if (snapshot.hasError) {
                             return Text("${snapshot.error}");
                           }
@@ -295,13 +274,13 @@ class _UserPostulationsState extends State<UserPostulations> {
                                 Text(
                                   "Obteniendo datos",
                                   style: TextStyle(
-                                      color: Color.fromRGBO(1, 167, 211, 1),
+                                      color: Colors.black,
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Padding(padding: EdgeInsets.all(8)),
                                 CircularProgressIndicator(
-                                  color: Color.fromRGBO(1, 167, 211, 1),
+                                  color: Colors.black,
                                 ),
                               ],
                             ),
@@ -317,13 +296,13 @@ class _UserPostulationsState extends State<UserPostulations> {
                         Text(
                           "Obteniendo datos",
                           style: TextStyle(
-                              color: Color.fromRGBO(1, 167, 211, 1),
+                              color: Colors.black,
                               fontSize: 17,
                               fontWeight: FontWeight.w700),
                         ),
                         Padding(padding: EdgeInsets.all(8)),
                         CircularProgressIndicator(
-                          color: Color.fromRGBO(1, 167, 211, 1),
+                          color: Colors.black,
                         ),
                       ],
                     ),
@@ -340,7 +319,7 @@ class _UserPostulationsState extends State<UserPostulations> {
   Future<bool> _onBack(BuildContext context) async {
     await Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return homePageUser(widget.user);
+      return RegisteredJobs(widget.company);
     }));
     return true;
   }
@@ -398,19 +377,14 @@ class _UserPostulationsState extends State<UserPostulations> {
   }
 }
 
-List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
-    List<Company>? companies, User user, context) {
+List<Widget> Postulations(List<User>? users, List<Postulation>? jobPost,
+    Company company, Job job, context) {
   List<Widget> pRet = [];
-  for (Postulation post in userPost!) {
-    for (Job job in jobs!) {
-      if (int.tryParse(job.numeroVacantes) != 0) {
-        if (post.idEmpleo == job.id) {
-          Company? comp;
-          for (Company c in companies!) {
-            if (c.id == job.idEmpresa) {
-              comp = c;
-            }
-          }
+  for (Postulation post in jobPost!) {
+    for (User user in users!) {
+      //Valio el estado de la postulacion
+      if (post.estado != "") {
+        if (post.idUsuario == user.id) {
           pRet.add(Container(
             padding:
                 EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
@@ -425,43 +399,40 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                 ]),
             child: Column(
               children: [
-                RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                    text: "${job.puesto}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24.0,
-                        color: Colors.black,
-                        fontFamily: 'PlaypenSans'),
+                IconButton(
+                  icon: Icon(
+                    Icons.remove_red_eye_outlined,
+                    color: Colors.black,
+                    size: 30,
                   ),
-                  TextSpan(
-                    text: " (${job.modalidad})",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20.0,
-                        color: Colors.black54,
-                        fontFamily: 'PlaypenSans'),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfileCompany(user, job, company);
+                    }));
+                  },
+                ),
+                Text(
+                  "Postulante:",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    fontSize: 20,
+                    overflow: TextOverflow.clip,
                   ),
-                ])),
-                RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                    text: "Empresa: ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20.0,
-                        color: Colors.black,
-                        fontFamily: 'PlaypenSans'),
+                  maxLines: 3,
+                ),
+                Text(
+                  "${user.nombre} ${user.apellido}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    overflow: TextOverflow.clip,
                   ),
-                  TextSpan(
-                    text: "${comp!.nombreEmpresa}",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black,
-                        fontFamily: 'PlaypenSans'),
-                  ),
-                ])),
+                  maxLines: 3,
+                ),
                 RichText(
                     text: TextSpan(children: [
                   TextSpan(
@@ -510,32 +481,21 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                   children: [
                     IconButton(
                       icon: Icon(
-                        Icons.remove_red_eye_outlined,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute<void>(
-                            builder: (BuildContext context) {
-                          return JobDetails(job);
-                        }));
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_forever_outlined,
-                        color: Colors.red,
+                        Icons.check_circle_outline,
+                        color: Colors.green,
+                        size: 45,
                       ),
                       onPressed: () {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text("Se eliminará esta postulación!",
+                                title: Text("Aceptar",
                                     style: TextStyle(
                                         color: Color.fromRGBO(226, 144, 32, 1),
                                         fontWeight: FontWeight.w700)),
                                 content: Text(
-                                    "¿Está seguro de eliminar esta postulación?",
+                                    "¿Está seguro de aceptar esta postulación?",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w700,
@@ -550,14 +510,14 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
                                               title: Text(
-                                                  "Postulación eliminada",
+                                                  "Postulación aceptada",
                                                   style: TextStyle(
                                                       color: Color.fromRGBO(
                                                           226, 144, 32, 1),
                                                       fontWeight:
                                                           FontWeight.w700)),
                                               content: Text(
-                                                  "Se ha eliminado la postulación",
+                                                  "Se ha aceptado la postulación",
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
@@ -567,7 +527,16 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                               actions: [
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    deletePostulation(post);
+                                                    Postulation nPost = Postulation(
+                                                        id: post.id,
+                                                        idUsuario:
+                                                            post.idUsuario,
+                                                        idEmpleo: post.idEmpleo,
+                                                        estado: "Aceptada",
+                                                        fechaPostulacion: post
+                                                            .fechaPostulacion,
+                                                        v: post.v);
+                                                    editPostulation(nPost);
                                                     Timer(Duration(seconds: 2),
                                                         () {
                                                       Navigator.of(context).push(
@@ -576,8 +545,8 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
-                                                        return UserPostulations(
-                                                            user);
+                                                        return JobPostulations(
+                                                            job, company);
                                                       }));
                                                     });
                                                   },
@@ -600,7 +569,243 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                           });
                                     },
                                     child: Text(
-                                      'Eliminar',
+                                      'Aceptar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.watch_later_outlined,
+                        color: Colors.grey,
+                        size: 45,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("En espera",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(226, 144, 32, 1),
+                                        fontWeight: FontWeight.w700)),
+                                content: Text(
+                                    "¿Está seguro de poner en espera esta postulación?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                backgroundColor: Colors.white70,
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  "Postulación en espera",
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          226, 144, 32, 1),
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              content: Text(
+                                                  "Se ha puesto en espera la postulación",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 18)),
+                                              backgroundColor: Colors.white70,
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Postulation nPost = Postulation(
+                                                        id: post.id,
+                                                        idUsuario:
+                                                            post.idUsuario,
+                                                        idEmpleo: post.idEmpleo,
+                                                        estado: "En espera",
+                                                        fechaPostulacion: post
+                                                            .fechaPostulacion,
+                                                        v: post.v);
+                                                    editPostulation(nPost);
+                                                    Timer(Duration(seconds: 2),
+                                                        () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return JobPostulations(
+                                                            job, company);
+                                                      }));
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    'Aceptar',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white70),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: Text(
+                                      'Poner en espera',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.unpublished_outlined,
+                        color: Colors.red,
+                        size: 45,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Negar",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(226, 144, 32, 1),
+                                        fontWeight: FontWeight.w700)),
+                                content: Text(
+                                    "¿Está seguro de negar esta postulación?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                backgroundColor: Colors.white70,
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  "Postulación negaddda",
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          226, 144, 32, 1),
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              content: Text(
+                                                  "Se ha negado la postulación",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 18)),
+                                              backgroundColor: Colors.white70,
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Postulation nPost = Postulation(
+                                                        id: post.id,
+                                                        idUsuario:
+                                                            post.idUsuario,
+                                                        idEmpleo: post.idEmpleo,
+                                                        estado: "Negada",
+                                                        fechaPostulacion: post
+                                                            .fechaPostulacion,
+                                                        v: post.v);
+                                                    editPostulation(nPost);
+                                                    Timer(Duration(seconds: 2),
+                                                        () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return JobPostulations(
+                                                            job, company);
+                                                      }));
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    'Aceptar',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white70),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: Text(
+                                      'Negar',
                                       style: TextStyle(
                                           color: Color.fromRGBO(1, 167, 211, 1),
                                           fontSize: 22,
@@ -642,8 +847,7 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
     pRet.add(Container(
       alignment: Alignment.center,
       child: Text("Sin postulaciones",
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
     ));
   }
   return pRet;

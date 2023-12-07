@@ -31,7 +31,7 @@ Future<List<Postulation>> getUserPostulations(idUsuario) async => http
 
 Future<List<Postulation>> getJobPostulations(idEmpleo) async => http
         .get(Uri.parse(
-            "https://0vmlb023-8000.use2.devtunnels.ms/api/postulations/user/$idEmpleo"))
+            "https://0vmlb023-8000.use2.devtunnels.ms/api/postulations/job/$idEmpleo"))
         .then((res) {
       if (res.statusCode == 200) {
         String body = utf8.decode(res.bodyBytes);

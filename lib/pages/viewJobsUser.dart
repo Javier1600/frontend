@@ -709,5 +709,13 @@ List<Widget> Jobs(
       }
     }
   }
+  if (cRet.isEmpty) {
+    cRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("No existen empleos disponibles",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
+  }
   return cRet;
 }
