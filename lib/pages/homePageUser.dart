@@ -26,6 +26,16 @@ class _homePageUserState extends State<homePageUser> {
       onWillPop: () => _onBack(context),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.exit_to_app_rounded,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _onBack(context);
+            },
+          ),
+          surfaceTintColor: Colors.white,
           backgroundColor: Color.fromRGBO(1, 167, 211, 1),
           title: const Text(
             'Inicio',
