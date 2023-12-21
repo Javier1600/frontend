@@ -575,6 +575,14 @@ List<Widget> FormacionAcademica(List<AcadTraining>? aT, List<School>? s) {
       ));
     }
   }
+  if (fA.isEmpty) {
+    fA.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin formación académica",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
+  }
   return fA;
 }
 
@@ -642,6 +650,14 @@ List<Widget> Certificaciones(List<Certification>? cert) {
         ),
       ));
     }
+  }
+  if (cRet.isEmpty) {
+    cRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin certificaciones",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
   }
   return cRet;
 }
@@ -755,6 +771,14 @@ List<Widget> ExpLaboral(List<WorkExperience>? expLab) {
         ),
       ));
     }
+  }
+  if (expRet.isEmpty) {
+    expRet.add(Container(
+      alignment: Alignment.center,
+      child: Text("Sin experiencia laboral",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18)),
+    ));
   }
   return expRet;
 }

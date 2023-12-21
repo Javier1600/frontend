@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/addJob.dart';
 import 'package:frontend/pages/addViewJobs.dart';
 import 'package:frontend/pages/companyProfile.dart';
 import 'package:frontend/pages/loginUser.dart';
@@ -24,138 +25,253 @@ class _homePageCompanyState extends State<homePageCompany> {
     return WillPopScope(
       onWillPop: () => _onBack(context),
       child: Scaffold(
-        drawer: Drawer(
-          width: MediaQuery.of(context).size.width * 0.75,
-          child: Container(
-            color: Colors.white,
-            child: Column(children: [
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                ),
-                width: 200,
-                height: 200,
-                child: Image(
-                  image: AssetImage('assets/img/empresa.png'),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      FractionallySizedBox(
-                        widthFactor: 1,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(206, 144, 32, 1)),
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(200, 70)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(0)))),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                return CompanyProfile(widget.loggedCompany);
-                              }));
-                            },
-                            child: Text(
-                              "Mi perfil",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w700),
-                            )),
-                      ),
-                    ]),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      FractionallySizedBox(
-                        widthFactor: 1,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(206, 144, 32, 1)),
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(200, 70)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(0)))),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute<Null>(
-                                      builder: (BuildContext context) {
-                                return RegisteredJobs(widget.loggedCompany);
-                              }));
-                            },
-                            child: Text(
-                              "Mis empleos",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w700),
-                            )),
-                      ),
-                    ]),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      FractionallySizedBox(
-                        widthFactor: 1,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color.fromRGBO(206, 144, 32, 1)),
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(200, 70)),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(0)))),
-                            onPressed: () {
-                              _onBack(context);
-                            },
-                            child: Text(
-                              "Cerrar sesión",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.w700),
-                            )),
-                      ),
-                    ]),
-              ),
-            ]),
-          ),
-        ),
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.exit_to_app_rounded,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _onBack(context);
+            },
+          ),
           backgroundColor: Color.fromRGBO(206, 144, 32, 1),
           title: const Text(
             'Resumen',
             style: TextStyle(color: Colors.white),
           ),
         ),
-        body: Container(),
+        body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              child: Center(
+                  child: Column(
+                children: [
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<Null>(
+                              builder: (BuildContext context) {
+                            return CompanyProfile(widget.loggedCompany);
+                          }));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border:
+                                  Border.all(color: Colors.black45, width: 4.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(8.0, 8.0),
+                                    blurRadius: 15.0)
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(206, 144, 32, 1),
+                                ),
+                                width: 100,
+                                height: 100,
+                                child: Image(
+                                  image: AssetImage(
+                                      'assets/img/empresaPerfil.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Mi perfil",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 8)),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<Null>(
+                              builder: (BuildContext context) {
+                            return RegisteredJobs(widget.loggedCompany);
+                          }));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border:
+                                  Border.all(color: Colors.black45, width: 4.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(8.0, 8.0),
+                                    blurRadius: 15.0)
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(206, 144, 32, 1),
+                                ),
+                                width: 100,
+                                height: 100,
+                                child: Image(
+                                  image: AssetImage('assets/img/compania.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Empleos",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<Null>(
+                              builder: (BuildContext context) {
+                            return AddJob(widget.loggedCompany);
+                          }));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border:
+                                  Border.all(color: Colors.black45, width: 4.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(8.0, 8.0),
+                                    blurRadius: 15.0)
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(206, 144, 32, 1),
+                                ),
+                                width: 100,
+                                height: 100,
+                                child: Image(
+                                  image: AssetImage(
+                                      'assets/img/publicarEmpleo.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Publicar",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 8)),
+                      GestureDetector(
+                        onTap: () {
+                          _onBack(context);
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border:
+                                  Border.all(color: Colors.black45, width: 4.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(8.0, 8.0),
+                                    blurRadius: 15.0)
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(1, 167, 211, 1),
+                                ),
+                                width: 100,
+                                height: 100,
+                                child: Image(
+                                  image:
+                                      AssetImage('assets/img/cerrarSesion.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Cerrar sesión",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+            )),
       ),
     );
   }
