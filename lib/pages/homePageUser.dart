@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/explorePageUser.dart';
 import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/userPostulations.dart';
 import 'package:frontend/pages/userProfile.dart';
@@ -223,7 +224,7 @@ class _homePageUserState extends State<homePageUser> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute<Null>(
                             builder: (BuildContext context) {
-                          return userProfile(widget.loggedUser);
+                          return ExplorePageUser(widget.loggedUser);
                         }));
                       },
                       child: Container(
@@ -262,7 +263,7 @@ class _homePageUserState extends State<homePageUser> {
                             ),
                             Container(
                               child: Text(
-                                "Mi perfil",
+                                "Explorar",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 17.0,

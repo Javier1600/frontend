@@ -5,6 +5,7 @@ import 'package:frontend/classes/companies.dart';
 import 'package:frontend/pages/addJob.dart';
 import 'package:frontend/pages/addViewJobs.dart';
 import 'package:frontend/pages/companyProfile.dart';
+import 'package:frontend/pages/explorePageCompany.dart';
 import 'package:frontend/pages/loginUser.dart';
 
 class homePageCompany extends StatefulWidget {
@@ -219,6 +220,66 @@ class _homePageCompanyState extends State<homePageCompany> {
                       Padding(padding: EdgeInsets.only(left: 8)),
                       GestureDetector(
                         onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<Null>(
+                              builder: (BuildContext context) {
+                            return ExplorePageCompany(widget.loggedCompany);
+                          }));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 10, bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border:
+                                  Border.all(color: Colors.black45, width: 4.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(8.0, 8.0),
+                                    blurRadius: 15.0)
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromRGBO(206, 144, 32, 1),
+                                ),
+                                width: 100,
+                                height: 100,
+                                child: Image(
+                                  image: AssetImage(
+                                      'assets/img/grupoUsuarios.png'),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Explorar",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17.0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(padding: EdgeInsets.only(left: 8)),
+                      GestureDetector(
+                        onTap: () {
                           _onBack(context);
                         },
                         child: Container(
@@ -268,7 +329,7 @@ class _homePageCompanyState extends State<homePageCompany> {
                         ),
                       ),
                     ],
-                  ),
+                  )
                 ],
               )),
             )),

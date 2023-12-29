@@ -8,6 +8,7 @@ import 'package:frontend/classes/jobs.dart';
 import 'package:frontend/pages/addJob.dart';
 import 'package:frontend/pages/companyProfile.dart';
 import 'package:frontend/pages/editJob.dart';
+import 'package:frontend/pages/explorePageCompany.dart';
 import 'package:frontend/pages/homePageCompany.dart';
 import 'package:frontend/pages/jobDetails.dart';
 import 'package:frontend/pages/jobPostulations.dart';
@@ -92,6 +93,42 @@ class _RegisteredJobsState extends State<RegisteredJobs> {
                             },
                             child: Text(
                               "Inicio",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(206, 144, 32, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return ExplorePageCompany(widget.company);
+                              }));
+                            },
+                            child: Text(
+                              "Explorar",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 34,
