@@ -1,9 +1,14 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/adminPostulations.dart';
+import 'package:frontend/pages/addCertificacion.dart';
+import 'package:frontend/pages/addWorkExperience.dart';
+import 'package:frontend/pages/editDeleteAcadTraining.dart';
+import 'package:frontend/pages/editDeleteCertification.dart';
+import 'package:frontend/pages/editDeleteWorkExperience.dart';
+import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
-import 'package:frontend/pages/explorePageUser.dart';
+import 'package:frontend/pages/registeredSchools.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -16,18 +21,14 @@ import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:frontend/services/schools.services.dart';
 
-class userProfileUser extends StatefulWidget {
+class AdminUserData extends StatefulWidget {
   //Variables para construir el drawer y el perfil
   User loggedUser;
   User reqUser;
-  bool FromAdminPostulation;
-  bool FromAdminExplore;
-  userProfileUser(this.loggedUser, this.reqUser, this.FromAdminPostulation,
-      this.FromAdminExplore,
-      {super.key});
+  AdminUserData(this.loggedUser, this.reqUser, {super.key});
 
   @override
-  State<userProfileUser> createState() => _userProfileUserState();
+  State<AdminUserData> createState() => _AdminUserDataState();
 }
 
 int CalcularEdad(fechaNacimiento) {
@@ -68,7 +69,7 @@ String FormatoFecha(DateTime fecha) {
   }
 }
 
-class _userProfileUserState extends State<userProfileUser> {
+class _AdminUserDataState extends State<AdminUserData> {
   //variable que contiene la formacion academica del usuario
   late Future<List<AcadTraining>> acadTraining;
   late List<AcadTraining>? aTList = [];
@@ -93,13 +94,12 @@ class _userProfileUserState extends State<userProfileUser> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onBack(
-          context, widget.FromAdminPostulation, widget.FromAdminExplore),
+      onWillPop: () => _onBack(context),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(1, 167, 211, 1),
           title: const Text(
-            'Usuario',
+            'Admin Usuario',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -175,6 +175,33 @@ class _userProfileUserState extends State<userProfileUser> {
                                                     fontSize: 25,
                                                     fontWeight:
                                                         FontWeight.w700),
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.edit_square,
+                                                      color: Colors.black38,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  Null>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return EditUserPersonalData(
+                                                            widget.loggedUser,
+                                                            widget.reqUser,
+                                                            true);
+                                                      }));
+                                                    },
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             Container(
@@ -325,7 +352,53 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteAcadTraining(
+                                                          aTList,
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          sList,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return RegisteredSchools(
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: FormacionAcademica(
                                                 aTList, sList),
@@ -360,7 +433,52 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteCertification(
+                                                          certList,
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return AddCertification(
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: Certificaciones(certList),
                                           )
@@ -396,7 +514,52 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteWorkExperience(
+                                                          wEList,
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return AddWorkExperience(
+                                                          widget.loggedUser,
+                                                          widget.reqUser,
+                                                          true);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: ExpLaboral(wEList),
                                           ),
@@ -415,13 +578,13 @@ class _userProfileUserState extends State<userProfileUser> {
                                     Text(
                                       "Obteniendo datos",
                                       style: TextStyle(
-                                          color: Colors.black,
+                                          color: Color.fromRGBO(1, 167, 211, 1),
                                           fontSize: 17,
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Padding(padding: EdgeInsets.all(8)),
                                     CircularProgressIndicator(
-                                      color: Colors.black,
+                                      color: Color.fromRGBO(1, 167, 211, 1),
                                     ),
                                   ],
                                 ),
@@ -438,13 +601,13 @@ class _userProfileUserState extends State<userProfileUser> {
                               Text(
                                 "Obteniendo datos",
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(1, 167, 211, 1),
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700),
                               ),
                               Padding(padding: EdgeInsets.all(8)),
                               CircularProgressIndicator(
-                                color: Colors.black,
+                                color: Color.fromRGBO(1, 167, 211, 1),
                               ),
                             ],
                           ),
@@ -461,13 +624,13 @@ class _userProfileUserState extends State<userProfileUser> {
                         Text(
                           "Obteniendo datos",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Color.fromRGBO(1, 167, 211, 1),
                               fontSize: 17,
                               fontWeight: FontWeight.w700),
                         ),
                         Padding(padding: EdgeInsets.all(8)),
                         CircularProgressIndicator(
-                          color: Colors.black,
+                          color: Color.fromRGBO(1, 167, 211, 1),
                         ),
                       ],
                     ),
@@ -484,12 +647,12 @@ class _userProfileUserState extends State<userProfileUser> {
                   Text(
                     "Obteniendo datos",
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Color.fromRGBO(1, 167, 211, 1),
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
                   CircularProgressIndicator(
-                    color: Colors.black,
+                    color: Color.fromRGBO(1, 167, 211, 1),
                   ),
                 ],
               ),
@@ -500,24 +663,11 @@ class _userProfileUserState extends State<userProfileUser> {
     );
   }
 
-  Future<bool> _onBack(BuildContext context, bool FromAdminPostulation,
-      bool FromAdminExplore) async {
-    if (FromAdminPostulation) {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return AdminPostulations(widget.loggedUser);
-      }));
-    } else if (FromAdminExplore) {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return ExplorePageAdmin(widget.loggedUser);
-      }));
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return ExplorePageUser(widget.loggedUser);
-      }));
-    }
+  Future<bool> _onBack(BuildContext context) async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+      return ExplorePageAdmin(widget.loggedUser);
+    }));
     return true;
   }
 }

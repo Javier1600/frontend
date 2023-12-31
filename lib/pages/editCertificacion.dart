@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:intl/intl.dart';
@@ -10,8 +11,12 @@ import 'package:flutter/material.dart';
 
 class EditCertification extends StatefulWidget {
   Certification certification;
-  User user;
-  EditCertification(this.user, this.certification, {super.key});
+  User loggeddUser;
+  User reqUser;
+  bool fromAdmin;
+  EditCertification(
+      this.loggeddUser, this.reqUser, this.certification, this.fromAdmin,
+      {super.key});
 
   @override
   State<EditCertification> createState() => _EditCertificacionState();
@@ -38,7 +43,7 @@ class _EditCertificacionState extends State<EditCertification> {
 
   @override
   void initState() {
-    certs = getUserCertifications(widget.user.id);
+    certs = getUserCertifications(widget.reqUser.id);
     titulo = widget.certification.titulo;
     url = widget.certification.url;
     fechaExpedicion = FormatoFecha(widget.certification.fechaExpedicion);
@@ -77,10 +82,17 @@ class _EditCertificacionState extends State<EditCertification> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
-                  }));
+                  if (widget.fromAdmin) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.loggeddUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfile(widget.reqUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -244,7 +256,7 @@ class _EditCertificacionState extends State<EditCertification> {
                                           id: widget.certification.id,
                                           titulo: titulo,
                                           url: url,
-                                          idUsuario: widget.user.id,
+                                          idUsuario: widget.reqUser.id,
                                           fechaExpedicion:
                                               DateFormat("dd-MM-yyyy")
                                                   .parse(fechaExpedicion),

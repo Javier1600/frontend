@@ -5,14 +5,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/classes/workExperience.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editWorkExperience.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/workExperiences.dart';
 
 class EditDeleteWorkExperience extends StatefulWidget {
-  User user;
+  User loggedUser;
+  User reqUser;
+  bool fromAdmin;
   List<WorkExperience>? wEList;
-  EditDeleteWorkExperience(this.wEList, this.user, {super.key});
+  EditDeleteWorkExperience(
+      this.wEList, this.loggedUser, this.reqUser, this.fromAdmin,
+      {super.key});
 
   @override
   State<EditDeleteWorkExperience> createState() =>
@@ -103,7 +108,8 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
               ]),
             ),
             Column(
-              children: Experiences(widget.wEList, context, widget.user),
+              children: Experiences(widget.wEList, context, widget.reqUser,
+                  widget.loggedUser, widget.fromAdmin),
             )
           ]),
         ),
@@ -112,8 +118,8 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
   }
 }
 
-List<Widget> Experiences(
-    List<WorkExperience>? wExp, BuildContext context, User user) {
+List<Widget> Experiences(List<WorkExperience>? wExp, BuildContext context,
+    User reqUser, User loggedUser, bool fromAdmin) {
   List<Widget> wERet = [];
   if (wExp != null) {
     for (WorkExperience exp in wExp) {
@@ -152,7 +158,8 @@ List<Widget> Experiences(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditWorkExperience(user, exp);
+                        return EditWorkExperience(
+                            loggedUser, reqUser, exp, fromAdmin);
                       }));
                     },
                   ),
@@ -206,13 +213,28 @@ List<Widget> Experiences(
                                                   deleteWorkExp(exp);
                                                   Timer(Duration(seconds: 2),
                                                       () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<void>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return userProfile(user);
-                                                    }));
+                                                    if (fromAdmin) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminUserData(
+                                                            loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return userProfile(
+                                                            reqUser);
+                                                      }));
+                                                    }
                                                   });
                                                 },
                                                 child: Text(

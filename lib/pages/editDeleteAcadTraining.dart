@@ -6,15 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editAcadTraining.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
 
 class EditDeleteAcadTraining extends StatefulWidget {
-  User user;
+  User reqUser;
+  User loggedUser;
   List<AcadTraining>? aTList;
   List<School>? sList;
-  EditDeleteAcadTraining(this.aTList, this.user, this.sList, {super.key});
+  bool fromAdminExplore;
+  EditDeleteAcadTraining(this.aTList, this.loggedUser, this.reqUser, this.sList,
+      this.fromAdminExplore,
+      {super.key});
 
   @override
   State<EditDeleteAcadTraining> createState() => _EditDeleteAcadTrainingState();
@@ -114,8 +119,8 @@ class _EditDeleteAcadTrainingState extends State<EditDeleteAcadTraining> {
               ]),
             ),
             Column(
-              children: AcadTrainings(
-                  widget.aTList, context, widget.user, widget.sList),
+              children: AcadTrainings(widget.aTList, context, widget.reqUser,
+                  widget.loggedUser, widget.sList, widget.fromAdminExplore),
             )
           ]),
         ),
@@ -124,8 +129,13 @@ class _EditDeleteAcadTrainingState extends State<EditDeleteAcadTraining> {
   }
 }
 
-List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
-    BuildContext context, User user, List<School>? lista) {
+List<Widget> AcadTrainings(
+    List<AcadTraining>? acadTrainings,
+    BuildContext context,
+    User reqUser,
+    User loggedUser,
+    List<School>? lista,
+    bool fromAdminExplore) {
   List<Widget> aTRet = [];
   if (acadTrainings != null) {
     for (AcadTraining acadT in acadTrainings) {
@@ -164,7 +174,8 @@ List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditAcadTraining(user, acadT);
+                        return EditAcadTraining(
+                            loggedUser, reqUser, acadT, fromAdminExplore);
                       }));
                     },
                   ),
@@ -216,13 +227,28 @@ List<Widget> AcadTrainings(List<AcadTraining>? acadTrainings,
                                                   deleteAcadTraining(acadT);
                                                   Timer(Duration(seconds: 2),
                                                       () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<void>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return userProfile(user);
-                                                    }));
+                                                    if (fromAdminExplore) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminUserData(
+                                                            loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return userProfile(
+                                                            reqUser);
+                                                      }));
+                                                    }
                                                   });
                                                 },
                                                 child: Text(

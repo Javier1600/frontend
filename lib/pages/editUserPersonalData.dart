@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names, must_be_immutable, prefer_void_to_null
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -10,8 +11,11 @@ import 'package:frontend/classes/users.dart';
 import 'package:frontend/services/user.services.dart';
 
 class EditUserPersonalData extends StatefulWidget {
+  User loggedUser;
   User reqUser;
-  EditUserPersonalData(this.reqUser, {super.key});
+  bool fromAdminUser;
+  EditUserPersonalData(this.loggedUser, this.reqUser, this.fromAdminUser,
+      {super.key});
 
   @override
   State<EditUserPersonalData> createState() => EditUserPersonalDataState();
@@ -102,10 +106,17 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<Null>(builder: (BuildContext context) {
-                    return userProfile(editedUser);
-                  }));
+                  if (widget.fromAdminUser) {
+                    Navigator.of(context).push(MaterialPageRoute<Null>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.reqUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<Null>(
+                        builder: (BuildContext context) {
+                      return userProfile(editedUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }

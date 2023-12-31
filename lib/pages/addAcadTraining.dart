@@ -3,6 +3,7 @@
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:intl/intl.dart';
@@ -10,9 +11,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 class AddAcadTraining extends StatefulWidget {
-  User user;
+  User loggedUser;
+  User reqUser;
   School school;
-  AddAcadTraining(this.user, this.school, {super.key});
+  bool fromAdmin;
+  AddAcadTraining(this.loggedUser, this.reqUser, this.school, this.fromAdmin,
+      {super.key});
 
   @override
   State<AddAcadTraining> createState() => _AddAcadTrainingState();
@@ -39,7 +43,7 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
 
   @override
   void initState() {
-    acadTrainings = getUserAcadTraining(widget.user.id);
+    acadTrainings = getUserAcadTraining(widget.reqUser.id);
     print(widget.school.nombreInstitucion);
     super.initState();
   }
@@ -61,10 +65,17 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
-                  }));
+                  if (widget.fromAdmin) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfile(widget.reqUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -253,7 +264,7 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
                                                       widget.school.id,
                                                   tituloObtenido:
                                                       tituloObtenido,
-                                                  idUsuario: widget.user.id,
+                                                  idUsuario: widget.reqUser.id,
                                                   fechaInicio:
                                                       DateFormat("dd-MM-yyyy")
                                                           .parse(fechaInicio),
@@ -337,7 +348,7 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
   Future<bool> _onBack(BuildContext context) async {
     await Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return userProfile(widget.user);
+      return userProfile(widget.reqUser);
     }));
     return true;
   }

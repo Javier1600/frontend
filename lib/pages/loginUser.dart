@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/pages/homePageAdmin.dart';
 import 'package:frontend/pages/homePageCompany.dart';
 
 import 'package:frontend/pages/homePageUser.dart';
@@ -451,7 +452,7 @@ class _loginPageState extends State<loginPage> {
                                                                         builder:
                                                                             (BuildContext
                                                                                 context) {
-                                                                  return homePageUser(
+                                                                  return homePageAdmin(
                                                                       authUser);
                                                                 }));
                                                                 break;

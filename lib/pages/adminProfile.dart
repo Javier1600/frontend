@@ -1,9 +1,18 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/addCertificacion.dart';
+import 'package:frontend/pages/addWorkExperience.dart';
 import 'package:frontend/pages/adminPostulations.dart';
+import 'package:frontend/pages/editDeleteAcadTraining.dart';
+import 'package:frontend/pages/editDeleteCertification.dart';
+import 'package:frontend/pages/editDeleteWorkExperience.dart';
+import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
-import 'package:frontend/pages/explorePageUser.dart';
+import 'package:frontend/pages/homePageAdmin.dart';
+import 'package:frontend/pages/loginUser.dart';
+import 'package:frontend/pages/registeredSchools.dart';
+import 'package:frontend/pages/viewJobsUser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -16,18 +25,13 @@ import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:frontend/services/schools.services.dart';
 
-class userProfileUser extends StatefulWidget {
+class AdminProfile extends StatefulWidget {
   //Variables para construir el drawer y el perfil
   User loggedUser;
-  User reqUser;
-  bool FromAdminPostulation;
-  bool FromAdminExplore;
-  userProfileUser(this.loggedUser, this.reqUser, this.FromAdminPostulation,
-      this.FromAdminExplore,
-      {super.key});
+  AdminProfile(this.loggedUser, {super.key});
 
   @override
-  State<userProfileUser> createState() => _userProfileUserState();
+  State<AdminProfile> createState() => _AdminProfileState();
 }
 
 int CalcularEdad(fechaNacimiento) {
@@ -68,7 +72,7 @@ String FormatoFecha(DateTime fecha) {
   }
 }
 
-class _userProfileUserState extends State<userProfileUser> {
+class _AdminProfileState extends State<AdminProfile> {
   //variable que contiene la formacion academica del usuario
   late Future<List<AcadTraining>> acadTraining;
   late List<AcadTraining>? aTList = [];
@@ -83,23 +87,219 @@ class _userProfileUserState extends State<userProfileUser> {
   late List<WorkExperience>? wEList = [];
   @override
   void initState() {
-    acadTraining = getUserAcadTraining(widget.reqUser.id);
-    certifications = getUserCertifications(widget.reqUser.id);
+    acadTraining = getUserAcadTraining(widget.loggedUser.id);
+    certifications = getUserCertifications(widget.loggedUser.id);
     schools = getAllSchools();
-    workExp = getUserWorkExperiences(widget.reqUser.id);
+    workExp = getUserWorkExperiences(widget.loggedUser.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onBack(
-          context, widget.FromAdminPostulation, widget.FromAdminExplore),
+      onWillPop: () => _onBack(context),
       child: Scaffold(
+        drawer: Drawer(
+          width: MediaQuery.of(context).size.width * 0.75,
+          child: Container(
+            color: Colors.white,
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.only(top: 30),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black, width: 4.0)),
+                width: 200,
+                height: 200,
+                child: const ClipOval(
+                    child: Image(
+                  image: AssetImage('assets/img/hombre.png'),
+                  fit: BoxFit.contain,
+                )),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return homePageAdmin(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Inicio",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return UserJobsView(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Empleos",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return AdminPostulations(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Postulaciones",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return ExplorePageAdmin(widget.loggedUser);
+                              }));
+                            },
+                            child: Text(
+                              "Explorar",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 1,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromRGBO(1, 167, 211, 1)),
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(200, 70)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(0)))),
+                            onPressed: () {
+                              _onCloseSession(context);
+                            },
+                            child: Text(
+                              "Cerrar sesión",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                      ),
+                    ]),
+              )
+            ]),
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(1, 167, 211, 1),
           title: const Text(
-            'Usuario',
+            'Mi perfil',
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -178,6 +378,33 @@ class _userProfileUserState extends State<userProfileUser> {
                                               ),
                                             ),
                                             Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.edit_square,
+                                                      color: Colors.black38,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  Null>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return EditUserPersonalData(
+                                                            widget.loggedUser,
+                                                            widget.loggedUser,
+                                                            false);
+                                                      }));
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
                                               alignment: Alignment.topLeft,
                                               child: Text(
                                                 'Nombre: ',
@@ -192,7 +419,7 @@ class _userProfileUserState extends State<userProfileUser> {
                                             Container(
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                  '${widget.reqUser.nombre} ${widget.reqUser.apellido}',
+                                                  '${widget.loggedUser.nombre} ${widget.loggedUser.apellido}',
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
@@ -215,8 +442,8 @@ class _userProfileUserState extends State<userProfileUser> {
                                             Container(
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                  FormatoFecha(widget
-                                                      .reqUser.fechaNacimiento),
+                                                  FormatoFecha(widget.loggedUser
+                                                      .fechaNacimiento),
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
@@ -237,7 +464,7 @@ class _userProfileUserState extends State<userProfileUser> {
                                                           FontWeight.w700),
                                                 ),
                                                 Text(
-                                                  '${CalcularEdad(widget.reqUser.fechaNacimiento)} años',
+                                                  '${CalcularEdad(widget.loggedUser.fechaNacimiento)} años',
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
@@ -260,7 +487,7 @@ class _userProfileUserState extends State<userProfileUser> {
                                                           FontWeight.w700),
                                                 ),
                                                 Text(
-                                                  '${widget.reqUser.sexo}',
+                                                  '${widget.loggedUser.sexo}',
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
@@ -283,7 +510,7 @@ class _userProfileUserState extends State<userProfileUser> {
                                                           FontWeight.w700),
                                                 ),
                                                 Text(
-                                                  '${widget.reqUser.telefono}',
+                                                  '${widget.loggedUser.telefono}',
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 1),
@@ -325,7 +552,53 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteAcadTraining(
+                                                          aTList,
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          sList,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return RegisteredSchools(
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: FormacionAcademica(
                                                 aTList, sList),
@@ -360,7 +633,52 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteCertification(
+                                                          certList,
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return AddCertification(
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: Certificaciones(certList),
                                           )
@@ -396,7 +714,52 @@ class _userProfileUserState extends State<userProfileUser> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                           ),
-                                          Row(),
+                                          Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return EditDeleteWorkExperience(
+                                                          wEList,
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .add_to_photos_outlined,
+                                                    color: Colors.black38,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<Null>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return AddWorkExperience(
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
+                                                    }));
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Column(
                                             children: ExpLaboral(wEList),
                                           ),
@@ -415,13 +778,13 @@ class _userProfileUserState extends State<userProfileUser> {
                                     Text(
                                       "Obteniendo datos",
                                       style: TextStyle(
-                                          color: Colors.black,
+                                          color: Color.fromRGBO(1, 167, 211, 1),
                                           fontSize: 17,
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Padding(padding: EdgeInsets.all(8)),
                                     CircularProgressIndicator(
-                                      color: Colors.black,
+                                      color: Color.fromRGBO(1, 167, 211, 1),
                                     ),
                                   ],
                                 ),
@@ -438,13 +801,13 @@ class _userProfileUserState extends State<userProfileUser> {
                               Text(
                                 "Obteniendo datos",
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: Color.fromRGBO(1, 167, 211, 1),
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700),
                               ),
                               Padding(padding: EdgeInsets.all(8)),
                               CircularProgressIndicator(
-                                color: Colors.black,
+                                color: Color.fromRGBO(1, 167, 211, 1),
                               ),
                             ],
                           ),
@@ -461,13 +824,13 @@ class _userProfileUserState extends State<userProfileUser> {
                         Text(
                           "Obteniendo datos",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Color.fromRGBO(1, 167, 211, 1),
                               fontSize: 17,
                               fontWeight: FontWeight.w700),
                         ),
                         Padding(padding: EdgeInsets.all(8)),
                         CircularProgressIndicator(
-                          color: Colors.black,
+                          color: Color.fromRGBO(1, 167, 211, 1),
                         ),
                       ],
                     ),
@@ -484,12 +847,12 @@ class _userProfileUserState extends State<userProfileUser> {
                   Text(
                     "Obteniendo datos",
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Color.fromRGBO(1, 167, 211, 1),
                         fontSize: 17,
                         fontWeight: FontWeight.w700),
                   ),
                   CircularProgressIndicator(
-                    color: Colors.black,
+                    color: Color.fromRGBO(1, 167, 211, 1),
                   ),
                 ],
               ),
@@ -500,25 +863,65 @@ class _userProfileUserState extends State<userProfileUser> {
     );
   }
 
-  Future<bool> _onBack(BuildContext context, bool FromAdminPostulation,
-      bool FromAdminExplore) async {
-    if (FromAdminPostulation) {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return AdminPostulations(widget.loggedUser);
-      }));
-    } else if (FromAdminExplore) {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return ExplorePageAdmin(widget.loggedUser);
-      }));
-    } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return ExplorePageUser(widget.loggedUser);
-      }));
-    }
+  Future<bool> _onBack(BuildContext context) async {
+    Navigator.of(context)
+        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+      return homePageAdmin(widget.loggedUser);
+    }));
+
     return true;
+  }
+
+  _onCloseSession(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("¿Está  seguro de cerrar sesión?",
+                style: TextStyle(
+                    color: Color.fromRGBO(226, 144, 32, 1),
+                    fontWeight: FontWeight.w700)),
+            backgroundColor: Colors.white70,
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                        return loginPage();
+                      }));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white60),
+                    child: Text(
+                      'Sí',
+                      style: TextStyle(
+                          color: Color.fromRGBO(1, 167, 211, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white60),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                          color: Color.fromRGBO(1, 167, 211, 1),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
 

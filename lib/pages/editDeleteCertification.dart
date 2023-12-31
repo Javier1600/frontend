@@ -5,15 +5,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editCertificacion.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditDeleteCertification extends StatefulWidget {
-  User user;
+  User loggedUser;
+  User reqUser;
+  bool fromAdmin;
   List<Certification>? cList;
-  EditDeleteCertification(this.cList, this.user, {super.key});
+  EditDeleteCertification(
+      this.cList, this.loggedUser, this.reqUser, this.fromAdmin,
+      {super.key});
 
   @override
   State<EditDeleteCertification> createState() =>
@@ -104,7 +109,8 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
               ]),
             ),
             Column(
-              children: Certificaciones(widget.cList, context, widget.user),
+              children: Certificaciones(widget.cList, context, widget.reqUser,
+                  widget.loggedUser, widget.fromAdmin),
             )
           ]),
         ),
@@ -113,8 +119,8 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
   }
 }
 
-List<Widget> Certificaciones(
-    List<Certification>? cert, BuildContext context, User user) {
+List<Widget> Certificaciones(List<Certification>? cert, BuildContext context,
+    User reqUser, User loggedUser, bool fromAdmin) {
   List<Widget> cRet = [];
   if (cert != null) {
     for (Certification certificacion in cert) {
@@ -153,7 +159,8 @@ List<Widget> Certificaciones(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditCertification(user, certificacion);
+                        return EditCertification(
+                            loggedUser, reqUser, certificacion, fromAdmin);
                       }));
                     },
                   ),
@@ -206,13 +213,28 @@ List<Widget> Certificaciones(
                                                       certificacion);
                                                   Timer(Duration(seconds: 2),
                                                       () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<void>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return userProfile(user);
-                                                    }));
+                                                    if (fromAdmin) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminUserData(
+                                                            loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return userProfile(
+                                                            reqUser);
+                                                      }));
+                                                    }
                                                   });
                                                 },
                                                 child: Text(

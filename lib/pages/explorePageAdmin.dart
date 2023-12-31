@@ -3,24 +3,24 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminPostulations.dart';
+import 'package:frontend/pages/adminProfile.dart';
+import 'package:frontend/pages/adminUserData.dart';
+import 'package:frontend/pages/homePageAdmin.dart';
 import 'package:frontend/pages/uExploreCompanyProfile.dart';
-import 'package:frontend/pages/homePageUser.dart';
 import 'package:frontend/pages/loginUser.dart';
-import 'package:frontend/pages/userPostulations.dart';
-import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/pages/userProfileUser.dart';
-import 'package:frontend/pages/viewJobsUser.dart';
 import 'package:frontend/services/company.services.dart';
 import 'package:frontend/services/user.services.dart';
 
-class ExplorePageUser extends StatefulWidget {
+class ExplorePageAdmin extends StatefulWidget {
   User loggedUser;
-  ExplorePageUser(this.loggedUser, {super.key});
+  ExplorePageAdmin(this.loggedUser, {super.key});
   @override
-  State<ExplorePageUser> createState() => _ExplorePageUserState();
+  State<ExplorePageAdmin> createState() => _ExplorePageAdminState();
 }
 
-class _ExplorePageUserState extends State<ExplorePageUser> {
+class _ExplorePageAdminState extends State<ExplorePageAdmin> {
   //variable que contiene todos los usuarios de la base
   late Future<List<User>> users;
   late List<User>? uList = [];
@@ -88,7 +88,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return homePageUser(widget.loggedUser);
+                                return homePageAdmin(widget.loggedUser);
                               }));
                             },
                             child: Text(
@@ -124,7 +124,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return userProfile(widget.loggedUser);
+                                return AdminProfile(widget.loggedUser);
                               }));
                             },
                             child: Text(
@@ -160,7 +160,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return UserJobsView(widget.loggedUser);
+                                return AdminPostulations(widget.loggedUser);
                               }));
                             },
                             child: Text(
@@ -196,7 +196,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
                               Navigator.of(context).push(
                                   MaterialPageRoute<Null>(
                                       builder: (BuildContext context) {
-                                return UserPostulations(widget.loggedUser);
+                                return AdminPostulations(widget.loggedUser);
                               }));
                             },
                             child: Text(
@@ -359,7 +359,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
   Future<bool> _onBack(BuildContext context) async {
     await Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return homePageUser(widget.loggedUser);
+      return homePageAdmin(widget.loggedUser);
     }));
     return true;
   }
@@ -459,18 +459,49 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                   fontSize: 20,
                   fontWeight: FontWeight.w400),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.remove_red_eye_outlined,
-                color: Colors.black,
-                size: 30,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute<void>(builder: (BuildContext context) {
-                  return userProfileUser(loggedUser, u, false, false);
-                }));
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.remove_red_eye_outlined,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfileUser(loggedUser, u, false, true);
+                    }));
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.edit_square,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(loggedUser, u);
+                    }));
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfileUser(loggedUser, u, false, true);
+                    }));
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -517,18 +548,36 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
             style: TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),
           ),
-          IconButton(
-            icon: Icon(
-              Icons.remove_red_eye_outlined,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (BuildContext context) {
-                return UserExploreCompanyProfile(loggedUser, c);
-              }));
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.remove_red_eye_outlined,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (BuildContext context) {
+                    return UserExploreCompanyProfile(loggedUser, c);
+                  }));
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.edit_square,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (BuildContext context) {
+                    return UserExploreCompanyProfile(loggedUser, c);
+                  }));
+                },
+              ),
+            ],
           ),
         ],
       ),

@@ -10,9 +10,11 @@ import 'package:frontend/pages/addSchool.dart';
 import 'package:frontend/services/schools.services.dart';
 
 class RegisteredSchools extends StatefulWidget {
-  User user;
-
-  RegisteredSchools(this.user, {super.key});
+  User loggedUser;
+  User reqUser;
+  bool fromAdminExplore;
+  RegisteredSchools(this.loggedUser, this.reqUser, this.fromAdminExplore,
+      {super.key});
 
   @override
   State<RegisteredSchools> createState() => _ResgisteredSchoolsState();
@@ -91,7 +93,8 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
-                      return AddSchool(widget.user);
+                      return AddSchool(widget.loggedUser, widget.reqUser,
+                          widget.fromAdminExplore);
                     }));
                   },
                   child: Text(
@@ -119,7 +122,12 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
                               padding: EdgeInsets.all(10),
                               child: Container(
                                   child: Column(
-                                children: Schools(sList, context, widget.user),
+                                children: Schools(
+                                    sList,
+                                    context,
+                                    widget.reqUser,
+                                    widget.loggedUser,
+                                    widget.fromAdminExplore),
                               )))));
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
@@ -151,7 +159,8 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
   }
 }
 
-List<Widget> Schools(List<School>? schools, BuildContext context, User user) {
+List<Widget> Schools(List<School>? schools, BuildContext context, User reqUser,
+    User loggedUser, bool fromAdmin) {
   List<Widget> cRet = [];
   if (schools != null) {
     for (School school in schools) {
@@ -194,7 +203,8 @@ List<Widget> Schools(List<School>? schools, BuildContext context, User user) {
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return AddAcadTraining(user, school);
+                    return AddAcadTraining(
+                        loggedUser, reqUser, school, fromAdmin);
                   }));
                 },
                 child: Text(

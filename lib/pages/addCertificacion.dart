@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/certifications.services.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +10,10 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 class AddCertification extends StatefulWidget {
-  User user;
-  AddCertification(this.user, {super.key});
+  User loggedUser;
+  User reqUser;
+  bool fromAdmin;
+  AddCertification(this.loggedUser, this.reqUser, this.fromAdmin, {super.key});
 
   @override
   State<AddCertification> createState() => _AddCertificacionState();
@@ -37,7 +40,7 @@ class _AddCertificacionState extends State<AddCertification> {
 
   @override
   void initState() {
-    certs = getUserCertifications(widget.user.id);
+    certs = getUserCertifications(widget.reqUser.id);
     super.initState();
   }
 
@@ -58,10 +61,17 @@ class _AddCertificacionState extends State<AddCertification> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
-                  }));
+                  if (widget.fromAdmin) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfile(widget.reqUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -236,7 +246,7 @@ class _AddCertificacionState extends State<AddCertification> {
                                               id: '0',
                                               titulo: titulo,
                                               url: url,
-                                              idUsuario: widget.user.id,
+                                              idUsuario: widget.reqUser.id,
                                               fechaExpedicion:
                                                   DateFormat("dd-MM-yyyy")
                                                       .parse(fechaExpedicion),
@@ -319,7 +329,7 @@ class _AddCertificacionState extends State<AddCertification> {
   Future<bool> _onBack(BuildContext context) async {
     await Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return userProfile(widget.user);
+      return userProfile(widget.reqUser);
     }));
     return true;
   }

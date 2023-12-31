@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
 import 'package:intl/intl.dart';
@@ -9,9 +10,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 class EditAcadTraining extends StatefulWidget {
-  User user;
+  User loggedUser;
+  User reqUser;
   AcadTraining acadTraining;
-  EditAcadTraining(this.user, this.acadTraining, {super.key});
+  bool fromAdminExplore;
+  EditAcadTraining(
+      this.loggedUser, this.reqUser, this.acadTraining, this.fromAdminExplore,
+      {super.key});
 
   @override
   State<EditAcadTraining> createState() => _EditAcadTrainingState();
@@ -38,7 +43,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
 
   @override
   void initState() {
-    acadTrainings = getUserAcadTraining(widget.user.id);
+    acadTrainings = getUserAcadTraining(widget.reqUser.id);
     tituloObtenido = widget.acadTraining.tituloObtenido;
     fechaInicio = FormatoFecha(widget.acadTraining.fechaInicio);
     fechaFin = FormatoFecha(widget.acadTraining.fechaFin);
@@ -78,10 +83,17 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
-                  }));
+                  if (widget.fromAdminExplore) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfile(widget.reqUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -249,7 +261,7 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                                               idInstitucion: widget
                                                   .acadTraining.idInstitucion,
                                               tituloObtenido: tituloObtenido,
-                                              idUsuario: widget.user.id,
+                                              idUsuario: widget.reqUser.id,
                                               fechaInicio:
                                                   DateFormat("dd-MM-yyyy")
                                                       .parse(fechaInicio),

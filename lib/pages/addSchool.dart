@@ -7,8 +7,10 @@ import 'package:frontend/services/schools.services.dart';
 import 'package:flutter/material.dart';
 
 class AddSchool extends StatefulWidget {
-  User user;
-  AddSchool(this.user, {super.key});
+  User loggedUser;
+  User reqUser;
+  bool fromAdminExplore;
+  AddSchool(this.loggedUser, this.reqUser, this.fromAdminExplore, {super.key});
 
   @override
   State<AddSchool> createState() => _AddSchoolState();
@@ -51,7 +53,8 @@ class _AddSchoolState extends State<AddSchool> {
                 if (navigate) {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return RegisteredSchools(widget.user);
+                    return RegisteredSchools(widget.loggedUser, widget.reqUser,
+                        widget.fromAdminExplore);
                   }));
                 } else {
                   Navigator.of(context).pop();

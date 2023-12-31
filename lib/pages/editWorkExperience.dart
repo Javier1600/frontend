@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/classes/workExperience.dart';
+import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/workExperiences.dart';
 import 'package:intl/intl.dart';
@@ -9,9 +10,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 class EditWorkExperience extends StatefulWidget {
-  User user;
+  User loggedUser;
+  User reqUser;
   WorkExperience wExp;
-  EditWorkExperience(this.user, this.wExp, {super.key});
+  bool fromAdmin;
+  EditWorkExperience(this.loggedUser, this.reqUser, this.wExp, this.fromAdmin,
+      {super.key});
 
   @override
   State<EditWorkExperience> createState() => _EditWorkExperienceState();
@@ -41,7 +45,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
 
   @override
   void initState() {
-    wExperiences = getUserWorkExperiences(widget.user.id);
+    wExperiences = getUserWorkExperiences(widget.reqUser.id);
     puesto = widget.wExp.puesto;
     ambitoLaboral = widget.wExp.ambitoLaboral;
     empresa = widget.wExp.empresa;
@@ -83,10 +87,17 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
-                  }));
+                  if (widget.fromAdmin) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return userProfile(widget.reqUser);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -309,7 +320,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                                               .parse(fechaInicio),
                                           fechaFin: DateFormat("dd-MM-yyyy")
                                               .parse(fechaFin),
-                                          idUsuario: widget.user.id,
+                                          idUsuario: widget.reqUser.id,
                                           v: 0);
                                       editWorkExp(newWExp);
                                       EditAlert(

@@ -358,7 +358,9 @@ class _userProfileState extends State<userProfile> {
                                                                   (BuildContext
                                                                       context) {
                                                         return EditUserPersonalData(
-                                                            widget.loggedUser);
+                                                            widget.loggedUser,
+                                                            widget.loggedUser,
+                                                            false);
                                                       }));
                                                     },
                                                   ),
@@ -532,7 +534,9 @@ class _userProfileState extends State<userProfile> {
                                                       return EditDeleteAcadTraining(
                                                           aTList,
                                                           widget.loggedUser,
-                                                          sList);
+                                                          widget.loggedUser,
+                                                          sList,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -549,7 +553,9 @@ class _userProfileState extends State<userProfile> {
                                                                 (BuildContext
                                                                     context) {
                                                       return RegisteredSchools(
-                                                          widget.loggedUser);
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -608,7 +614,9 @@ class _userProfileState extends State<userProfile> {
                                                                     context) {
                                                       return EditDeleteCertification(
                                                           certList,
-                                                          widget.loggedUser);
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -625,7 +633,9 @@ class _userProfileState extends State<userProfile> {
                                                                 (BuildContext
                                                                     context) {
                                                       return AddCertification(
-                                                          widget.loggedUser);
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -685,7 +695,9 @@ class _userProfileState extends State<userProfile> {
                                                                     context) {
                                                       return EditDeleteWorkExperience(
                                                           wEList,
-                                                          widget.loggedUser);
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -702,7 +714,9 @@ class _userProfileState extends State<userProfile> {
                                                                 (BuildContext
                                                                     context) {
                                                       return AddWorkExperience(
-                                                          widget.loggedUser);
+                                                          widget.loggedUser,
+                                                          widget.loggedUser,
+                                                          false);
                                                     }));
                                                   },
                                                 ),
@@ -813,10 +827,11 @@ class _userProfileState extends State<userProfile> {
   }
 
   Future<bool> _onBack(BuildContext context) async {
-    await Navigator.of(context)
+    Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
       return homePageUser(widget.loggedUser);
     }));
+
     return true;
   }
 
