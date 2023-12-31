@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editAcadTraining.dart';
 import 'package:frontend/pages/userProfile.dart';
@@ -17,8 +18,9 @@ class EditDeleteAcadTraining extends StatefulWidget {
   List<AcadTraining>? aTList;
   List<School>? sList;
   bool fromAdminExplore;
+  bool fromAdminProfile;
   EditDeleteAcadTraining(this.aTList, this.loggedUser, this.reqUser, this.sList,
-      this.fromAdminExplore,
+      this.fromAdminExplore, this.fromAdminProfile,
       {super.key});
 
   @override
@@ -119,8 +121,14 @@ class _EditDeleteAcadTrainingState extends State<EditDeleteAcadTraining> {
               ]),
             ),
             Column(
-              children: AcadTrainings(widget.aTList, context, widget.reqUser,
-                  widget.loggedUser, widget.sList, widget.fromAdminExplore),
+              children: AcadTrainings(
+                  widget.aTList,
+                  context,
+                  widget.reqUser,
+                  widget.loggedUser,
+                  widget.sList,
+                  widget.fromAdminExplore,
+                  widget.fromAdminProfile),
             )
           ]),
         ),
@@ -135,7 +143,8 @@ List<Widget> AcadTrainings(
     User reqUser,
     User loggedUser,
     List<School>? lista,
-    bool fromAdminExplore) {
+    bool fromAdminExplore,
+    bool fromAdminProfile) {
   List<Widget> aTRet = [];
   if (acadTrainings != null) {
     for (AcadTraining acadT in acadTrainings) {
@@ -174,8 +183,8 @@ List<Widget> AcadTrainings(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditAcadTraining(
-                            loggedUser, reqUser, acadT, fromAdminExplore);
+                        return EditAcadTraining(loggedUser, reqUser, acadT,
+                            fromAdminExplore, fromAdminProfile);
                       }));
                     },
                   ),
@@ -236,6 +245,16 @@ List<Widget> AcadTrainings(
                                                                       context) {
                                                         return AdminUserData(
                                                             loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else if (fromAdminProfile) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminProfile(
                                                             reqUser);
                                                       }));
                                                     } else {

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/classes/workExperience.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editWorkExperience.dart';
 import 'package:frontend/pages/userProfile.dart';
@@ -14,9 +15,10 @@ class EditDeleteWorkExperience extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdmin;
+  bool fromAdminProfile;
   List<WorkExperience>? wEList;
-  EditDeleteWorkExperience(
-      this.wEList, this.loggedUser, this.reqUser, this.fromAdmin,
+  EditDeleteWorkExperience(this.wEList, this.loggedUser, this.reqUser,
+      this.fromAdmin, this.fromAdminProfile,
       {super.key});
 
   @override
@@ -109,7 +111,7 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
             ),
             Column(
               children: Experiences(widget.wEList, context, widget.reqUser,
-                  widget.loggedUser, widget.fromAdmin),
+                  widget.loggedUser, widget.fromAdmin, widget.fromAdminProfile),
             )
           ]),
         ),
@@ -119,7 +121,7 @@ class _EditDeleteorkExperienceState extends State<EditDeleteWorkExperience> {
 }
 
 List<Widget> Experiences(List<WorkExperience>? wExp, BuildContext context,
-    User reqUser, User loggedUser, bool fromAdmin) {
+    User reqUser, User loggedUser, bool fromAdmin, bool fromAdminProfile) {
   List<Widget> wERet = [];
   if (wExp != null) {
     for (WorkExperience exp in wExp) {
@@ -158,8 +160,8 @@ List<Widget> Experiences(List<WorkExperience>? wExp, BuildContext context,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditWorkExperience(
-                            loggedUser, reqUser, exp, fromAdmin);
+                        return EditWorkExperience(loggedUser, reqUser, exp,
+                            fromAdmin, fromAdminProfile);
                       }));
                     },
                   ),
@@ -222,6 +224,16 @@ List<Widget> Experiences(List<WorkExperience>? wExp, BuildContext context,
                                                                       context) {
                                                         return AdminUserData(
                                                             loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else if (fromAdminProfile) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminProfile(
                                                             reqUser);
                                                       }));
                                                     } else {

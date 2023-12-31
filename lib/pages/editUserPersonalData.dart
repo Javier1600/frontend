@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names, must_be_immutable, prefer_void_to_null
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,9 @@ class EditUserPersonalData extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdminUser;
-  EditUserPersonalData(this.loggedUser, this.reqUser, this.fromAdminUser,
+  bool fromAdminProfile;
+  EditUserPersonalData(
+      this.loggedUser, this.reqUser, this.fromAdminUser, this.fromAdminProfile,
       {super.key});
 
   @override
@@ -110,6 +113,11 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
                       return AdminUserData(widget.reqUser, widget.reqUser);
+                    }));
+                  } else if (widget.fromAdminProfile) {
+                    Navigator.of(context).push(MaterialPageRoute<Null>(
+                        builder: (BuildContext context) {
+                      return AdminProfile(editedUser);
                     }));
                   } else {
                     Navigator.of(context).push(MaterialPageRoute<Null>(

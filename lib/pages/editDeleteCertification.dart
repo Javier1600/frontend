@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/editCertificacion.dart';
 import 'package:frontend/pages/userProfile.dart';
@@ -15,9 +16,10 @@ class EditDeleteCertification extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdmin;
+  bool fromAdminProfile;
   List<Certification>? cList;
-  EditDeleteCertification(
-      this.cList, this.loggedUser, this.reqUser, this.fromAdmin,
+  EditDeleteCertification(this.cList, this.loggedUser, this.reqUser,
+      this.fromAdmin, this.fromAdminProfile,
       {super.key});
 
   @override
@@ -110,7 +112,7 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
             ),
             Column(
               children: Certificaciones(widget.cList, context, widget.reqUser,
-                  widget.loggedUser, widget.fromAdmin),
+                  widget.loggedUser, widget.fromAdmin, widget.fromAdminProfile),
             )
           ]),
         ),
@@ -120,7 +122,7 @@ class _EditDeleteCertificationState extends State<EditDeleteCertification> {
 }
 
 List<Widget> Certificaciones(List<Certification>? cert, BuildContext context,
-    User reqUser, User loggedUser, bool fromAdmin) {
+    User reqUser, User loggedUser, bool fromAdmin, bool fromAdminProfile) {
   List<Widget> cRet = [];
   if (cert != null) {
     for (Certification certificacion in cert) {
@@ -159,8 +161,8 @@ List<Widget> Certificaciones(List<Certification>? cert, BuildContext context,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute<void>(
                           builder: (BuildContext context) {
-                        return EditCertification(
-                            loggedUser, reqUser, certificacion, fromAdmin);
+                        return EditCertification(loggedUser, reqUser,
+                            certificacion, fromAdmin, fromAdminProfile);
                       }));
                     },
                   ),
@@ -222,6 +224,16 @@ List<Widget> Certificaciones(List<Certification>? cert, BuildContext context,
                                                                       context) {
                                                         return AdminUserData(
                                                             loggedUser,
+                                                            reqUser);
+                                                      }));
+                                                    } else if (fromAdminProfile) {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return AdminProfile(
                                                             reqUser);
                                                       }));
                                                     } else {

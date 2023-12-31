@@ -10,7 +10,10 @@ class AddSchool extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdminExplore;
-  AddSchool(this.loggedUser, this.reqUser, this.fromAdminExplore, {super.key});
+  bool fromAdminProfile;
+  AddSchool(this.loggedUser, this.reqUser, this.fromAdminExplore,
+      this.fromAdminProfile,
+      {super.key});
 
   @override
   State<AddSchool> createState() => _AddSchoolState();
@@ -54,7 +57,7 @@ class _AddSchoolState extends State<AddSchool> {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
                     return RegisteredSchools(widget.loggedUser, widget.reqUser,
-                        widget.fromAdminExplore);
+                        widget.fromAdminExplore, widget.fromAdminProfile);
                   }));
                 } else {
                   Navigator.of(context).pop();

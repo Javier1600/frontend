@@ -13,7 +13,9 @@ class RegisteredSchools extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdminExplore;
+  bool fromAdminProfile;
   RegisteredSchools(this.loggedUser, this.reqUser, this.fromAdminExplore,
+      this.fromAdminProfile,
       {super.key});
 
   @override
@@ -94,7 +96,7 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
                       return AddSchool(widget.loggedUser, widget.reqUser,
-                          widget.fromAdminExplore);
+                          widget.fromAdminExplore, widget.fromAdminProfile);
                     }));
                   },
                   child: Text(
@@ -127,7 +129,8 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
                                     context,
                                     widget.reqUser,
                                     widget.loggedUser,
-                                    widget.fromAdminExplore),
+                                    widget.fromAdminExplore,
+                                    widget.fromAdminProfile),
                               )))));
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
@@ -160,7 +163,7 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
 }
 
 List<Widget> Schools(List<School>? schools, BuildContext context, User reqUser,
-    User loggedUser, bool fromAdmin) {
+    User loggedUser, bool fromAdmin, bool fromAdminProfile) {
   List<Widget> cRet = [];
   if (schools != null) {
     for (School school in schools) {
@@ -203,8 +206,8 @@ List<Widget> Schools(List<School>? schools, BuildContext context, User reqUser,
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return AddAcadTraining(
-                        loggedUser, reqUser, school, fromAdmin);
+                    return AddAcadTraining(loggedUser, reqUser, school,
+                        fromAdmin, fromAdminProfile);
                   }));
                 },
                 child: Text(

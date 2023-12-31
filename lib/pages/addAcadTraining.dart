@@ -3,6 +3,7 @@
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
@@ -15,7 +16,9 @@ class AddAcadTraining extends StatefulWidget {
   User reqUser;
   School school;
   bool fromAdmin;
+  bool fromAdminProfile;
   AddAcadTraining(this.loggedUser, this.reqUser, this.school, this.fromAdmin,
+      this.fromAdminProfile,
       {super.key});
 
   @override
@@ -69,6 +72,11 @@ class _AddAcadTrainingState extends State<AddAcadTraining> {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) {
                       return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else if (widget.fromAdminProfile) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminProfile(widget.reqUser);
                     }));
                   } else {
                     Navigator.of(context).push(MaterialPageRoute<void>(

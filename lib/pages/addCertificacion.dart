@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/certifications.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/certifications.services.dart';
@@ -13,7 +14,10 @@ class AddCertification extends StatefulWidget {
   User loggedUser;
   User reqUser;
   bool fromAdmin;
-  AddCertification(this.loggedUser, this.reqUser, this.fromAdmin, {super.key});
+  bool fromAdminProfile;
+  AddCertification(
+      this.loggedUser, this.reqUser, this.fromAdmin, this.fromAdminProfile,
+      {super.key});
 
   @override
   State<AddCertification> createState() => _AddCertificacionState();
@@ -65,6 +69,11 @@ class _AddCertificacionState extends State<AddCertification> {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) {
                       return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else if (widget.fromAdminProfile) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminProfile(widget.reqUser);
                     }));
                   } else {
                     Navigator.of(context).push(MaterialPageRoute<void>(

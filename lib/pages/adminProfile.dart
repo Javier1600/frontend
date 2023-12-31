@@ -397,7 +397,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                         return EditUserPersonalData(
                                                             widget.loggedUser,
                                                             widget.loggedUser,
-                                                            false);
+                                                            false,
+                                                            true);
                                                       }));
                                                     },
                                                   ),
@@ -573,7 +574,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                           widget.loggedUser,
                                                           widget.loggedUser,
                                                           sList,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),
@@ -592,7 +594,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                       return RegisteredSchools(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),
@@ -653,7 +656,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                           certList,
                                                           widget.loggedUser,
                                                           widget.loggedUser,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),
@@ -672,7 +676,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                       return AddCertification(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),
@@ -734,7 +739,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                           wEList,
                                                           widget.loggedUser,
                                                           widget.loggedUser,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),
@@ -753,7 +759,8 @@ class _AdminProfileState extends State<AdminProfile> {
                                                       return AddWorkExperience(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
-                                                          false);
+                                                          false,
+                                                          true);
                                                     }));
                                                   },
                                                 ),

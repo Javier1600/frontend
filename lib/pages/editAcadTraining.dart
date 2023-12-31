@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/acadTrainings.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
 import 'package:frontend/pages/userProfile.dart';
 import 'package:frontend/services/acadTrainings.services.dart';
@@ -14,8 +15,9 @@ class EditAcadTraining extends StatefulWidget {
   User reqUser;
   AcadTraining acadTraining;
   bool fromAdminExplore;
-  EditAcadTraining(
-      this.loggedUser, this.reqUser, this.acadTraining, this.fromAdminExplore,
+  bool fromAdminProfile;
+  EditAcadTraining(this.loggedUser, this.reqUser, this.acadTraining,
+      this.fromAdminExplore, this.fromAdminProfile,
       {super.key});
 
   @override
@@ -87,6 +89,11 @@ class _EditAcadTrainingState extends State<EditAcadTraining> {
                     Navigator.of(context).push(MaterialPageRoute<void>(
                         builder: (BuildContext context) {
                       return AdminUserData(widget.loggedUser, widget.reqUser);
+                    }));
+                  } else if (widget.fromAdminProfile) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminProfile(widget.reqUser);
                     }));
                   } else {
                     Navigator.of(context).push(MaterialPageRoute<void>(

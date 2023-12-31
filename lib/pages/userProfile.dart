@@ -360,6 +360,7 @@ class _userProfileState extends State<userProfile> {
                                                         return EditUserPersonalData(
                                                             widget.loggedUser,
                                                             widget.loggedUser,
+                                                            false,
                                                             false);
                                                       }));
                                                     },
@@ -536,6 +537,7 @@ class _userProfileState extends State<userProfile> {
                                                           widget.loggedUser,
                                                           widget.loggedUser,
                                                           sList,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
@@ -555,6 +557,7 @@ class _userProfileState extends State<userProfile> {
                                                       return RegisteredSchools(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
@@ -616,6 +619,7 @@ class _userProfileState extends State<userProfile> {
                                                           certList,
                                                           widget.loggedUser,
                                                           widget.loggedUser,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
@@ -635,6 +639,7 @@ class _userProfileState extends State<userProfile> {
                                                       return AddCertification(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
@@ -697,6 +702,7 @@ class _userProfileState extends State<userProfile> {
                                                           wEList,
                                                           widget.loggedUser,
                                                           widget.loggedUser,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
@@ -716,6 +722,7 @@ class _userProfileState extends State<userProfile> {
                                                       return AddWorkExperience(
                                                           widget.loggedUser,
                                                           widget.loggedUser,
+                                                          false,
                                                           false);
                                                     }));
                                                   },
