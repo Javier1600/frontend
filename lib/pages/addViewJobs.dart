@@ -418,93 +418,82 @@ List<Widget> Jobs(List<Job>? jobs, BuildContext context, Company company) {
                                       fontSize: 18)),
                               backgroundColor: Colors.white70,
                               actions: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text("Empleo eliminado",
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            226, 144, 32, 1),
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                                content: Text(
-                                                    "Se ha eliminado el empleo",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                                backgroundColor: Colors.white70,
-                                                actions: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      deleteJob(job);
-                                                      Timer(
-                                                          Duration(seconds: 2),
-                                                          () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute<
-                                                                    void>(
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                          return RegisteredJobs(
-                                                              company);
-                                                        }));
-                                                      });
-                                                    },
-                                                    child: Text(
-                                                      'Aceptar',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              1, 167, 211, 1),
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white70),
-                                                  ),
-                                                ],
-                                              );
-                                            });
-                                      },
-                                      child: Text(
-                                        'Sí',
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromRGBO(1, 167, 211, 1),
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white70),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancelar',
-                                        style: TextStyle(
-                                            color:
-                                                Color.fromRGBO(1, 167, 211, 1),
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white70),
-                                    ),
-                                  ],
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Empleo eliminado",
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        226, 144, 32, 1),
+                                                    fontWeight:
+                                                        FontWeight.w700)),
+                                            content: Text(
+                                                "Se ha eliminado el empleo",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w700)),
+                                            backgroundColor: Colors.white70,
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  deleteJob(job);
+                                                  Timer(Duration(seconds: 2),
+                                                      () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute<void>(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return RegisteredJobs(
+                                                          company);
+                                                    }));
+                                                  });
+                                                },
+                                                child: Text(
+                                                  'Aceptar',
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          1, 167, 211, 1),
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white70),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  child: Text(
+                                    'Sí',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(1, 167, 211, 1),
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white70),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancelar',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(1, 167, 211, 1),
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white70),
                                 ),
                               ],
                             );

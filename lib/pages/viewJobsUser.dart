@@ -458,212 +458,170 @@ List<Widget> Jobs(
                                         fontSize: 18)),
                                 backgroundColor: Colors.white70,
                                 actions: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          bool create = true;
-                                          for (Postulation p in userPost!) {
-                                            if (p.idEmpleo == job.id) {
-                                              create = false;
-                                              break;
-                                            }
-                                          }
-                                          if (create) {
-                                            Postulation newPost = Postulation(
-                                                id: '',
-                                                idUsuario: user.id,
-                                                idEmpleo: job.id,
-                                                estado: "En espera",
-                                                fechaPostulacion:
-                                                    DateTime.now().toLocal(),
-                                                v: 0);
-                                            createPostulation(newPost);
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        "Postulación completada",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    226,
-                                                                    144,
-                                                                    32,
-                                                                    1),
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                    content: Text(
-                                                        "Se ha postulado al empleo de forma exitosa!",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                    backgroundColor:
-                                                        Colors.white70,
-                                                    actions: [
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute<
-                                                                      void>(
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                            return homePageUser(
-                                                                user);
-                                                          }));
-                                                        },
-                                                        child: Text(
-                                                          'Ver postulaciones',
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      1,
-                                                                      167,
-                                                                      211,
-                                                                      1),
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        ),
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white70),
-                                                      ),
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute<
-                                                                      void>(
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                            return UserJobsView(
-                                                                user);
-                                                          }));
-                                                        },
-                                                        child: Text(
-                                                          'Seguir postulando',
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      1,
-                                                                      167,
-                                                                      211,
-                                                                      1),
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        ),
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white70),
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          } else {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Error",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    226,
-                                                                    144,
-                                                                    32,
-                                                                    1),
-                                                            fontSize: 24,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                    content: Text(
-                                                        "¡Ya cuenta con una postulación a éste empleo!",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
-                                                    backgroundColor:
-                                                        Colors.white70,
-                                                    actions: [
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: Text(
-                                                          'Cerrar',
-                                                          style: TextStyle(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      1,
-                                                                      167,
-                                                                      211,
-                                                                      1),
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                        ),
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white70),
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          }
-                                        },
-                                        child: Text(
-                                          'Sí',
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  1, 167, 211, 1),
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white70),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text(
-                                          'Cancelar',
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  1, 167, 211, 1),
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white70),
-                                      ),
-                                    ],
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      bool create = true;
+                                      for (Postulation p in userPost!) {
+                                        if (p.idEmpleo == job.id) {
+                                          create = false;
+                                          break;
+                                        }
+                                      }
+                                      if (create) {
+                                        Postulation newPost = Postulation(
+                                            id: '',
+                                            idUsuario: user.id,
+                                            idEmpleo: job.id,
+                                            estado: "En espera",
+                                            fechaPostulacion:
+                                                DateTime.now().toLocal(),
+                                            v: 0);
+                                        createPostulation(newPost);
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Postulación completada",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "Se ha postulado al empleo de forma exitosa!",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return homePageUser(
+                                                            user);
+                                                      }));
+                                                    },
+                                                    child: Text(
+                                                      'Ver postulaciones',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return UserJobsView(
+                                                            user);
+                                                      }));
+                                                    },
+                                                    child: Text(
+                                                      'Seguir postulando',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Error",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "¡Ya cuenta con una postulación a éste empleo!",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      'Cerrar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    },
+                                    child: Text(
+                                      'Sí',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
                                   ),
                                 ],
                               );

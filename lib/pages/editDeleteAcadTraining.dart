@@ -288,7 +288,7 @@ List<Widget> AcadTrainings(
                                         });
                                   },
                                   child: Text(
-                                    'Eliminar',
+                                    'Sí',
                                     style: TextStyle(
                                         color: Color.fromRGBO(1, 167, 211, 1),
                                         fontSize: 22,

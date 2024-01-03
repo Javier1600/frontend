@@ -466,7 +466,7 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                 IconButton(
                   icon: Icon(
                     Icons.remove_red_eye_outlined,
-                    color: Colors.black,
+                    color: Colors.black87,
                     size: 30,
                   ),
                   onPressed: () {
@@ -479,7 +479,7 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                 IconButton(
                   icon: Icon(
                     Icons.edit_square,
-                    color: Colors.black,
+                    color: Colors.black54,
                     size: 30,
                   ),
                   onPressed: () {
@@ -489,19 +489,22 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                     }));
                   },
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (BuildContext context) {
-                      return userProfileUser(loggedUser, u, false, true);
-                    }));
-                  },
+              IconButton( 
+                icon: Icon(
+                  Icons.lock_outline_sharp,
+                  color: Colors.red,
+                  size: 30,
                 ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.lock_open_outlined,
+                  color: Colors.green,
+                  size: 30,
+                ),
+                onPressed: () {},
+              ),
               ],
             ),
           ],
@@ -555,7 +558,7 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
               IconButton(
                 icon: Icon(
                   Icons.remove_red_eye_outlined,
-                  color: Colors.black,
+                  color: Colors.black87,
                   size: 30,
                 ),
                 onPressed: () {
@@ -568,7 +571,7 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
               IconButton(
                 icon: Icon(
                   Icons.edit_square,
-                  color: Colors.black,
+                  color: Colors.black54,
                   size: 30,
                 ),
                 onPressed: () {
@@ -580,16 +583,19 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.delete_outline,
+                  Icons.lock_outline_sharp,
                   color: Colors.red,
                   size: 30,
                 ),
-                onPressed: () {
-                  // Navigator.of(context).push(
-                  //     MaterialPageRoute<void>(builder: (BuildContext context) {
-                  //   return userProfileUser(loggedUser, u, false, true);
-                  // }));
-                },
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.lock_open_outlined,
+                  color: Colors.green,
+                  size: 30,
+                ),
+                onPressed: () {},
               ),
             ],
           ),

@@ -2,20 +2,20 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
-import 'package:frontend/pages/userProfile.dart';
+import 'package:frontend/pages/adminSchools.dart';
 import 'package:frontend/services/schools.services.dart';
 import 'package:flutter/material.dart';
 
-class editSchool extends StatefulWidget {
+class EditSchool extends StatefulWidget {
   User user;
   School school;
-  editSchool(this.user, this.school, {super.key});
+  EditSchool(this.user, this.school, {super.key});
 
   @override
-  State<editSchool> createState() => _EditSchoolState();
+  State<EditSchool> createState() => _EditSchoolState();
 }
 
-class _EditSchoolState extends State<editSchool> {
+class _EditSchoolState extends State<EditSchool> {
   //Variable que contiene todos los certificados registrados del usuario de la base
   late Future<List<School>> schools;
   //Variable para iterar la lista de usuarios de la base
@@ -54,7 +54,7 @@ class _EditSchoolState extends State<editSchool> {
                 if (navigate) {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return userProfile(widget.user);
+                    return AdminSchools(widget.user);
                   }));
                 } else {
                   Navigator.of(context).pop();
@@ -80,7 +80,7 @@ class _EditSchoolState extends State<editSchool> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        backgroundColor: Color.fromRGBO(1, 167, 211, 1),
+        backgroundColor: Colors.white,
       ),
       body: FutureBuilder(
           future: schools,
@@ -127,7 +127,7 @@ class _EditSchoolState extends State<editSchool> {
                           color: Color.fromRGBO(226, 144, 32, 1),
                         ),
                         Text(
-                          "Registro de nueva",
+                          "Editar",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 25.0,
@@ -202,12 +202,12 @@ class _EditSchoolState extends State<editSchool> {
                                     //Verifico que se ingresaron todos los campos
                                     if (nombreInstitucion != '' &&
                                         ubicacion != '') {
-                                      School newSchool = School(
-                                          id: '0',
+                                      School editedSchool = School(
+                                          id: widget.school.id,
                                           nombreInstitucion: nombreInstitucion,
                                           ubicacion: ubicacion,
                                           v: 0);
-                                      createSchool(newSchool);
+                                      editSchool(editedSchool);
                                       AddAlert(
                                           "Exito",
                                           "Se ha modificado la institución de forma exitosa",

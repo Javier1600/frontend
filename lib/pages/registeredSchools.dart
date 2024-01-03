@@ -95,8 +95,12 @@ class _ResgisteredSchoolsState extends State<RegisteredSchools> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
-                      return AddSchool(widget.loggedUser, widget.reqUser,
-                          widget.fromAdminExplore, widget.fromAdminProfile);
+                      return AddSchool(
+                          widget.loggedUser,
+                          widget.reqUser,
+                          widget.fromAdminExplore,
+                          widget.fromAdminProfile,
+                          false);
                     }));
                   },
                   child: Text(

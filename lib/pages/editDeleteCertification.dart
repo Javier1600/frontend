@@ -267,7 +267,7 @@ List<Widget> Certificaciones(List<Certification>? cert, BuildContext context,
                                         });
                                   },
                                   child: Text(
-                                    'Eliminar',
+                                    'Sí',
                                     style: TextStyle(
                                         color: Color.fromRGBO(1, 167, 211, 1),
                                         fontSize: 22,

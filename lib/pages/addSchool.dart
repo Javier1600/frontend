@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
 import 'package:frontend/classes/schools.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminSchools.dart';
 import 'package:frontend/pages/registeredSchools.dart';
 import 'package:frontend/services/schools.services.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ class AddSchool extends StatefulWidget {
   User reqUser;
   bool fromAdminExplore;
   bool fromAdminProfile;
+  bool fromAdminShools;
   AddSchool(this.loggedUser, this.reqUser, this.fromAdminExplore,
-      this.fromAdminProfile,
+      this.fromAdminProfile, this.fromAdminShools,
       {super.key});
 
   @override
@@ -54,11 +56,23 @@ class _AddSchoolState extends State<AddSchool> {
             ElevatedButton(
               onPressed: () {
                 if (navigate) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return RegisteredSchools(widget.loggedUser, widget.reqUser,
-                        widget.fromAdminExplore, widget.fromAdminProfile);
-                  }));
+                  if (widget.fromAdminShools) {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AdminSchools(
+                        widget.loggedUser,
+                      );
+                    }));
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return RegisteredSchools(
+                          widget.loggedUser,
+                          widget.reqUser,
+                          widget.fromAdminExplore,
+                          widget.fromAdminProfile);
+                    }));
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
