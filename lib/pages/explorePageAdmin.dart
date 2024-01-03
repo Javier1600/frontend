@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/CompanyProfileAdmin.dart';
 import 'package:frontend/pages/adminPostulations.dart';
 import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminUserData.dart';
+import 'package:frontend/pages/editCompanyAdmin.dart';
 import 'package:frontend/pages/homePageAdmin.dart';
-import 'package:frontend/pages/uExploreCompanyProfile.dart';
 import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/userProfileUser.dart';
 import 'package:frontend/services/company.services.dart';
@@ -560,7 +561,7 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return UserExploreCompanyProfile(loggedUser, c);
+                    return CompanyProfileAdmin(loggedUser, c);
                   }));
                 },
               ),
@@ -573,8 +574,21 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return UserExploreCompanyProfile(loggedUser, c);
+                    return EditCompanyAdmin(loggedUser, c);
                   }));
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                  size: 30,
+                ),
+                onPressed: () {
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute<void>(builder: (BuildContext context) {
+                  //   return userProfileUser(loggedUser, u, false, true);
+                  // }));
                 },
               ),
             ],
