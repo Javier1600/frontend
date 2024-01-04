@@ -387,18 +387,28 @@ class _loginPageState extends State<loginPage> {
                                                                 cList![i];
                                                             uExist = true;
                                                             if (uExist) {
-                                                              clearTextFields();
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .push(MaterialPageRoute<
-                                                                          Null>(
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                return homePageCompany(
-                                                                    authCompany);
-                                                              }));
-                                                              break;
+                                                              //Verifico si la empresa esta activa
+                                                              if (authCompany
+                                                                      .estado ==
+                                                                  "Activo") {
+                                                                clearTextFields();
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .push(MaterialPageRoute<
+                                                                            Null>(
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                  return homePageCompany(
+                                                                      authCompany);
+                                                                }));
+                                                                break;
+                                                              } else {
+                                                                //Empresa inactiva
+                                                                loginAlert(
+                                                                    "Usuario bloqueado",
+                                                                    "Si desea habilitarlo, comuníquese con el administrador");
+                                                              }
                                                             }
                                                           } else {
                                                             uExist = false;
@@ -433,35 +443,43 @@ class _loginPageState extends State<loginPage> {
                                                             uExist = true;
                                                             //Verifico la existencia del usuario
                                                             if (uExist) {
-                                                              //Existe y es un Cliente
+                                                              //Verifico si el usuario esta activo
                                                               if (authUser
-                                                                      .rol ==
-                                                                  "Cliente") {
-                                                                clearTextFields();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(MaterialPageRoute<
-                                                                            Null>(
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                  return homePageUser(
-                                                                      authUser);
-                                                                }));
+                                                                      .estado ==
+                                                                  "Activo") {
+                                                                //Existe y es un Cliente
+                                                                if (authUser
+                                                                        .rol ==
+                                                                    "Cliente") {
+                                                                  clearTextFields();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .push(MaterialPageRoute<
+                                                                              Null>(
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                    return homePageUser(
+                                                                        authUser);
+                                                                  }));
+                                                                } else {
+                                                                  //Existe y es un Administrador
+                                                                  clearTextFields();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .push(MaterialPageRoute<
+                                                                              Null>(
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                    return homePageAdmin(
+                                                                        authUser);
+                                                                  }));
+                                                                  break;
+                                                                }
                                                               } else {
-                                                                //Existe y es un Administrador
-                                                                clearTextFields();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(MaterialPageRoute<
-                                                                            Null>(
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                  return homePageAdmin(
-                                                                      authUser);
-                                                                }));
-                                                                break;
+                                                                //Usario inactivo
+                                                                loginAlert(
+                                                                    "Usuario bloqueado",
+                                                                    "Si desea habilitarlo, comuníquese con el administrador");
                                                               }
                                                             }
                                                           } else {

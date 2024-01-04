@@ -421,7 +421,7 @@ class _ExplorePageUserState extends State<ExplorePageUser> {
 List<Widget> Users(List<User>? users, User loggedUser, context) {
   List<Widget> uRet = [];
   for (User u in users!) {
-    if (u.usuario != loggedUser.usuario) {
+    if (u.usuario != loggedUser.usuario && u.estado != "Inactivo") {
       uRet.add(Padding(padding: EdgeInsets.all(8)));
       uRet.add(Container(
         width: MediaQuery.of(context).size.height * 0.33,
@@ -483,56 +483,61 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
 List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
   List<Widget> cRet = [];
   for (Company c in companies!) {
-    cRet.add(Padding(padding: EdgeInsets.all(8)));
-    cRet.add(Container(
-      width: MediaQuery.of(context).size.height * 0.33,
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 10, bottom: 10),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
-          border: Border.all(color: Color.fromRGBO(1, 167, 211, 1), width: 4.0),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black26,
-                offset: Offset(8.0, 8.0),
-                blurRadius: 15.0)
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 4.0)),
-            width: 100,
-            height: 100,
-            child: const ClipOval(
-                child: Image(
-              image: AssetImage('assets/img/empresa.png'),
-              fit: BoxFit.contain,
-            )),
-          ),
-          Text(
-            c.nombreEmpresa,
-            style: TextStyle(
-                color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.remove_red_eye_outlined,
-              color: Colors.black,
-              size: 30,
+    if (c.estado != "Inactivo") {
+      cRet.add(Padding(padding: EdgeInsets.all(8)));
+      cRet.add(Container(
+        width: MediaQuery.of(context).size.height * 0.33,
+        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 10, bottom: 10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            border:
+                Border.all(color: Color.fromRGBO(1, 167, 211, 1), width: 4.0),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(8.0, 8.0),
+                  blurRadius: 15.0)
+            ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black, width: 4.0)),
+              width: 100,
+              height: 100,
+              child: const ClipOval(
+                  child: Image(
+                image: AssetImage('assets/img/empresa.png'),
+                fit: BoxFit.contain,
+              )),
             ),
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (BuildContext context) {
-                return UserExploreCompanyProfile(loggedUser, c);
-              }));
-            },
-          ),
-        ],
-      ),
-    ));
+            Text(
+              c.nombreEmpresa,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.remove_red_eye_outlined,
+                color: Colors.black,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute<void>(builder: (BuildContext context) {
+                  return UserExploreCompanyProfile(loggedUser, c);
+                }));
+              },
+            ),
+          ],
+        ),
+      ));
+    }
   }
   return cRet;
 }

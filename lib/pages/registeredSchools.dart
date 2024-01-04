@@ -171,62 +171,66 @@ List<Widget> Schools(List<School>? schools, BuildContext context, User reqUser,
   List<Widget> cRet = [];
   if (schools != null) {
     for (School school in schools) {
-      cRet.add(Container(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(8.0, 8.0),
-                  blurRadius: 15.0)
-            ]),
-        child: Column(
-          children: [
-            Text(
-              '${school.nombreInstitucion}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color.fromRGBO(0, 0, 0, 1),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  overflow: TextOverflow.clip),
-              maxLines: 3,
-            ),
-            Container(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  '${school.ubicacion}',
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 1),
-                      fontSize: 20,
-                      overflow: TextOverflow.clip),
-                  maxLines: 4,
-                )),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return AddAcadTraining(loggedUser, reqUser, school,
-                        fromAdmin, fromAdminProfile);
-                  }));
-                },
-                child: Text(
-                  'Seleccionar',
-                  style: TextStyle(
-                      color: Color.fromRGBO(226, 144, 32, 1),
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700),
-                ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+      if (school.estado != "Inactivo") {
+        cRet.add(Container(
+          padding:
+              EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: const [
+                BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(8.0, 8.0),
+                    blurRadius: 15.0)
+              ]),
+          child: Column(
+            children: [
+              Text(
+                '${school.nombreInstitucion}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    overflow: TextOverflow.clip),
+                maxLines: 3,
               ),
-            )
-          ],
-        ),
-      ));
+              Container(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    '${school.ubicacion}',
+                    style: TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 1),
+                        fontSize: 20,
+                        overflow: TextOverflow.clip),
+                    maxLines: 4,
+                  )),
+              Container(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return AddAcadTraining(loggedUser, reqUser, school,
+                          fromAdmin, fromAdminProfile);
+                    }));
+                  },
+                  child: Text(
+                    'Seleccionar',
+                    style: TextStyle(
+                        color: Color.fromRGBO(226, 144, 32, 1),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                ),
+              )
+            ],
+          ),
+        ));
+      }
       cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
     }
   }
