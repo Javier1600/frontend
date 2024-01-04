@@ -288,6 +288,28 @@ class _userProfileCompanyState extends State<userProfileCompany> {
                                                 ),
                                               ],
                                             ),
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                'Sobre mí: ',
+                                                style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            Container(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  '${widget.reqUser.descripcionPersonal}',
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        0, 0, 0, 1),
+                                                    fontSize: 20,
+                                                  ),
+                                                )),
                                           ],
                                         ),
                                       ),

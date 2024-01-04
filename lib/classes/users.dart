@@ -18,6 +18,8 @@ class User {
   String sexo;
   DateTime fechaNacimiento;
   String telefono;
+  String descripcionPersonal;
+  String estado;
   String usuario;
   String password;
   String confirmPassword;
@@ -31,6 +33,8 @@ class User {
     required this.sexo,
     required this.fechaNacimiento,
     required this.telefono,
+    required this.descripcionPersonal,
+    required this.estado,
     required this.usuario,
     required this.password,
     required this.confirmPassword,
@@ -45,6 +49,8 @@ class User {
         sexo: json["sexo"],
         fechaNacimiento: DateTime.parse(json["fechaNacimiento"]),
         telefono: json["telefono"],
+        descripcionPersonal: json["descripcionPersonal"],
+        estado: json['estado'],
         usuario: json["usuario"],
         password: json["password"],
         confirmPassword: json["password"],
@@ -58,6 +64,8 @@ class User {
         "sexo": sexo,
         "fechaNacimiento": fechaNacimiento.toIso8601String(),
         "telefono": telefono,
+        "descripcionPersonal": descripcionPersonal,
+        "estado": estado,
         "usuario": usuario,
         "password": password,
         "confirmPassword": confirmPassword

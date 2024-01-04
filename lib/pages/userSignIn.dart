@@ -27,6 +27,7 @@ class _userSignInState extends State<userSignIn> {
   String sexo = '';
   String fechaNacimiento = '';
   String telefono = '';
+  String descripcionPersonal = '';
   String usuario = '';
   String password = '';
   String confirmPassword = '';
@@ -287,6 +288,21 @@ class _userSignInState extends State<userSignIn> {
                             },
                           ),
                           Text(
+                            'Descripción personal',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Soy una persona...',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              icon: Icon(Icons.account_circle_outlined),
+                            ),
+                            onChanged: (valor) => setState(() {
+                              descripcionPersonal = valor;
+                            }),
+                          ),
+                          Text(
                             'Nombre de usuario',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
@@ -371,6 +387,7 @@ class _userSignInState extends State<userSignIn> {
                                         (isMale || isFemale) &&
                                         fechaNacimiento != '' &&
                                         telefono != '' &&
+                                        descripcionPersonal != '' &&
                                         usuario != '' &&
                                         password != '' &&
                                         confirmPassword != '') {
@@ -412,6 +429,9 @@ class _userSignInState extends State<userSignIn> {
                                                           "dd-MM-yyyy")
                                                       .parse(fechaNacimiento),
                                                   telefono: telefono,
+                                                  descripcionPersonal:
+                                                      descripcionPersonal,
+                                                  estado: "Activo",
                                                   usuario: usuario,
                                                   password: encryptedPassword,
                                                   confirmPassword:

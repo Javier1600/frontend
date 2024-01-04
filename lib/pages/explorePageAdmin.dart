@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_unnecessary_containers, prefer_void_to_null, deprecated_member_use
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/users.dart';
@@ -428,7 +430,7 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
         width: MediaQuery.of(context).size.height * 0.33,
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 10, bottom: 10),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: u.estado == "Activo" ? Colors.white : Colors.blueGrey[200],
             borderRadius: BorderRadius.circular(8.0),
             border:
                 Border.all(color: Color.fromRGBO(1, 167, 211, 1), width: 4.0),
@@ -489,22 +491,267 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                     }));
                   },
                 ),
-              IconButton( 
-                icon: Icon(
-                  Icons.lock_outline_sharp,
-                  color: Colors.red,
-                  size: 30,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.lock_open_outlined,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                onPressed: () {},
-              ),
+                u.estado == "Activo"
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.lock_outline_sharp,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Se inhabilitará este usuario!",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(226, 144, 32, 1),
+                                          fontWeight: FontWeight.w700)),
+                                  content: Text(
+                                      "¿Está seguro de inhabilitar este usuario?",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18)),
+                                  backgroundColor: Colors.white70,
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Usuario inhabilitado",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "Se ha inhabilitado el usuario",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 18)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      User updatedUser = User(
+                                                          id: u.id,
+                                                          nombre: u.nombre,
+                                                          apellido: u.apellido,
+                                                          rol: u.rol,
+                                                          sexo: u.sexo,
+                                                          fechaNacimiento:
+                                                              u.fechaNacimiento,
+                                                          telefono: u.telefono,
+                                                          descripcionPersonal: u
+                                                              .descripcionPersonal,
+                                                          estado: "Inactivo",
+                                                          usuario: u.usuario,
+                                                          password: u.password,
+                                                          confirmPassword:
+                                                              u.confirmPassword,
+                                                          v: u.v);
+                                                      editUser(updatedUser);
+                                                      Timer(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return ExplorePageAdmin(
+                                                              loggedUser);
+                                                        }));
+                                                      });
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                    child: Text(
+                                                      'Aceptar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                      child: Text(
+                                        'Sí',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.lock_open_outlined,
+                          color: Colors.green,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Se habilitará este usuario!",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(226, 144, 32, 1),
+                                          fontWeight: FontWeight.w700)),
+                                  content: Text(
+                                      "¿Está seguro de habilitar este usuario?",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18)),
+                                  backgroundColor: Colors.white70,
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Usuario habilitado",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "Se ha habilitado el usuario",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 18)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      User updatedUser = User(
+                                                          id: u.id,
+                                                          nombre: u.nombre,
+                                                          apellido: u.apellido,
+                                                          rol: u.rol,
+                                                          sexo: u.sexo,
+                                                          fechaNacimiento:
+                                                              u.fechaNacimiento,
+                                                          telefono: u.telefono,
+                                                          descripcionPersonal: u
+                                                              .descripcionPersonal,
+                                                          estado: "Activo",
+                                                          usuario: u.usuario,
+                                                          password: u.password,
+                                                          confirmPassword:
+                                                              u.confirmPassword,
+                                                          v: u.v);
+                                                      editUser(updatedUser);
+                                                      Timer(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return ExplorePageAdmin(
+                                                              loggedUser);
+                                                        }));
+                                                      });
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                    child: Text(
+                                                      'Aceptar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                      child: Text(
+                                        'Sí',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      ),
               ],
             ),
           ],
@@ -523,7 +770,7 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
       width: MediaQuery.of(context).size.height * 0.33,
       padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 10, bottom: 10),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: c.estado == "Activo" ? Colors.white : Colors.blueGrey[200],
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(color: Color.fromRGBO(1, 167, 211, 1), width: 4.0),
           boxShadow: const [
@@ -581,22 +828,266 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
                   }));
                 },
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.lock_outline_sharp,
-                  color: Colors.red,
-                  size: 30,
-                ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.lock_open_outlined,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                onPressed: () {},
-              ),
+              c.estado == "Activo"
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.lock_outline_sharp,
+                        color: Colors.red,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Se inhabilitará esta empresa!",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(226, 144, 32, 1),
+                                        fontWeight: FontWeight.w700)),
+                                content: Text(
+                                    "¿Está seguro de inhabilitar esta empresa?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                backgroundColor: Colors.white70,
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  "Empresa inhabilitada",
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          226, 144, 32, 1),
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              content: Text(
+                                                  "Se ha inhabilitado la empresa",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 18)),
+                                              backgroundColor: Colors.white70,
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Company updatedCompany =
+                                                        Company(
+                                                            id: c.id,
+                                                            nombreEmpresa:
+                                                                c.nombreEmpresa,
+                                                            correo: c.correo,
+                                                            direccion:
+                                                                c.direccion,
+                                                            telefono:
+                                                                c.telefono,
+                                                            descripcion:
+                                                                c.descripcion,
+                                                            valores: c.valores,
+                                                            rol: c.rol,
+                                                            estado: "Inactivo",
+                                                            usuario: c.usuario,
+                                                            password:
+                                                                c.password,
+                                                            confirmPassword: c
+                                                                .confirmPassword,
+                                                            v: c.v);
+                                                    editCompany(updatedCompany);
+                                                    Timer(Duration(seconds: 2),
+                                                        () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return ExplorePageAdmin(
+                                                            loggedUser);
+                                                      }));
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white70),
+                                                  child: Text(
+                                                    'Aceptar',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                    child: Text(
+                                      'Sí',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                    )
+                  : IconButton(
+                      icon: Icon(
+                        Icons.lock_open_outlined,
+                        color: Colors.green,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Se habilitará esta empresa!",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(226, 144, 32, 1),
+                                        fontWeight: FontWeight.w700)),
+                                content: Text(
+                                    "¿Está seguro de habilitar esta empresa?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                backgroundColor: Colors.white70,
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Empresa habilitada",
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          226, 144, 32, 1),
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              content: Text(
+                                                  "Se ha habilitado la empresa",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 18)),
+                                              backgroundColor: Colors.white70,
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Company updatedCompany =
+                                                        Company(
+                                                            id: c.id,
+                                                            nombreEmpresa:
+                                                                c.nombreEmpresa,
+                                                            correo: c.correo,
+                                                            direccion:
+                                                                c.direccion,
+                                                            telefono:
+                                                                c.telefono,
+                                                            descripcion:
+                                                                c.descripcion,
+                                                            valores: c.valores,
+                                                            rol: c.rol,
+                                                            estado: "Activo",
+                                                            usuario: c.usuario,
+                                                            password:
+                                                                c.password,
+                                                            confirmPassword: c
+                                                                .confirmPassword,
+                                                            v: c.v);
+                                                    editCompany(updatedCompany);
+                                                    Timer(Duration(seconds: 2),
+                                                        () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return ExplorePageAdmin(
+                                                            loggedUser);
+                                                      }));
+                                                    });
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white70),
+                                                  child: Text(
+                                                    'Aceptar',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                    child: Text(
+                                      'Sí',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            });
+                      },
+                    ),
             ],
           ),
         ],

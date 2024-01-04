@@ -273,11 +273,8 @@ class _AdminSchoolsState extends State<AdminSchools> {
                               padding: EdgeInsets.all(10),
                               child: Container(
                                   child: Column(
-                                children: Schools(
-                                  sList,
-                                  context,
-                                  widget.loggedUser,
-                                ),
+                                children:
+                                    Schools(sList, context, widget.loggedUser),
                               )))));
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
@@ -397,7 +394,7 @@ List<Widget> Schools(
       cRet.add(Container(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: school.estado == "Activo" ? Colors.white : Colors.black12,
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: const [
               BoxShadow(
@@ -444,19 +441,250 @@ List<Widget> Schools(
                     }));
                   },
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    // Navigator.of(context).push(MaterialPageRoute<void>(
-                    //     builder: (BuildContext context) {
-                    //   return userProfileUser(loggedUser, u, false, true);
-                    // }));
-                  },
-                ),
+                school.estado == "Activo"
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.lock_outline_sharp,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                      "Se inhabilitará esta institución!",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(226, 144, 32, 1),
+                                          fontWeight: FontWeight.w700)),
+                                  content: Text(
+                                      "¿Está seguro de inhabilitar esta institución?",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18)),
+                                  backgroundColor: Colors.white70,
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Institución inhabilitada",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "Se ha inhabilitado la institución",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 18)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      School updatedSchool = School(
+                                                          id: school.id,
+                                                          nombreInstitucion: school
+                                                              .nombreInstitucion,
+                                                          ubicacion:
+                                                              school.ubicacion,
+                                                          estado: "Inactivo",
+                                                          v: 0);
+                                                      editSchool(updatedSchool);
+                                                      Timer(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return AdminSchools(
+                                                              loggedUser);
+                                                        }));
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      'Aceptar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      child: Text(
+                                        'Sí',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.lock_open_outlined,
+                          color: Colors.green,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Se habilitará esta institución!",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(226, 144, 32, 1),
+                                          fontWeight: FontWeight.w700)),
+                                  content: Text(
+                                      "¿Está seguro de habilitar esta institución?",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18)),
+                                  backgroundColor: Colors.white70,
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Institución habilitada",
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            226, 144, 32, 1),
+                                                        fontWeight:
+                                                            FontWeight.w700)),
+                                                content: Text(
+                                                    "Se ha habilitado la institución",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 18)),
+                                                backgroundColor: Colors.white70,
+                                                actions: [
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      School updatedSchool = School(
+                                                          id: school.id,
+                                                          nombreInstitucion: school
+                                                              .nombreInstitucion,
+                                                          ubicacion:
+                                                              school.ubicacion,
+                                                          estado: "Activo",
+                                                          v: 0);
+                                                      editSchool(updatedSchool);
+                                                      Timer(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute<
+                                                                    void>(
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                          return AdminSchools(
+                                                              loggedUser);
+                                                        }));
+                                                      });
+                                                    },
+                                                    child: Text(
+                                                      'Aceptar',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              1, 167, 211, 1),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white70),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      child: Text(
+                                        'Sí',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(1, 167, 211, 1),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white70),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      ),
               ],
             ),
           ],

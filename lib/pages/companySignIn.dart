@@ -378,6 +378,7 @@ class _companySignInState extends State<companySignIn> {
                                                   descripcion: descripcion,
                                                   valores: valores,
                                                   rol: rol,
+                                                  estado: "Activo",
                                                   usuario: usuario,
                                                   password: encryptedPassword,
                                                   confirmPassword:

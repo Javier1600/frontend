@@ -29,6 +29,7 @@ class _AddSchoolState extends State<AddSchool> {
   //Variables para los valores de los campos
   String nombreInstitucion = '';
   String ubicacion = '';
+  String estado = 'Activo';
   //Variable para controlar el registro en caso de usuario repetido
   bool registeredSchool = false;
   //Mascara del campo fecha
@@ -238,6 +239,7 @@ class _AddSchoolState extends State<AddSchool> {
                                             nombreInstitucion:
                                                 nombreInstitucion,
                                             ubicacion: ubicacion,
+                                            estado: estado,
                                             v: 0);
                                         createSchool(newSchool);
                                         AddAlert(

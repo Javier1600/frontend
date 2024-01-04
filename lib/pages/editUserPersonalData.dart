@@ -36,6 +36,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
   String sexo = '';
   String fechaNacimiento = '';
   String telefono = '';
+  String descripcionPersonal = '';
   String usuario = '';
   String password = '';
   String confirmPassword = '';
@@ -67,6 +68,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
     rol = widget.reqUser.rol;
     sexo = widget.reqUser.sexo;
     telefono = widget.reqUser.telefono;
+    descripcionPersonal = widget.reqUser.descripcionPersonal;
     usuario = widget.reqUser.usuario;
     //Mes y dia
     if (widget.reqUser.fechaNacimiento.day < 10 &&
@@ -112,7 +114,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                   if (widget.fromAdminUser) {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
-                      return AdminUserData(widget.reqUser, widget.reqUser);
+                      return AdminUserData(widget.loggedUser, widget.reqUser);
                     }));
                   } else if (widget.fromAdminProfile) {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -342,6 +344,23 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                             },
                           ),
                           Text(
+                            'Descripción personal',
+                            style: TextStyle(
+                                color: Color.fromRGBO(1, 167, 211, 1)),
+                          ),
+                          TextFormField(
+                            initialValue: descripcionPersonal,
+                            minLines: 1,
+                            maxLines: 6,
+                            decoration: InputDecoration(
+                                hintText: 'Nombre',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                icon: Icon(Icons.account_circle_outlined)),
+                            onChanged: (valor) => setState(() {
+                              descripcionPersonal = valor;
+                            }),
+                          ),
+                          Text(
                             'Nombre de usuario',
                             style: TextStyle(
                                 color: Color.fromRGBO(1, 167, 211, 1)),
@@ -427,6 +446,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                         (isMale || isFemale) &&
                                         fechaNacimiento != '' &&
                                         telefono != '' &&
+                                        descripcionPersonal != "" &&
                                         usuario != '' &&
                                         password != '' &&
                                         confirmPassword != '') {
@@ -476,6 +496,10 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                                             "dd-MM-yyyy")
                                                         .parse(fechaNacimiento),
                                                     telefono: telefono,
+                                                    descripcionPersonal:
+                                                        descripcionPersonal,
+                                                    estado:
+                                                        widget.reqUser.estado,
                                                     usuario: usuario,
                                                     password: encryptedPassword,
                                                     confirmPassword:
@@ -526,6 +550,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                           (isMale || isFemale) &&
                                           fechaNacimiento != '' &&
                                           telefono != '' &&
+                                          descripcionPersonal != '' &&
                                           usuario != '' &&
                                           password == '' &&
                                           confirmPassword == '') {
@@ -577,10 +602,15 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                                                           fechaNacimiento),
                                                               telefono:
                                                                   telefono,
+                                                              descripcionPersonal:
+                                                                  descripcionPersonal,
+                                                              estado:
+                                                                  widget.reqUser
+                                                                      .estado,
                                                               usuario: usuario,
-                                                              password: widget
-                                                                  .reqUser
-                                                                  .password,
+                                                              password:
+                                                                  widget.reqUser
+                                                                      .password,
                                                               confirmPassword:
                                                                   widget.reqUser
                                                                       .confirmPassword,

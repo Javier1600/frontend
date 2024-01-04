@@ -14,12 +14,14 @@ class School {
   String id;
   String nombreInstitucion;
   String ubicacion;
+  String estado;
   int v;
 
   School({
     required this.id,
     required this.nombreInstitucion,
     required this.ubicacion,
+    required this.estado,
     required this.v,
   });
 
@@ -27,6 +29,7 @@ class School {
         id: json["_id"],
         nombreInstitucion: json["nombreInstitucion"],
         ubicacion: json["ubicacion"],
+        estado: json['estado'],
         v: json["__v"],
       );
 
@@ -34,5 +37,6 @@ class School {
         "_id": id,
         "nombreInstitucion": nombreInstitucion,
         "ubicacion": ubicacion,
+        "estado": estado,
       };
 }

@@ -22,7 +22,8 @@ void createSchool(School school) async {
         Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/school/new'),
         body: {
           'nombreInstitucion': school.nombreInstitucion,
-          'ubicacion': school.ubicacion
+          'ubicacion': school.ubicacion,
+          'estado': school.estado
         });
   } catch (e) {
     print(e);
@@ -37,7 +38,8 @@ void editSchool(School school) async {
         body: {
           'id': school.id,
           'nombreInstitucion': school.nombreInstitucion,
-          'ubicacion': school.ubicacion
+          'ubicacion': school.ubicacion,
+          'estado': school.estado
         });
   } catch (e) {
     print(e);

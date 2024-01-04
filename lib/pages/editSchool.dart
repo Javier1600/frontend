@@ -23,6 +23,7 @@ class _EditSchoolState extends State<EditSchool> {
   //Variables para los valores de los campos
   String nombreInstitucion = '';
   String ubicacion = '';
+  String estado = '';
   //Variable para controlar el registro en caso de usuario repetido
   bool registeredSchool = false;
   //Mascara del campo fecha
@@ -32,6 +33,7 @@ class _EditSchoolState extends State<EditSchool> {
     schools = getAllSchools();
     nombreInstitucion = widget.school.nombreInstitucion;
     ubicacion = widget.school.ubicacion;
+    estado = widget.school.estado;
     super.initState();
   }
 
@@ -206,6 +208,7 @@ class _EditSchoolState extends State<EditSchool> {
                                           id: widget.school.id,
                                           nombreInstitucion: nombreInstitucion,
                                           ubicacion: ubicacion,
+                                          estado: widget.school.estado,
                                           v: 0);
                                       editSchool(editedSchool);
                                       AddAlert(

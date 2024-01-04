@@ -398,6 +398,8 @@ class _EditCompanyAdminState extends State<EditCompanyAdmin> {
                                                 descripcion: descripcion,
                                                 valores: valores,
                                                 rol: rol,
+                                                estado:
+                                                    widget.reqCompany.estado,
                                                 usuario: usuario,
                                                 password: encryptedPassword,
                                                 confirmPassword:
@@ -478,6 +480,9 @@ class _EditCompanyAdminState extends State<EditCompanyAdmin> {
                                                                   descripcion,
                                                               valores: valores,
                                                               rol: rol,
+                                                              estado: widget
+                                                                  .reqCompany
+                                                                  .estado,
                                                               usuario: usuario,
                                                               password: widget
                                                                   .reqCompany

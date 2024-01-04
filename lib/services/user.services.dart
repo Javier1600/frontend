@@ -28,6 +28,8 @@ void createUser(User user) async {
           'sexo': user.sexo,
           'fechaNacimiento': user.fechaNacimiento.toIso8601String(),
           'telefono': user.telefono,
+          'descripcionPersonal': user.descripcionPersonal,
+          'estado': user.estado,
           'usuario': user.usuario,
           'password': user.password,
           'confirmPassword': user.password
@@ -50,6 +52,8 @@ void editUser(User user) async {
           'sexo': user.sexo,
           'fechaNacimiento': user.fechaNacimiento.toIso8601String(),
           'telefono': user.telefono,
+          'descripcionPersonal': user.descripcionPersonal,
+          'estado': user.estado,
           'usuario': user.usuario,
           'password': user.password,
         });
