@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminJobs.dart';
 import 'package:frontend/pages/adminPostulations.dart';
 import 'package:frontend/pages/adminProfile.dart';
 import 'package:frontend/pages/adminSchools.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
 import 'package:frontend/pages/loginUser.dart';
-import 'package:frontend/pages/viewJobsUser.dart';
 
 class homePageAdmin extends StatefulWidget {
   User loggedUser;
@@ -112,7 +112,7 @@ class _homePageAdminState extends State<homePageAdmin> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute<Null>(
                             builder: (BuildContext context) {
-                          return UserJobsView(widget.loggedUser);
+                          return AdminJobs(widget.loggedUser);
                         }));
                       },
                       child: Container(

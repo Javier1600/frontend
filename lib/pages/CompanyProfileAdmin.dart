@@ -3,12 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
 import 'package:frontend/classes/users.dart';
+import 'package:frontend/pages/adminJobs.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
 
 class CompanyProfileAdmin extends StatefulWidget {
   User user;
   Company reqCompany;
-  CompanyProfileAdmin(this.user, this.reqCompany, {super.key});
+  bool fromAdminJobs;
+  CompanyProfileAdmin(this.user, this.reqCompany, this.fromAdminJobs,
+      {super.key});
 
   @override
   State<CompanyProfileAdmin> createState() => _CompanyProfileAdminState();
@@ -185,10 +188,17 @@ class _CompanyProfileAdminState extends State<CompanyProfileAdmin> {
   }
 
   Future<bool> _onBack(BuildContext context) async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return ExplorePageAdmin(widget.user);
-    }));
+    if (widget.fromAdminJobs) {
+      Navigator.of(context)
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return AdminJobs(widget.user);
+      }));
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return ExplorePageAdmin(widget.user);
+      }));
+    }
     return true;
   }
 }

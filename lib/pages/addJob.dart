@@ -405,6 +405,7 @@ class _AddJobState extends State<AddJob> {
                                           aptitudes: aptitudes,
                                           modalidad: modalidad,
                                           numeroVacantes: numeroVacantes,
+                                          estado: "Activo",
                                           v: 0);
                                       createJob(newJob);
                                       AddAlert(

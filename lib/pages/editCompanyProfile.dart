@@ -363,66 +363,49 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                         usuario != '' &&
                                         password != '' &&
                                         confirmPassword != '') {
-                                      //Verifica si el usuario ingresado existe
-                                      for (Company c in cList!) {
-                                        if (c.usuario != usuario) {
-                                          registeredCompany = false;
-                                        } else {
-                                          registeredCompany = true;
-                                        }
-                                      }
-                                      if (registeredCompany) {
-                                        EditAlert(
-                                            "Error",
-                                            "El nombre de usuario ya se encuentra registrado",
-                                            false,
-                                            widget.reqCompany);
-                                      } else {
-                                        //Verifico que la nueva contraseña sea diferente a la actual
-                                        if (md5
-                                                .convert(utf8.encode(password))
-                                                .toString() !=
-                                            widget.reqCompany.password) {
-                                          if (password == confirmPassword) {
-                                            String encryptedPassword = md5
-                                                .convert(utf8.encode(password))
-                                                .toString();
-                                            Company editedCompany = Company(
-                                                id: widget.reqCompany.id,
-                                                nombreEmpresa: nombreEmpresa,
-                                                correo: correo,
-                                                direccion: direccion,
-                                                telefono: telefono,
-                                                descripcion: descripcion,
-                                                valores: valores,
-                                                rol: rol,
-                                                estado:
-                                                    widget.reqCompany.estado,
-                                                usuario: usuario,
-                                                password: encryptedPassword,
-                                                confirmPassword:
-                                                    encryptedPassword,
-                                                v: 0);
-                                            editCompany(editedCompany);
-                                            EditAlert(
-                                                "Exito",
-                                                "Se ha actualizado la empresa de forma exitosa",
-                                                true,
-                                                editedCompany);
-                                          } else {
-                                            EditAlert(
-                                                "Error",
-                                                "Las contraseñas deben coincidir",
-                                                false,
-                                                widget.reqCompany);
-                                          }
+                                      //Verifico que la nueva contraseña sea diferente a la actual
+                                      if (md5
+                                              .convert(utf8.encode(password))
+                                              .toString() !=
+                                          widget.reqCompany.password) {
+                                        if (password == confirmPassword) {
+                                          String encryptedPassword = md5
+                                              .convert(utf8.encode(password))
+                                              .toString();
+                                          Company editedCompany = Company(
+                                              id: widget.reqCompany.id,
+                                              nombreEmpresa: nombreEmpresa,
+                                              correo: correo,
+                                              direccion: direccion,
+                                              telefono: telefono,
+                                              descripcion: descripcion,
+                                              valores: valores,
+                                              rol: rol,
+                                              estado: widget.reqCompany.estado,
+                                              usuario: usuario,
+                                              password: encryptedPassword,
+                                              confirmPassword:
+                                                  encryptedPassword,
+                                              v: 0);
+                                          editCompany(editedCompany);
+                                          EditAlert(
+                                              "Exito",
+                                              "Se ha actualizado la empresa de forma exitosa",
+                                              true,
+                                              editedCompany);
                                         } else {
                                           EditAlert(
                                               "Error",
-                                              "La nueva contraseña no puede ser igual a la actual",
+                                              "Las contraseñas deben coincidir",
                                               false,
                                               widget.reqCompany);
                                         }
+                                      } else {
+                                        EditAlert(
+                                            "Error",
+                                            "La nueva contraseña no puede ser igual a la actual",
+                                            false,
+                                            widget.reqCompany);
                                       }
                                     } else {
                                       //Verifico si los campos de contra estan vacios para consevar la contra anterior

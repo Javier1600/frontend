@@ -510,12 +510,13 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? Posts,
               comp = c;
             }
           }
-
           pRet.add(Container(
             padding:
                 EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: post.estadoPostulacion == "Activo"
+                    ? Colors.white
+                    : Colors.blueGrey[200],
                 borderRadius: BorderRadius.circular(8.0),
                 boxShadow: const [
                   BoxShadow(

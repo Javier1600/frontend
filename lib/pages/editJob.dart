@@ -380,6 +380,7 @@ class _EditJobState extends State<EditJob> {
                                     aptitudes: aptitudes,
                                     modalidad: modalidad,
                                     numeroVacantes: numeroVacantes,
+                                    estado: widget.job.estado,
                                     v: 0);
                                 editJob(updatedJob);
                                 AddAlert(

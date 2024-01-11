@@ -355,234 +355,261 @@ List<Widget> Jobs(List<Job>? jobs, BuildContext context, Company company) {
   List<Widget> cRet = [];
   if (jobs != null) {
     for (Job job in jobs) {
-      cRet.add(Container(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(8.0, 8.0),
-                  blurRadius: 15.0)
-            ]),
-        child: Column(
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: Colors.black,
+      if (job.estado == "Activo") {
+        cRet.add(Container(
+          padding:
+              EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: const [
+                BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(8.0, 8.0),
+                    blurRadius: 15.0)
+              ]),
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (BuildContext context) {
+                          return JobDetails(job);
+                        }));
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (BuildContext context) {
-                        return JobDetails(job);
-                      }));
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit_square,
-                      color: Colors.black38,
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit_square,
+                        color: Colors.black38,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute<void>(
+                            builder: (BuildContext context) {
+                          return EditJob(company, job);
+                        }));
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (BuildContext context) {
-                        return EditJob(company, job);
-                      }));
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete_forever_outlined,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Se eliminará éste empleo!",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(226, 144, 32, 1),
-                                      fontWeight: FontWeight.w700)),
-                              content: Text(
-                                  "¿Está seguro de eliminar éste empleo?",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18)),
-                              backgroundColor: Colors.white70,
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text("Empleo eliminado",
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        226, 144, 32, 1),
-                                                    fontWeight:
-                                                        FontWeight.w700)),
-                                            content: Text(
-                                                "Se ha eliminado el empleo",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.w700)),
-                                            backgroundColor: Colors.white70,
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  deleteJob(job);
-                                                  Timer(Duration(seconds: 2),
-                                                      () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute<void>(
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                      return RegisteredJobs(
-                                                          company);
-                                                    }));
-                                                  });
-                                                },
-                                                child: Text(
-                                                  'Aceptar',
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Se eliminará éste empleo!",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(226, 144, 32, 1),
+                                        fontWeight: FontWeight.w700)),
+                                content: Text(
+                                    "¿Está seguro de eliminar éste empleo?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18)),
+                                backgroundColor: Colors.white70,
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Empleo eliminado",
                                                   style: TextStyle(
                                                       color: Color.fromRGBO(
-                                                          1, 167, 211, 1),
-                                                      fontSize: 22,
+                                                          226, 144, 32, 1),
                                                       fontWeight:
-                                                          FontWeight.w700),
+                                                          FontWeight.w700)),
+                                              content: Text(
+                                                  "Se ha eliminado el empleo",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              backgroundColor: Colors.white70,
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Job deletedJob = Job(
+                                                        id: job.id,
+                                                        puesto: job.puesto,
+                                                        idEmpresa:
+                                                            job.idEmpresa,
+                                                        descripcion:
+                                                            job.descripcion,
+                                                        formacionAcademica: job
+                                                            .formacionAcademica,
+                                                        experiencia:
+                                                            job.experiencia,
+                                                        conocimientos:
+                                                            job.conocimientos,
+                                                        aptitudes:
+                                                            job.aptitudes,
+                                                        modalidad:
+                                                            job.modalidad,
+                                                        numeroVacantes:
+                                                            job.numeroVacantes,
+                                                        estado: "Inactivo",
+                                                        v: job.v);
+                                                    editJob(deletedJob);
+                                                    Timer(Duration(seconds: 2),
+                                                        () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute<
+                                                                  void>(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return RegisteredJobs(
+                                                            company);
+                                                      }));
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    'Aceptar',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            1, 167, 211, 1),
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.white70),
                                                 ),
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.white70),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: Text(
-                                    'Sí',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(1, 167, 211, 1),
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: Text(
+                                      'Sí',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white70),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    'Cancelar',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(1, 167, 211, 1),
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w700),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(1, 167, 211, 1),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white70),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white70),
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: "${job.puesto}",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.0,
-                    color: Colors.black,
-                    fontFamily: 'PlaypenSans'),
-              ),
-              TextSpan(
-                text: " (${job.modalidad})",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20.0,
-                    color: Colors.black54,
-                    fontFamily: 'PlaypenSans'),
-              ),
-            ])),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: "Vacantes disponibles: ",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontFamily: 'PlaypenSans'),
-              ),
-              TextSpan(
-                text: "${job.numeroVacantes}",
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontFamily: 'PlaypenSans'),
-              ),
-            ])),
-            Text(
-              'Descripción general',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color.fromRGBO(0, 0, 0, 1),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  overflow: TextOverflow.clip),
-              maxLines: 3,
-            ),
-            Text(
-              '${job.descripcion}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                overflow: TextOverflow.clip,
-              ),
-              maxLines: 3,
-            ),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return JobPostulations(job, company);
-                  }));
-                },
-                child: Text(
-                  'Ver postulaciones',
-                  style: TextStyle(
-                      color: Color.fromRGBO(226, 144, 32, 1),
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700),
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                  ],
                 ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
               ),
-            )
-          ],
-        ),
-      ));
-      cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
+              RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                  text: "${job.puesto}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24.0,
+                      color: Colors.black,
+                      fontFamily: 'PlaypenSans'),
+                ),
+                TextSpan(
+                  text: " (${job.modalidad})",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20.0,
+                      color: Colors.black54,
+                      fontFamily: 'PlaypenSans'),
+                ),
+              ])),
+              RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                  text: "Vacantes disponibles: ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontFamily: 'PlaypenSans'),
+                ),
+                TextSpan(
+                  text: "${job.numeroVacantes}",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      fontFamily: 'PlaypenSans'),
+                ),
+              ])),
+              Text(
+                'Descripción general',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    overflow: TextOverflow.clip),
+                maxLines: 3,
+              ),
+              Text(
+                '${job.descripcion}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  overflow: TextOverflow.clip,
+                ),
+                maxLines: 3,
+              ),
+              Container(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                      return JobPostulations(job, company);
+                    }));
+                  },
+                  child: Text(
+                    'Ver postulaciones',
+                    style: TextStyle(
+                        color: Color.fromRGBO(226, 144, 32, 1),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                ),
+              )
+            ],
+          ),
+        ));
+        cRet.add(Padding(padding: EdgeInsets.only(top: 10)));
+      }
     }
   }
   if (cRet.isEmpty) {

@@ -362,7 +362,7 @@ List<Widget> Jobs(
   List<Widget> cRet = [];
   if (jobs != null) {
     for (Job job in jobs) {
-      if (int.tryParse(job.numeroVacantes) != 0) {
+      if (int.tryParse(job.numeroVacantes) != 0 && job.estado == "Activo") {
         cRet.add(Container(
           padding:
               EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
@@ -474,6 +474,7 @@ List<Widget> Jobs(
                                             idUsuario: user.id,
                                             idEmpleo: job.id,
                                             estado: "En espera",
+                                            estadoPostulacion: "Activo",
                                             fechaPostulacion:
                                                 DateTime.now().toLocal(),
                                             v: 0);

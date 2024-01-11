@@ -404,7 +404,7 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
   for (Postulation post in userPost!) {
     for (Job job in jobs!) {
       if (int.tryParse(job.numeroVacantes) != 0) {
-        if (post.idEmpleo == job.id) {
+        if (post.idEmpleo == job.id && post.estadoPostulacion == "Activo") {
           Company? comp;
           for (Company c in companies!) {
             if (c.id == job.idEmpresa) {
@@ -567,7 +567,21 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                               actions: [
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    deletePostulation(post);
+                                                    Postulation deletedPost =
+                                                        Postulation(
+                                                            id: post.id,
+                                                            idUsuario:
+                                                                post.idUsuario,
+                                                            idEmpleo:
+                                                                post.idEmpleo,
+                                                            estado: post.estado,
+                                                            estadoPostulacion:
+                                                                "Inactivo",
+                                                            fechaPostulacion: post
+                                                                .fechaPostulacion,
+                                                            v: post.v);
+                                                    editPostulation(
+                                                        deletedPost);
                                                     Timer(Duration(seconds: 2),
                                                         () {
                                                       Navigator.of(context).push(

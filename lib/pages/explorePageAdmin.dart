@@ -811,7 +811,7 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
                 onPressed: () {
                   Navigator.of(context).push(
                       MaterialPageRoute<void>(builder: (BuildContext context) {
-                    return CompanyProfileAdmin(loggedUser, c);
+                    return CompanyProfileAdmin(loggedUser, c, false);
                   }));
                 },
               ),

@@ -43,6 +43,7 @@ void createJob(Job job) async {
           "aptitudes": job.aptitudes,
           "modalidad": job.modalidad,
           "numeroVacantes": job.numeroVacantes,
+          "estado": job.estado
         });
   } catch (e) {
     print(e);
@@ -63,7 +64,8 @@ void editJob(Job job) async {
           "experiencia": job.experiencia,
           "aptitudes": job.aptitudes,
           "modalidad": job.modalidad,
-          "numeroVacantes": job.numeroVacantes
+          "numeroVacantes": job.numeroVacantes,
+          "estado": job.estado
         });
   } catch (e) {
     print(e);
