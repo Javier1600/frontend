@@ -1,10 +1,11 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print, unused_local_variable
+// ignore_for_file: non_constant_identifier_names, avoid_print, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
 import 'package:frontend/classes/users.dart';
+import 'package:image_picker/image_picker.dart';
 
 Future<List<User>> getAllUsers() async => http
         .get(Uri.parse('https://0vmlb023-8000.use2.devtunnels.ms/api/users'))
@@ -60,4 +61,35 @@ void editUser(User user) async {
   } catch (e) {
     print(e);
   }
+}
+
+void subirFoto(User user, XFile image) async {
+  var formData = http.MultipartRequest(
+      'PUT',
+      Uri.parse(
+          'https://0vmlb023-8000.use2.devtunnels.ms/api/user/foto/${user.id}'));
+  formData.files.add(await http.MultipartFile.fromPath('foto', image.path));
+  try {
+    final response = await formData.send();
+    if (response.statusCode == 200) {
+      print('Formulario enviado con éxito');
+    } else {
+      print(
+          'Error al enviar el formulario. Código de estado: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error de red: $error');
+  }
+}
+
+Future<String> getUserPhoto(idUser) async {
+  var response = await http.get(Uri.parse(
+      'https://0vmlb023-8000.use2.devtunnels.ms/api/user/foto/$idUser'));
+
+  return response.body
+      .replaceAll("{", "")
+      .replaceAll("}", "")
+      .replaceAll("\":", "")
+      .replaceAll("\"", "")
+      .replaceAll("foto", "");
 }
