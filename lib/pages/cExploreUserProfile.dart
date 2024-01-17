@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/pages/explorePageCompany.dart';
+import 'package:frontend/services/user.services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -151,10 +153,39 @@ class _userProfileCompanyState extends State<CompanyExploreUserProfile> {
                                                     ),
                                                     width: 170,
                                                     height: 170,
-                                                    child: Image(
-                                                      image: AssetImage(
-                                                          'assets/img/hombre.png'),
-                                                      fit: BoxFit.contain,
+                                                    child: FutureBuilder(
+                                                      future: getUserPhoto(
+                                                          widget.reqUser.id),
+                                                      builder:
+                                                          (BuildContext context,
+                                                              AsyncSnapshot
+                                                                  snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          UserPhoto
+                                                              profileImage =
+                                                              snapshot.data;
+                                                          return ClipOval(
+                                                              child:
+                                                                  Image.network(
+                                                            profileImage.foto,
+                                                            fit: BoxFit.cover,
+                                                          ));
+                                                        } else if (snapshot
+                                                            .hasError) {
+                                                          return ClipOval(
+                                                              child: Image(
+                                                            image: AssetImage(
+                                                                'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                            fit: BoxFit.contain,
+                                                          ));
+                                                        }
+                                                        return ClipOval(
+                                                            child: Image(
+                                                          image: AssetImage(
+                                                              'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                          fit: BoxFit.contain,
+                                                        ));
+                                                      },
                                                     ),
                                                   ),
                                                 ],

@@ -1,6 +1,10 @@
-// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
+// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously
+
+import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/pages/addCertificacion.dart';
 import 'package:frontend/pages/addWorkExperience.dart';
 import 'package:frontend/pages/adminPostulations.dart';
@@ -13,6 +17,8 @@ import 'package:frontend/pages/homePageAdmin.dart';
 import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/registeredSchools.dart';
 import 'package:frontend/pages/viewJobsUser.dart';
+import 'package:frontend/services/user.services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -85,6 +91,8 @@ class _AdminProfileState extends State<AdminProfile> {
   //variable que contiene la experiencia laboral del usuario
   late Future<List<WorkExperience>> workExp;
   late List<WorkExperience>? wEList = [];
+  File? imagen;
+  String imageUrl = '';
   @override
   void initState() {
     acadTraining = getUserAcadTraining(widget.loggedUser.id);
@@ -92,6 +100,31 @@ class _AdminProfileState extends State<AdminProfile> {
     schools = getAllSchools();
     workExp = getUserWorkExperiences(widget.loggedUser.id);
     super.initState();
+  }
+
+  Future setImage(int opction) async {
+    final picker = ImagePicker();
+    XFile? pickedFile;
+    if (opction == 1) {
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
+    setState(() {
+      pickedFile != null
+          ? {imagen = File(pickedFile.path)}
+          : print("Selecciona un archivo válido");
+    });
+
+    //Guardo la imagen en el server
+    subirFoto(widget.loggedUser, pickedFile!);
+    Navigator.of(context).pop();
+    Timer(Duration(seconds: 1), () {
+      Navigator.of(context)
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return AdminProfile(widget.loggedUser);
+      }));
+    });
   }
 
   @override
@@ -111,11 +144,44 @@ class _AdminProfileState extends State<AdminProfile> {
                     border: Border.all(color: Colors.black, width: 4.0)),
                 width: 200,
                 height: 200,
-                child: const ClipOval(
-                    child: Image(
-                  image: AssetImage('assets/img/hombre.png'),
-                  fit: BoxFit.contain,
-                )),
+                child: FutureBuilder(
+                  future: getUserPhoto(widget.loggedUser.id),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      UserPhoto profileImage = snapshot.data;
+                      return ClipOval(
+                          child: Image.network(
+                        profileImage.foto,
+                        fit: BoxFit.cover,
+                      ));
+                    } else if (snapshot.hasError) {
+                      return imagen == null
+                          ? ClipOval(
+                              child: Image(
+                              image: AssetImage(
+                                  'assets/img/ImagenUsuarioDefecto.jpg'),
+                              fit: BoxFit.contain,
+                            ))
+                          : ClipOval(
+                              child: Image.file(
+                              imagen!,
+                              fit: BoxFit.cover,
+                            ));
+                    }
+                    return imagen == null
+                        ? ClipOval(
+                            child: Image(
+                            image: AssetImage(
+                                'assets/img/ImagenUsuarioDefecto.jpg'),
+                            fit: BoxFit.contain,
+                          ))
+                        : ClipOval(
+                            child: Image.file(
+                            imagen!,
+                            fit: BoxFit.cover,
+                          ));
+                  },
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 5.0),
@@ -352,15 +418,108 @@ class _AdminProfileState extends State<AdminProfile> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 30),
                                                     decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.black,
+                                                            width: 4.0)),
+                                                    width: 200,
+                                                    height: 200,
+                                                    child: FutureBuilder(
+                                                      future: getUserPhoto(
+                                                          widget.loggedUser.id),
+                                                      builder:
+                                                          (BuildContext context,
+                                                              AsyncSnapshot
+                                                                  snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          UserPhoto
+                                                              profileImage =
+                                                              snapshot.data;
+                                                          return ClipOval(
+                                                              child:
+                                                                  Image.network(
+                                                            profileImage.foto,
+                                                            fit: BoxFit.cover,
+                                                          ));
+                                                        } else if (snapshot
+                                                            .hasError) {
+                                                          return imagen == null
+                                                              ? ClipOval(
+                                                                  child: Image(
+                                                                  image: AssetImage(
+                                                                      'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                                  fit: BoxFit
+                                                                      .contain,
+                                                                ))
+                                                              : ClipOval(
+                                                                  child: Image
+                                                                      .file(
+                                                                  imagen!,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ));
+                                                        }
+                                                        return imagen == null
+                                                            ? ClipOval(
+                                                                child: Image(
+                                                                image: AssetImage(
+                                                                    'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                              ))
+                                                            : ClipOval(
+                                                                child:
+                                                                    Image.file(
+                                                                imagen!,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ));
+                                                      },
                                                     ),
-                                                    width: 170,
-                                                    height: 170,
-                                                    child: Image(
-                                                      image: AssetImage(
-                                                          'assets/img/hombre.png'),
-                                                      fit: BoxFit.contain,
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.all(8),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            ElevatedButton(
+                                                                onPressed: () =>
+                                                                    {
+                                                                      AlertaFoto(
+                                                                          context)
+                                                                    },
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.edit_square,
+                                                                            color:
+                                                                                Colors.black,
+                                                                          ),
+                                                                          Padding(
+                                                                              padding: EdgeInsets.all(5)),
+                                                                          Text(
+                                                                              "Editar imagen",
+                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700))
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
@@ -949,6 +1108,87 @@ class _AdminProfileState extends State<AdminProfile> {
                 ],
               ),
             ],
+          );
+        });
+  }
+  
+  AlertaFoto(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setImage(1);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Tomar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.camera_alt_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setImage(2);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Seleccionar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.image_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         });
   }

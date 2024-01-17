@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:frontend/classes/users.dart';
@@ -82,14 +83,14 @@ void subirFoto(User user, XFile image) async {
   }
 }
 
-Future<String> getUserPhoto(idUser) async {
-  var response = await http.get(Uri.parse(
-      'https://0vmlb023-8000.use2.devtunnels.ms/api/user/foto/$idUser'));
-
-  return response.body
-      .replaceAll("{", "")
-      .replaceAll("}", "")
-      .replaceAll("\":", "")
-      .replaceAll("\"", "")
-      .replaceAll("foto", "");
-}
+Future<UserPhoto> getUserPhoto(userId) async => http
+        .get(Uri.parse(
+            'https://0vmlb023-8000.use2.devtunnels.ms/api/user/foto/$userId'))
+        .then((res) {
+      if (res.statusCode == 200) {
+        String body = utf8.decode(res.bodyBytes);
+        return userPhotoFromJson(body);
+      } else {
+        throw Exception('Conexión fallida');
+      }
+    });

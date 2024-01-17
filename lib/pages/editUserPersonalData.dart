@@ -114,7 +114,7 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                   if (widget.fromAdminUser) {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
                         builder: (BuildContext context) {
-                      return AdminUserData(widget.loggedUser, widget.reqUser);
+                      return AdminUserData(widget.loggedUser, editedUser);
                     }));
                   } else if (widget.fromAdminProfile) {
                     Navigator.of(context).push(MaterialPageRoute<Null>(
@@ -477,10 +477,6 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                             if (ValidatePassword(password)) {
                                               //Verifico la longitud de la contraseña
                                               if (password.length >= 8) {
-                                                String encryptedPassword = md5
-                                                    .convert(
-                                                        utf8.encode(password))
-                                                    .toString();
                                                 if (isMale) {
                                                   sexo = 'Masculino';
                                                 } else {
@@ -501,9 +497,8 @@ class EditUserPersonalDataState extends State<EditUserPersonalData> {
                                                     estado:
                                                         widget.reqUser.estado,
                                                     usuario: usuario,
-                                                    password: encryptedPassword,
-                                                    confirmPassword:
-                                                        encryptedPassword,
+                                                    password: password,
+                                                    confirmPassword: password,
                                                     v: 0);
                                                 print(
                                                     '${editedUser.fechaNacimiento.toIso8601String()} ');

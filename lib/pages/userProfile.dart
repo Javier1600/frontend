@@ -1,9 +1,9 @@
-// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation
+// ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use, use_build_context_synchronously, prefer_interpolation_to_compose_strings
 
+import 'dart:async';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/pages/addCertificacion.dart';
 import 'package:frontend/pages/addWorkExperience.dart';
 import 'package:frontend/pages/editDeleteAcadTraining.dart';
@@ -98,33 +98,7 @@ class _userProfileState extends State<userProfile> {
     certifications = getUserCertifications(widget.loggedUser.id);
     schools = getAllSchools();
     workExp = getUserWorkExperiences(widget.loggedUser.id);
-    _fetchImageUrl();
     super.initState();
-  }
-
-  Future<void> _fetchImageUrl() async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://0vmlb023-8000.use2.devtunnels.ms/api/user/foto/${widget.loggedUser.id}'));
-
-      if (response.statusCode == 200) {
-        setState(() {
-          imageUrl = "https://0vmlb023-8000.use2.devtunnels.ms/" +
-              "foto" +
-              response.body
-                  .replaceAll("{", "")
-                  .replaceAll("}", "")
-                  .replaceAll("\":", "")
-                  .replaceAll("\"", "")
-                  .split("foto")[2];
-          print(imageUrl);
-        });
-      } else {
-        print('Error al obtener la URL de la imagen: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error de red: $error');
-    }
   }
 
   Future setImage(int opction) async {
@@ -143,8 +117,13 @@ class _userProfileState extends State<userProfile> {
 
     //Guardo la imagen en el server
     subirFoto(widget.loggedUser, pickedFile!);
-
     Navigator.of(context).pop();
+    Timer(Duration(seconds: 1), () {
+      Navigator.of(context)
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return userProfile(widget.loggedUser);
+      }));
+    });
   }
 
   @override
@@ -157,7 +136,7 @@ class _userProfileState extends State<userProfile> {
           child: Container(
             color: Colors.white,
             child: Column(children: [
-              imageUrl.isNotEmpty
+              imagen == null
                   ? Container(
                       margin: const EdgeInsets.only(top: 30),
                       decoration: BoxDecoration(
@@ -165,13 +144,45 @@ class _userProfileState extends State<userProfile> {
                           border: Border.all(color: Colors.black, width: 4.0)),
                       width: 200,
                       height: 200,
-                      child: ClipOval(
-                          child: CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      )),
+                      child: FutureBuilder(
+                        future: getUserPhoto(widget.loggedUser.id),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            UserPhoto profileImage = snapshot.data;
+                            return ClipOval(
+                                child: Image.network(
+                              profileImage.foto,
+                              fit: BoxFit.cover,
+                            ));
+                          } else if (snapshot.hasError) {
+                            return imagen == null
+                                ? ClipOval(
+                                    child: Image(
+                                    image: AssetImage(
+                                        'assets/img/ImagenUsuarioDefecto.jpg'),
+                                    fit: BoxFit.contain,
+                                  ))
+                                : ClipOval(
+                                    child: Image.file(
+                                    imagen!,
+                                    fit: BoxFit.cover,
+                                  ));
+                          }
+                          return imagen == null
+                              ? ClipOval(
+                                  child: Image(
+                                  image: AssetImage(
+                                      'assets/img/ImagenUsuarioDefecto.jpg'),
+                                  fit: BoxFit.contain,
+                                ))
+                              : ClipOval(
+                                  child: Image.file(
+                                  imagen!,
+                                  fit: BoxFit.cover,
+                                ));
+                        },
+                      ),
                     )
                   : Container(
                       margin: const EdgeInsets.only(top: 30),
@@ -380,136 +391,88 @@ class _userProfileState extends State<userProfile> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  imagen == null
-                                                      ? Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  top: 30),
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  width: 4.0)),
-                                                          width: 200,
-                                                          height: 200,
-                                                          child: const ClipOval(
-                                                              child: Image(
-                                                            image: AssetImage(
-                                                                'assets/img/ImagenUsuarioDefecto.jpg'),
-                                                            fit: BoxFit.contain,
-                                                          )),
-                                                        )
-                                                      : Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  top: 30),
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  width: 4.0)),
-                                                          width: 200,
-                                                          height: 200,
-                                                          child: ClipOval(
-                                                              child: Image.file(
-                                                            imagen!,
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 30),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color: Colors.black,
+                                                            width: 4.0)),
+                                                    width: 200,
+                                                    height: 200,
+                                                    child: FutureBuilder(
+                                                      future: getUserPhoto(
+                                                          widget.loggedUser.id),
+                                                      builder:
+                                                          (BuildContext context,
+                                                              AsyncSnapshot
+                                                                  snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          UserPhoto
+                                                              profileImage =
+                                                              snapshot.data;
+                                                          return ClipOval(
+                                                              child:
+                                                                  Image.network(
+                                                            profileImage.foto,
                                                             fit: BoxFit.cover,
-                                                          )),
-                                                        ),
-                                                  imagen != null
-                                                      ? Padding(
-                                                          padding:
-                                                              EdgeInsets.all(8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () =>
-                                                                              {
-                                                                                showDialog(
-                                                                                    context: context,
-                                                                                    builder: (BuildContext context) {
-                                                                                      return AlertDialog(
-                                                                                        contentPadding: EdgeInsets.all(0),
-                                                                                        content: SingleChildScrollView(
-                                                                                          child: Column(
-                                                                                            children: [
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setImage(1);
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Tomar una foto",
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      Icon(Icons.camera_alt_outlined)
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setImage(2);
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Seleccionar una foto",
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      Icon(Icons.image_outlined)
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  Navigator.of(context).pop();
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Cancelar",
-                                                                                                          textAlign: TextAlign.center,
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      );
-                                                                                    })
-                                                                              },
+                                                          ));
+                                                        } else if (snapshot
+                                                            .hasError) {
+                                                          return imagen == null
+                                                              ? ClipOval(
+                                                                  child: Image(
+                                                                  image: AssetImage(
+                                                                      'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                                  fit: BoxFit
+                                                                      .contain,
+                                                                ))
+                                                              : ClipOval(
+                                                                  child: Image
+                                                                      .file(
+                                                                  imagen!,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ));
+                                                        }
+                                                        return imagen == null
+                                                            ? ClipOval(
+                                                                child: Image(
+                                                                image: AssetImage(
+                                                                    'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                              ))
+                                                            : ClipOval(
+                                                                child:
+                                                                    Image.file(
+                                                                imagen!,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ));
+                                                      },
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.all(8),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            ElevatedButton(
+                                                                onPressed: () =>
+                                                                    {
+                                                                      AlertaFoto(
+                                                                          context)
+                                                                    },
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
                                                                       child:
                                                                           Row(
                                                                         children: [
@@ -521,120 +484,18 @@ class _userProfileState extends State<userProfile> {
                                                                           Padding(
                                                                               padding: EdgeInsets.all(5)),
                                                                           Text(
-                                                                              "Cambiar imagen",
-                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700)),
+                                                                              "Editar imagen",
+                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700))
                                                                         ],
-                                                                      )),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      : Padding(
-                                                          padding:
-                                                              EdgeInsets.all(8),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () =>
-                                                                              {
-                                                                                showDialog(
-                                                                                    context: context,
-                                                                                    builder: (BuildContext context) {
-                                                                                      return AlertDialog(
-                                                                                        contentPadding: EdgeInsets.all(0),
-                                                                                        content: SingleChildScrollView(
-                                                                                          child: Column(
-                                                                                            children: [
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setImage(1);
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Tomar una foto",
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      Icon(Icons.camera_alt_outlined)
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setImage(2);
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Seleccionar una foto",
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                      Icon(Icons.image_outlined)
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  Navigator.of(context).pop();
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  padding: EdgeInsets.all(20),
-                                                                                                  child: Row(
-                                                                                                    children: [
-                                                                                                      Expanded(
-                                                                                                        child: Text(
-                                                                                                          "Cancelar",
-                                                                                                          textAlign: TextAlign.center,
-                                                                                                          style: TextStyle(fontSize: 16),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      );
-                                                                                    })
-                                                                              },
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                              Icons.image_search,
-                                                                              color: Colors.black),
-                                                                          Padding(
-                                                                              padding: EdgeInsets.all(5)),
-                                                                          Text(
-                                                                              "Agregar imagen",
-                                                                              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w700)),
-                                                                        ],
-                                                                      )),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                          ],
                                                         ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -1221,6 +1082,87 @@ class _userProfileState extends State<userProfile> {
                 ],
               ),
             ],
+          );
+        });
+  }
+
+  AlertaFoto(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setImage(1);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Tomar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.camera_alt_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setImage(2);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Seleccionar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.image_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         });
   }

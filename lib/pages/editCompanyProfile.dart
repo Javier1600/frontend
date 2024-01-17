@@ -369,9 +369,6 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                               .toString() !=
                                           widget.reqCompany.password) {
                                         if (password == confirmPassword) {
-                                          String encryptedPassword = md5
-                                              .convert(utf8.encode(password))
-                                              .toString();
                                           Company editedCompany = Company(
                                               id: widget.reqCompany.id,
                                               nombreEmpresa: nombreEmpresa,
@@ -383,9 +380,8 @@ class _EditCompanyProfileState extends State<EditCompanyProfile> {
                                               rol: rol,
                                               estado: widget.reqCompany.estado,
                                               usuario: usuario,
-                                              password: encryptedPassword,
-                                              confirmPassword:
-                                                  encryptedPassword,
+                                              password: password,
+                                              confirmPassword: password,
                                               v: 0);
                                           editCompany(editedCompany);
                                           EditAlert(

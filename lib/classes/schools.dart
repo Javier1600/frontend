@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final school = schoolFromJson(jsonString);
-
 import 'dart:convert';
 
 List<School> schoolFromJson(String str) =>

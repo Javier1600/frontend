@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, avoid_unnecessary_containers, unnecessary_string_interpolations, prefer_const_literals_to_create_immutables, non_constant_identifier_names, avoid_print, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/pages/addCertificacion.dart';
 import 'package:frontend/pages/addWorkExperience.dart';
 import 'package:frontend/pages/editDeleteAcadTraining.dart';
@@ -9,6 +10,7 @@ import 'package:frontend/pages/editDeleteWorkExperience.dart';
 import 'package:frontend/pages/editUserPersonalData.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
 import 'package:frontend/pages/registeredSchools.dart';
+import 'package:frontend/services/user.services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:frontend/classes/acadTrainings.dart';
@@ -157,10 +159,39 @@ class _AdminUserDataState extends State<AdminUserData> {
                                                     ),
                                                     width: 170,
                                                     height: 170,
-                                                    child: Image(
-                                                      image: AssetImage(
-                                                          'assets/img/hombre.png'),
-                                                      fit: BoxFit.contain,
+                                                    child: FutureBuilder(
+                                                      future: getUserPhoto(
+                                                          widget.reqUser.id),
+                                                      builder:
+                                                          (BuildContext context,
+                                                              AsyncSnapshot
+                                                                  snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          UserPhoto
+                                                              profileImage =
+                                                              snapshot.data;
+                                                          return ClipOval(
+                                                              child:
+                                                                  Image.network(
+                                                            profileImage.foto,
+                                                            fit: BoxFit.cover,
+                                                          ));
+                                                        } else if (snapshot
+                                                            .hasError) {
+                                                          return ClipOval(
+                                                              child: Image(
+                                                            image: AssetImage(
+                                                                'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                            fit: BoxFit.contain,
+                                                          ));
+                                                        }
+                                                        return ClipOval(
+                                                            child: Image(
+                                                          image: AssetImage(
+                                                              'assets/img/ImagenUsuarioDefecto.jpg'),
+                                                          fit: BoxFit.contain,
+                                                        ));
+                                                      },
                                                     ),
                                                   ),
                                                 ],

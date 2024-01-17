@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/uExploreCompanyProfile.dart';
 import 'package:frontend/pages/homePageUser.dart';
@@ -446,11 +447,30 @@ List<Widget> Users(List<User>? users, User loggedUser, context) {
                   border: Border.all(color: Colors.black, width: 4.0)),
               width: 100,
               height: 100,
-              child: const ClipOval(
-                  child: Image(
-                image: AssetImage('assets/img/hombre.png'),
-                fit: BoxFit.contain,
-              )),
+              child: FutureBuilder(
+                future: getUserPhoto(u.id),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    UserPhoto profileImage = snapshot.data;
+                    return ClipOval(
+                        child: Image.network(
+                      profileImage.foto,
+                      fit: BoxFit.cover,
+                    ));
+                  } else if (snapshot.hasError) {
+                    return ClipOval(
+                        child: Image(
+                      image: AssetImage('assets/img/ImagenUsuarioDefecto.jpg'),
+                      fit: BoxFit.contain,
+                    ));
+                  }
+                  return ClipOval(
+                      child: Image(
+                    image: AssetImage('assets/img/ImagenUsuarioDefecto.jpg'),
+                    fit: BoxFit.contain,
+                  ));
+                },
+              ),
             ),
             Text(
               "${u.nombre} ${u.apellido}",
@@ -508,11 +528,30 @@ List<Widget> Companies(List<Company>? companies, User loggedUser, context) {
                   border: Border.all(color: Colors.black, width: 4.0)),
               width: 100,
               height: 100,
-              child: const ClipOval(
-                  child: Image(
-                image: AssetImage('assets/img/empresa.png'),
-                fit: BoxFit.contain,
-              )),
+              child: FutureBuilder(
+                future: getCompanyPhoto(c.id),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    UserPhoto profileImage = snapshot.data;
+                    return ClipOval(
+                        child: Image.network(
+                      profileImage.foto,
+                      fit: BoxFit.cover,
+                    ));
+                  } else if (snapshot.hasError) {
+                    return ClipOval(
+                        child: Image(
+                      image: AssetImage('assets/img/ImagenUsuarioDefecto.jpg'),
+                      fit: BoxFit.contain,
+                    ));
+                  }
+                  return ClipOval(
+                      child: Image(
+                    image: AssetImage('assets/img/ImagenUsuarioDefecto.jpg'),
+                    fit: BoxFit.contain,
+                  ));
+                },
+              ),
             ),
             Text(
               c.nombreEmpresa,

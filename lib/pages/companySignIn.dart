@@ -1,6 +1,4 @@
 // ignore_for_file: camel_case_types, file_names, prefer_const_constructors, avoid_print, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, sort_child_properties_last, non_constant_identifier_names
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
@@ -365,10 +363,6 @@ class _companySignInState extends State<companySignIn> {
                                         if (password == confirmPassword) {
                                           if (ValidatePassword(password)) {
                                             if (password.length >= 8) {
-                                              String encryptedPassword = md5
-                                                  .convert(
-                                                      utf8.encode(password))
-                                                  .toString();
                                               Company newCompany = Company(
                                                   id: '',
                                                   nombreEmpresa: nombreEmpresa,
@@ -380,9 +374,8 @@ class _companySignInState extends State<companySignIn> {
                                                   rol: rol,
                                                   estado: "Activo",
                                                   usuario: usuario,
-                                                  password: encryptedPassword,
-                                                  confirmPassword:
-                                                      encryptedPassword,
+                                                  password: password,
+                                                  confirmPassword: password,
                                                   v: 0);
                                               createcompany(newCompany);
                                               signInAlert(

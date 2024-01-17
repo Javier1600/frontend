@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/adminJobs.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
+import 'package:frontend/services/company.services.dart';
 
 class CompanyProfileAdmin extends StatefulWidget {
   User user;
@@ -60,9 +62,32 @@ class _CompanyProfileAdminState extends State<CompanyProfileAdmin> {
                             ),
                             width: 150,
                             height: 150,
-                            child: Image(
-                              image: AssetImage('assets/img/empresa.png'),
-                              fit: BoxFit.contain,
+                            child: FutureBuilder(
+                              future: getCompanyPhoto(widget.reqCompany.id),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  UserPhoto profileImage = snapshot.data;
+                                  return ClipOval(
+                                      child: Image.network(
+                                    profileImage.foto,
+                                    fit: BoxFit.cover,
+                                  ));
+                                } else if (snapshot.hasError) {
+                                  return ClipOval(
+                                      child: Image(
+                                    image: AssetImage(
+                                        'assets/img/ImagenUsuarioDefecto.jpg'),
+                                    fit: BoxFit.contain,
+                                  ));
+                                }
+                                return ClipOval(
+                                    child: Image(
+                                  image: AssetImage(
+                                      'assets/img/ImagenUsuarioDefecto.jpg'),
+                                  fit: BoxFit.contain,
+                                ));
+                              },
                             ),
                           ),
                         ),

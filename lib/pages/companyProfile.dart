@@ -1,12 +1,18 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_const_constructors, unnecessary_string_interpolations, avoid_unnecessary_containers, prefer_void_to_null, prefer_const_literals_to_create_immutables, deprecated_member_use
+// ignore_for_file: file_names, must_be_immutable, prefer_const_constructors, unnecessary_string_interpolations, avoid_unnecessary_containers, prefer_void_to_null, prefer_const_literals_to_create_immutables, deprecated_member_use, use_build_context_synchronously, avoid_print, non_constant_identifier_names
+
+import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/companies.dart';
+import 'package:frontend/classes/userPhoto.dart';
 import 'package:frontend/pages/addViewJobs.dart';
 import 'package:frontend/pages/editCompanyProfile.dart';
 import 'package:frontend/pages/explorePageCompany.dart';
 import 'package:frontend/pages/homePageCompany.dart';
 import 'package:frontend/pages/loginUser.dart';
+import 'package:frontend/services/company.services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CompanyProfile extends StatefulWidget {
   Company loggedCompany;
@@ -17,6 +23,34 @@ class CompanyProfile extends StatefulWidget {
 }
 
 class _CompanyProfileState extends State<CompanyProfile> {
+  File? imagen;
+  String imageUrl = '';
+
+  Future setImage(int opction) async {
+    final picker = ImagePicker();
+    XFile? pickedFile;
+    if (opction == 1) {
+      pickedFile = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
+    setState(() {
+      pickedFile != null
+          ? {imagen = File(pickedFile.path)}
+          : print("Selecciona un archivo válido");
+    });
+
+    //Guardo la imagen en el server
+    subirFoto(widget.loggedCompany, pickedFile!);
+    Navigator.of(context).pop();
+    Timer(Duration(seconds: 1), () {
+      Navigator.of(context)
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return CompanyProfile(widget.loggedCompany);
+      }));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -34,9 +68,43 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 ),
                 width: 200,
                 height: 200,
-                child: Image(
-                  image: AssetImage('assets/img/empresa.png'),
-                  fit: BoxFit.contain,
+                child: FutureBuilder(
+                  future: getCompanyPhoto(widget.loggedCompany.id),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      UserPhoto profileImage = snapshot.data;
+                      return ClipOval(
+                          child: Image.network(
+                        profileImage.foto,
+                        fit: BoxFit.cover,
+                      ));
+                    } else if (snapshot.hasError) {
+                      return imagen == null
+                          ? ClipOval(
+                              child: Image(
+                              image: AssetImage(
+                                  'assets/img/ImagenUsuarioDefecto.jpg'),
+                              fit: BoxFit.contain,
+                            ))
+                          : ClipOval(
+                              child: Image.file(
+                              imagen!,
+                              fit: BoxFit.cover,
+                            ));
+                    }
+                    return imagen == null
+                        ? ClipOval(
+                            child: Image(
+                            image: AssetImage(
+                                'assets/img/ImagenUsuarioDefecto.jpg'),
+                            fit: BoxFit.contain,
+                          ))
+                        : ClipOval(
+                            child: Image.file(
+                            imagen!,
+                            fit: BoxFit.cover,
+                          ));
+                  },
                 ),
               ),
               Container(
@@ -219,15 +287,94 @@ class _CompanyProfileState extends State<CompanyProfile> {
                             ),
                             width: 150,
                             height: 150,
-                            child: Image(
-                              image: AssetImage('assets/img/empresa.png'),
-                              fit: BoxFit.contain,
+                            child: FutureBuilder(
+                              future: getCompanyPhoto(widget.loggedCompany.id),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  UserPhoto profileImage = snapshot.data;
+                                  return ClipOval(
+                                      child: Image.network(
+                                    profileImage.foto,
+                                    fit: BoxFit.cover,
+                                  ));
+                                } else if (snapshot.hasError) {
+                                  return imagen == null
+                                      ? ClipOval(
+                                          child: Image(
+                                          image: AssetImage(
+                                              'assets/img/ImagenUsuarioDefecto.jpg'),
+                                          fit: BoxFit.contain,
+                                        ))
+                                      : ClipOval(
+                                          child: Image.file(
+                                          imagen!,
+                                          fit: BoxFit.cover,
+                                        ));
+                                }
+                                return imagen == null
+                                    ? ClipOval(
+                                        child: Image(
+                                        image: AssetImage(
+                                            'assets/img/ImagenUsuarioDefecto.jpg'),
+                                        fit: BoxFit.contain,
+                                      ))
+                                    : ClipOval(
+                                        child: Image.file(
+                                        imagen!,
+                                        fit: BoxFit.cover,
+                                      ));
+                              },
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () => {AlertaFoto(context)},
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.edit_square,
+                                                  color: Colors.black,
+                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.all(5)),
+                                                Text("Editar imagen",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w700))
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          widget.loggedCompany.nombreEmpresa,
+                          style: TextStyle(
+                              color: Color.fromRGBO(1, 167, 211, 1),
+                              fontSize: 36,
+                              fontWeight: FontWeight.w700),
+                          maxLines: 3,
+                        ),
                         Container(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
                                 icon: Icon(
@@ -245,14 +392,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
                               ),
                             ],
                           ),
-                        ),
-                        Text(
-                          widget.loggedCompany.nombreEmpresa,
-                          style: TextStyle(
-                              color: Color.fromRGBO(1, 167, 211, 1),
-                              fontSize: 36,
-                              fontWeight: FontWeight.w700),
-                          maxLines: 3,
                         ),
                         Container(
                           padding: EdgeInsets.only(top: 10.0),
@@ -423,6 +562,87 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 ],
               ),
             ],
+          );
+        });
+  }
+
+  AlertaFoto(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(0),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setImage(1);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Tomar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.camera_alt_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setImage(2);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.grey))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Seleccionar una foto",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                          Icon(Icons.image_outlined)
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Cancelar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         });
   }
