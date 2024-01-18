@@ -45,6 +45,7 @@ dependencies:
   path_provider:
   dio:
   cached_network_image:
+  fl_chart:
 
 dev_dependencies:
   flutter_test:

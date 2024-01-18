@@ -5,6 +5,7 @@ import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/adminJobs.dart';
 import 'package:frontend/pages/adminPostulations.dart';
 import 'package:frontend/pages/adminProfile.dart';
+import 'package:frontend/pages/adminReports.dart';
 import 'package:frontend/pages/adminSchools.dart';
 import 'package:frontend/pages/explorePageAdmin.dart';
 import 'package:frontend/pages/loginUser.dart';
@@ -337,6 +338,67 @@ class _homePageAdminState extends State<homePageAdmin> {
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(left: 8)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<Null>(
+                            builder: (BuildContext context) {
+                          return AdminReports(
+                            widget.loggedUser,
+                          );
+                        }));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.28,
+                        padding: EdgeInsets.only(
+                            left: 16.0, right: 16.0, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                                color: Color.fromRGBO(1, 167, 211, 1),
+                                width: 4.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(8.0, 8.0),
+                                  blurRadius: 15.0)
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(1, 167, 211, 1),
+                              ),
+                              width: 100,
+                              height: 100,
+                              child: Image(
+                                image: AssetImage('assets/img/reportes.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "Cerrar sesión",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 17.0,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     GestureDetector(
                       onTap: () {
                         _onBack(context);
