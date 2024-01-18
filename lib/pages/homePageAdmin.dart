@@ -382,7 +382,7 @@ class _homePageAdminState extends State<homePageAdmin> {
                             ),
                             Container(
                               child: Text(
-                                "Cerrar sesión",
+                                "Reportes",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 17.0,
