@@ -642,9 +642,7 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.45,
-                    padding: EdgeInsets.only(
-                        left: 16.0, right: 16.0, top: 10, bottom: 10),
+                    height: MediaQuery.of(context).size.height * 0.55,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8.0),
@@ -656,18 +654,18 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               offset: Offset(8.0, 8.0),
                               blurRadius: 15.0)
                         ]),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 200,
-                          height: 200,
+                          width: 225,
+                          height: 225,
                           child: PieChart(PieChartData(
                             sections: [
                               PieChartSectionData(
                                 color: Colors.green,
                                 value: accepted,
-                                radius: 60,
+                                radius: 80,
                                 title: accepted.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
@@ -677,7 +675,7 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               PieChartSectionData(
                                 color: Colors.red,
                                 value: denied,
-                                radius: 60,
+                                radius: 80,
                                 title: denied.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
@@ -687,7 +685,7 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               PieChartSectionData(
                                 color: Colors.blue,
                                 value: waiting,
-                                radius: 60,
+                                radius: 80,
                                 title: waiting.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
@@ -704,9 +702,24 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _legendItem('Aceptadas', Colors.green),
-                              _legendItem('En espera', Colors.blue),
-                              _legendItem('Negadas', Colors.red),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem('Aceptadas', Colors.green),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem('En espera', Colors.blue),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem('Negadas', Colors.red),
+                                ],
+                              ),
                             ],
                           ),
                         )
@@ -808,17 +821,44 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                           )),
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 100, top: 10),
+                          padding: EdgeInsets.only(top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _legendItem('Edad fuera de rango', Colors.purple),
-                              _legendItem('Formación académica', Colors.red),
-                              _legendItem(
-                                  'Plaza ya no disponible', Colors.blue),
-                              _legendItem(
-                                  'Información incompleta', Colors.orange),
-                              _legendItem('Otros', Colors.grey),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem(
+                                      'Edad fuera de rango', Colors.purple),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem(
+                                      'Formación académica', Colors.red),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem(
+                                      'Plaza ya no disponible', Colors.blue),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem(
+                                      'Información incompleta', Colors.orange),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  _legendItem('Otros', Colors.grey),
+                                ],
+                              ),
                             ],
                           ),
                         )
@@ -839,13 +879,13 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
 Widget _legendItem(String label, Color color) {
   return Row(
     children: [
+      Text(label),
+      SizedBox(width: 5),
       Container(
         width: 16,
         height: 16,
         color: color,
       ),
-      SizedBox(width: 5),
-      Text(label),
     ],
   );
 }
