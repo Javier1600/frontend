@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, deprecated_member_use, prefer_const_literals_to_create_immutables
+// ignore_for_file: file_names, must_be_immutable, prefer_const_constructors, prefer_void_to_null, deprecated_member_use, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
@@ -435,6 +435,11 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
     List<Postulation>? postulations, context) {
   List<Widget> ret = [];
   int uCounter = 0, cCounter = 0;
+  double ageCounter = 0,
+      acadCounter = 0,
+      jobClosedCounter = 0,
+      infoCounter = 0,
+      otherCounter = 0;
   double waiting = 0, accepted = 0, denied = 0;
   for (int i = 0; i < users!.length; i++) {
     uCounter++;
@@ -448,6 +453,20 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
         : post.estado == "Aceptada"
             ? accepted++
             : denied++;
+  }
+
+  for (var post in postulations) {
+    if (post.estado == "Negada") {
+      post.motivoRechazo.contains("Edad")
+          ? ageCounter++
+          : post.motivoRechazo.contains("académica")
+              ? acadCounter++
+              : post.motivoRechazo.contains("disponible")
+                  ? jobClosedCounter++
+                  : post.motivoRechazo.contains("Información")
+                      ? infoCounter++
+                      : otherCounter++;
+    }
   }
   ret.add(Center(
     child: Column(
@@ -711,7 +730,7 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                   Padding(padding: EdgeInsets.only(top: 10)),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.6,
                     padding: EdgeInsets.only(
                         left: 16.0, right: 16.0, top: 10, bottom: 10),
                     decoration: BoxDecoration(
@@ -725,19 +744,19 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               offset: Offset(8.0, 8.0),
                               blurRadius: 15.0)
                         ]),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 200,
-                          height: 200,
+                          width: 225,
+                          height: 225,
                           child: PieChart(PieChartData(
                             sections: [
                               PieChartSectionData(
-                                color: Colors.green,
-                                value: accepted,
-                                radius: 60,
-                                title: accepted.toStringAsFixed(0),
+                                color: Colors.purple,
+                                value: ageCounter,
+                                radius: 80,
+                                title: ageCounter.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -745,9 +764,9 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               ),
                               PieChartSectionData(
                                 color: Colors.red,
-                                value: denied,
-                                radius: 60,
-                                title: denied.toStringAsFixed(0),
+                                value: acadCounter,
+                                radius: 80,
+                                title: acadCounter.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -755,9 +774,29 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                               ),
                               PieChartSectionData(
                                 color: Colors.blue,
-                                value: waiting,
-                                radius: 60,
-                                title: waiting.toStringAsFixed(0),
+                                value: jobClosedCounter,
+                                radius: 80,
+                                title: jobClosedCounter.toStringAsFixed(0),
+                                titleStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xffffffff)),
+                              ),
+                              PieChartSectionData(
+                                color: Colors.grey,
+                                value: otherCounter,
+                                radius: 80,
+                                title: otherCounter.toStringAsFixed(0),
+                                titleStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xffffffff)),
+                              ),
+                              PieChartSectionData(
+                                color: Colors.orange,
+                                value: infoCounter,
+                                radius: 80,
+                                title: infoCounter.toStringAsFixed(0),
                                 titleStyle: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -769,13 +808,17 @@ List<Widget> reports(List<User>? users, List<Company>? companies,
                           )),
                         ),
                         Container(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left: 100, top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _legendItem('Aceptadas', Colors.green),
-                              _legendItem('En espera', Colors.blue),
-                              _legendItem('Negadas', Colors.red),
+                              _legendItem('Edad fuera de rango', Colors.purple),
+                              _legendItem('Formación académica', Colors.red),
+                              _legendItem(
+                                  'Plaza ya no disponible', Colors.blue),
+                              _legendItem(
+                                  'Información incompleta', Colors.orange),
+                              _legendItem('Otros', Colors.grey),
                             ],
                           ),
                         )

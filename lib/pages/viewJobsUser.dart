@@ -474,6 +474,7 @@ List<Widget> Jobs(
                                             idUsuario: user.id,
                                             idEmpleo: job.id,
                                             estado: "En espera",
+                                            motivoRechazo: "",
                                             estadoPostulacion: "Activo",
                                             fechaPostulacion:
                                                 DateTime.now().toLocal(),
@@ -508,7 +509,7 @@ List<Widget> Jobs(
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
-                                                        return homePageUser(
+                                                        return UserPostulations(
                                                             user);
                                                       }));
                                                     },
@@ -526,6 +527,9 @@ List<Widget> Jobs(
                                                             backgroundColor:
                                                                 Colors.white70),
                                                   ),
+                                                  Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 10)),
                                                   ElevatedButton(
                                                     onPressed: () {
                                                       Navigator.of(context).push(

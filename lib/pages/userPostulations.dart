@@ -485,6 +485,32 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                         fontWeight: FontWeight.w700),
                   ),
                 ])),
+                post.estado == "Negada"
+                    ? Container(
+                        child: Column(children: [
+                          Text(
+                            'Motivo de rechazo:',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 1),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.clip),
+                            maxLines: 3,
+                          ),
+                          Text(
+                            post.motivoRechazo,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              overflow: TextOverflow.clip,
+                            ),
+                            maxLines: 3,
+                          ),
+                        ]),
+                      )
+                    : Container(),
                 Text(
                   'Fecha postulación:',
                   textAlign: TextAlign.center,
@@ -575,6 +601,8 @@ List<Widget> Postulations(List<Job>? jobs, List<Postulation>? userPost,
                                                             idEmpleo:
                                                                 post.idEmpleo,
                                                             estado: post.estado,
+                                                            motivoRechazo: post
+                                                                .motivoRechazo,
                                                             estadoPostulacion:
                                                                 "Inactivo",
                                                             fechaPostulacion: post

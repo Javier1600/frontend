@@ -15,6 +15,7 @@ class Postulation {
   String idUsuario;
   String idEmpleo;
   String estado;
+  String motivoRechazo;
   String estadoPostulacion;
   DateTime fechaPostulacion;
   int v;
@@ -24,6 +25,7 @@ class Postulation {
     required this.idUsuario,
     required this.idEmpleo,
     required this.estado,
+    required this.motivoRechazo,
     required this.estadoPostulacion,
     required this.fechaPostulacion,
     required this.v,
@@ -34,6 +36,7 @@ class Postulation {
         idUsuario: json["idUsuario"],
         idEmpleo: json["idEmpleo"],
         estado: json["estado"],
+        motivoRechazo: json["motivoRechazo"],
         estadoPostulacion: json["estadoPostulacion"],
         fechaPostulacion: DateTime.parse(json["fechaPostulacion"]),
         v: json["__v"],
@@ -44,6 +47,7 @@ class Postulation {
         "idUsuario": idUsuario,
         "idEmpleo": idEmpleo,
         "estado": estado,
+        "motivoRechazo": motivoRechazo,
         "estadoPostulacion": estadoPostulacion,
         "fechaPostulacion": fechaPostulacion.toIso8601String(),
       };

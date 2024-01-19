@@ -49,6 +49,7 @@ void createPostulation(Postulation postulation) async {
           "idUsuario": postulation.idUsuario,
           "idEmpleo": postulation.idEmpleo,
           "estado": postulation.estado,
+          "motivoRechazo": postulation.motivoRechazo,
           "estadoPostulacion": postulation.estadoPostulacion,
           "fechaPostulacion": postulation.fechaPostulacion.toIso8601String(),
         });
@@ -67,6 +68,7 @@ void editPostulation(Postulation postulation) async {
           "idUsuario": postulation.idUsuario,
           "idEmpleo": postulation.idEmpleo,
           "estado": postulation.estado,
+          "motivoRechazo": postulation.motivoRechazo,
           "estadoPostulacion": postulation.estadoPostulacion,
           "fechaPostulacion": postulation.fechaPostulacion.toIso8601String(),
         });
