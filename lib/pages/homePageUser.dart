@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/classes/users.dart';
 import 'package:frontend/pages/explorePageUser.dart';
+import 'package:frontend/pages/externalCompaniesUser.dart';
 import 'package:frontend/pages/loginUser.dart';
 import 'package:frontend/pages/userPostulations.dart';
 import 'package:frontend/pages/userProfile.dart';
@@ -280,6 +281,60 @@ class _homePageUserState extends State<homePageUser> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute<Null>(
+                            builder: (BuildContext context) {
+                          return UserExternalCompanies(widget.loggedUser);
+                        }));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.28,
+                        padding: EdgeInsets.only(
+                            left: 16.0, right: 16.0, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                                color: Color.fromRGBO(1, 167, 211, 1),
+                                width: 4.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(8.0, 8.0),
+                                  blurRadius: 15.0)
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(1, 167, 211, 1),
+                              ),
+                              width: 100,
+                              height: 100,
+                              child: Image(
+                                image: AssetImage('assets/img/anuncio.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "Publicaciones",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 17.0,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 8)),
                     GestureDetector(
                       onTap: () {
                         _onBack(context);

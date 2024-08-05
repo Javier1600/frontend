@@ -275,137 +275,134 @@ class _RejectPostulationState extends State<RejectPostulation> {
                                                     fontSize: 18)),
                                             backgroundColor: Colors.white70,
                                             actions: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      nPost = Postulation(
-                                                          id: widget.reqPost.id,
-                                                          idUsuario: widget
-                                                              .reqPost
-                                                              .idUsuario,
-                                                          idEmpleo: widget
-                                                              .reqPost.idEmpleo,
-                                                          estado: "Negada",
-                                                          motivoRechazo: motivo,
-                                                          estadoPostulacion: widget
-                                                              .reqPost
-                                                              .estadoPostulacion,
-                                                          fechaPostulacion: widget
-                                                              .reqPost
-                                                              .fechaPostulacion,
-                                                          v: widget.reqPost.v);
-                                                      editPostulation(nPost!);
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return AlertDialog(
-                                                              title: Text(
-                                                                  "Postulación negada",
-                                                                  style: TextStyle(
-                                                                      color: Color.fromRGBO(
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  nPost = Postulation(
+                                                      id: widget.reqPost.id,
+                                                      idUsuario: widget
+                                                          .reqPost.idUsuario,
+                                                      idEmpleo: widget
+                                                          .reqPost.idEmpleo,
+                                                      estado: "Negada",
+                                                      motivoRechazo: motivo,
+                                                      estadoPostulacion: widget
+                                                          .reqPost
+                                                          .estadoPostulacion,
+                                                      fechaPostulacion: widget
+                                                          .reqPost
+                                                          .fechaPostulacion,
+                                                      v: widget.reqPost.v);
+                                                  editPostulation(nPost!);
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              "Postulación negada",
+                                                              style: TextStyle(
+                                                                  color: Color
+                                                                      .fromRGBO(
                                                                           226,
                                                                           144,
                                                                           32,
                                                                           1),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700)),
-                                                              content: Text(
-                                                                  "Se ha negado la postulación por $motivo",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          18)),
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .white70,
-                                                              actions: [
-                                                                ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    editPostulation(
-                                                                        nPost!);
-                                                                    Timer(
-                                                                        Duration(
-                                                                            seconds:
-                                                                                1),
-                                                                        () {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(MaterialPageRoute<void>(builder:
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700)),
+                                                          content: Text(
+                                                              "Se ha negado la postulación por $motivo",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontSize:
+                                                                      18)),
+                                                          backgroundColor:
+                                                              Colors.white70,
+                                                          actions: [
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                editPostulation(
+                                                                    nPost!);
+                                                                Timer(
+                                                                    Duration(
+                                                                        seconds:
+                                                                            1),
+                                                                    () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .push(MaterialPageRoute<
+                                                                              void>(
+                                                                          builder:
                                                                               (BuildContext context) {
-                                                                        return JobPostulations(
-                                                                            widget.reqJob,
-                                                                            widget.loggedCompany);
-                                                                      }));
-                                                                    });
-                                                                  },
-                                                                  style: ElevatedButton.styleFrom(
+                                                                    return JobPostulations(
+                                                                        widget
+                                                                            .reqJob,
+                                                                        widget
+                                                                            .loggedCompany);
+                                                                  }));
+                                                                });
+                                                              },
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
                                                                       backgroundColor:
                                                                           Colors
                                                                               .white70),
-                                                                  child: Text(
-                                                                    'Aceptar',
-                                                                    style: TextStyle(
-                                                                        color: Color.fromRGBO(
+                                                              child: Text(
+                                                                'Aceptar',
+                                                                style: TextStyle(
+                                                                    color: Color
+                                                                        .fromRGBO(
                                                                             1,
                                                                             167,
                                                                             211,
                                                                             1),
-                                                                        fontSize:
-                                                                            22,
-                                                                        fontWeight:
-                                                                            FontWeight.w700),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          });
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white70),
-                                                    child: Text(
-                                                      'Continuar',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              1, 167, 211, 1),
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white70),
-                                                    child: Text(
-                                                      'Cancelar',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              226, 144, 32, 1),
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                  ),
-                                                ],
+                                                                    fontSize:
+                                                                        22,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white70),
+                                                child: Text(
+                                                  'Continuar',
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          1, 167, 211, 1),
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.all(5)),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white70),
+                                                child: Text(
+                                                  'Cancelar',
+                                                  style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          226, 144, 32, 1),
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
                                               ),
                                             ],
                                           );
